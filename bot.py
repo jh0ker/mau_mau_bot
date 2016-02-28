@@ -23,7 +23,7 @@ def start(bot, update, args):
     else:
         bot.sendMessage(update.message.chat_id,
                         text="Please invite me to a group and "
-                             "issue the /start command there.")
+                             "issue the /new command there.")
 
 
 def inline(bot, update):
@@ -45,3 +45,9 @@ def inline(bot, update):
         user_id = update.chosen_inline_result.from_user.id
         game = gm.userid_game[user_id]
         game.play_card(c.from_str(update.chosen_inline_result.id))
+
+dp.addTelegramInlineHandler(inline)
+dp.addTelegramCommandHandler('start', start)
+dp.addTelegramCommandHandler('new', new_game)
+
+u.start_polling()
