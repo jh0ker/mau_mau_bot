@@ -1,5 +1,7 @@
 import logging
 
+import card as c
+
 
 class Player(object):
 
@@ -27,6 +29,12 @@ class Player(object):
 
         for i in range(6):
             self.cards.append(self.game.deck.draw())
+
+    def leave(self):
+        self.next.prev = self.prev
+        self.prev.next = self.next
+        self.next = None
+        self.prev = None
 
     def __repr__(self):
         return repr(self.user)
@@ -69,10 +77,28 @@ class Player(object):
 
         for card in self.cards:
             self.logger.debug("Checking card " + str(card))
-            if (card.color is last.color or card.value is last.value or
-                    card.special) and \
-                    not last.special and card not in playable:
-                self.logger.debug("Matching!")
-                playable.append(card)
+            if (card.color != last.color and card.value != last.value and
+                    not card.special):
+                self.logger.debug("Card's color or value doesn't match")
+                continue
+
+            if last.value == c.DRAW_TWO and not \
+                    (card.value == c.DRAW_TWO or
+                     card.special == c.DRAW_FOUR or
+                     not self.game.draw_counter):
+                self.logger.debug("Player has to draw and can't counter")
+                continue
+
+            if last.special == c.DRAW_FOUR and self.game.draw_counter:
+                self.logger.debug("Player has to draw and can't counter")
+                continue
+
+            if not last.color or card in playable:
+                self.logger.debug("Last card has no color or the card was "
+                                  "already added to the list")
+                continue
+
+            self.logger.debug("Matching!")
+            playable.append(card)
 
         return playable

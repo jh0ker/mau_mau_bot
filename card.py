@@ -51,18 +51,7 @@ class Card(object):
             return '%s_%s' % (self.color, self.value)
 
     def __repr__(self):
-        if self.special:
-            return self.special
-            '''
-            if self.special is CHOOSE:
-                return "Colorchooser"
-            elif self.special is DRAW_FOUR:
-                return "Draw four"
-            '''
-        else:
-            return self.color + " - " + self.value
-
-        return str(self)
+        return ' '.join([s.capitalize() for s in str(self).split('_')])
 
     def __eq__(self, other):
         return str(self) == str(other)
@@ -75,7 +64,7 @@ class Card(object):
 
 
 def from_str(string):
-    if '_' in string:
+    if string not in SPECIALS:
         color, value = string.split('_')
         return Card(color, value)
     else:

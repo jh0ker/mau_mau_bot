@@ -13,7 +13,6 @@ class GameManager(object):
         self.gameid_game = dict()
         self.userid_game = dict()
         self.chatid_gameid = dict()
-        self.userid_user = dict()
         self.userid_player = dict()
         self.logger = logging.getLogger(__name__)
 
@@ -24,6 +23,8 @@ class GameManager(object):
         self.logger.info("Creating new game with id " + game_id)
         self.gameid_game[game_id] = game
         self.chatid_gameid[chat_id] = game_id
+        self.chatid_gameid[game_id] = chat_id
+        self.chatid_gameid[game] = chat_id
 
         return LINK_PATTERN % (bot_name, game_id)
 
@@ -33,3 +34,11 @@ class GameManager(object):
         player = Player(game, user)
         self.userid_player[user.id] = player
         self.userid_game[user.id] = game
+
+    def leave_game(self, user):
+        player = self.userid_player[user.id]
+
+        player.leave()
+        del self.userid_player[user.id]
+        del self.userid_game[user.id]
+
