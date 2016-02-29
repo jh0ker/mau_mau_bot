@@ -11,7 +11,7 @@ class Game(object):
     """
     current_player = None
     reversed = False
-    draw_counter = 0
+    draw_counter = 1
     choosing_color = False
 
     def __init__(self):

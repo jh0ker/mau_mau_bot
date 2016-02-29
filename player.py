@@ -1,4 +1,4 @@
-import card as c
+import logging
 
 
 class Player(object):
@@ -13,6 +13,8 @@ class Player(object):
         self.cards = list()
         self.game = game
         self.user = user
+        self.logger = logging.getLogger(__name__)
+
         if game.current_player:
             self.next = game.current_player
             self.prev = game.current_player.prev
@@ -56,15 +58,21 @@ class Player(object):
 
     def playable_cards(self):
 
-        if self.game.current_player is not self:
+        if self.game.current_player.user.id is not self.user.id:
+            self.logger.debug("Player is not current player")
             return False
 
         playable = list()
         last = self.game.last_card
 
+        self.logger.debug("Last card was" + str(last))
+
         for card in self.cards:
-            if (card.color is last.color or card.value is last.value) and \
-                    not last.special:
+            self.logger.debug("Checking card " + str(card))
+            if (card.color is last.color or card.value is last.value or
+                    card.special) and \
+                    not last.special and card not in playable:
+                self.logger.debug("Matching!")
                 playable.append(card)
 
         return playable

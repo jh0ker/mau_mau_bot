@@ -24,11 +24,14 @@ class Deck(object):
         self.shuffle()
 
     def shuffle(self):
-        self.cards = shuffle(self.cards)
+        self.logger.debug("Shuffling Deck")
+        shuffle(self.cards)
 
     def draw(self):
         try:
-            return self.cards.pop()
+            card = self.cards.pop()
+            self.logger.debug("Drawing card " + str(card))
+            return card
         except IndexError:
             while len(self.graveyard):
                 self.cards.append(self.graveyard.pop())

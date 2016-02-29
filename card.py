@@ -51,7 +51,21 @@ class Card(object):
             return '%s_%s' % (self.color, self.value)
 
     def __repr__(self):
+        if self.special:
+            return self.special
+            '''
+            if self.special is CHOOSE:
+                return "Colorchooser"
+            elif self.special is DRAW_FOUR:
+                return "Draw four"
+            '''
+        else:
+            return self.color + " - " + self.value
+
         return str(self)
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     def get_image_link(self):
         return IMAGE_PATTERN % str(self)
