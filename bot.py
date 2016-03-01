@@ -192,17 +192,17 @@ def chosen_card(bot, update):
     elif result_id == 'call_bluff':
         if player.prev.bluffing:
             bot.sendMessage(chat_id, text="Bluff called! Giving %d cards to %s"
-                                          % (game.draw_counter + 2,
+                                          % (game.draw_counter,
                                              player.prev.user.first_name))
-            for i in range(game.draw_counter + 2):
+            for i in range(game.draw_counter):
                 player.prev.cards.append(game.deck.draw())
         else:
             bot.sendMessage(chat_id, text="%s didn't bluff! Giving %d cards to"
                                           " %s"
                                           % (player.prev.user.first_name,
-                                             game.draw_counter,
+                                             game.draw_counter + 2,
                                              player.user.first_name))
-            for i in range(game.draw_counter):
+            for i in range(game.draw_counter + 2):
                 player.cards.append(game.deck.draw())
 
         game.draw_counter = 0
