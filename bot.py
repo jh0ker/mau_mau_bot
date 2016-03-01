@@ -187,6 +187,23 @@ def chosen_card(bot, update):
 
     if result_id in ('hand', 'not_your_turn'):
         return
+    elif result_id == 'call_bluff':
+        if player.prev.bluffing:
+            bot.sendMessage(chat_id, text="Bluff called! Giving %d cards to %s"
+                                          % (game.draw_counter + 2,
+                                             player.prev.user.first_name))
+            for i in range(game.draw_counter + 2):
+                player.prev.cards.append(game.deck.draw())
+        else:
+            bot.sendMessage(chat_id, text="%s didn't bluff! Giving %d cards to"
+                                          " %s"
+                                          % (player.prev.user.first_name,
+                                             game.draw_counter,
+                                             player.user.first_name))
+            for i in range(game.draw_counter):
+                player.cards.append(game.deck.draw())
+
+            game.turn()
     elif result_id == 'draw':
         for n in range(game.draw_counter or 1):
             player.cards.append(game.deck.draw())
