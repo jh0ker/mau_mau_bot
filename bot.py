@@ -68,15 +68,7 @@ def reply_to_query(bot, update):
     playable = list()
 
     if game.choosing_color:
-        for color in c.COLORS:
-            results.append(
-                InlineQueryResultArticle(
-                    id=color,
-                    title="Choose Color",
-                    message_text=color,
-                    description=color.upper()
-                )
-            )
+        choose_color(results)
     else:
         playable = list(sorted(player.playable_cards()))
 
@@ -85,8 +77,9 @@ def reply_to_query(bot, update):
     elif playable:
         for card in playable:
             play_card(card, results)
-    elif not game.choosing_color:
-        draw(player, results)
+
+    if playable is not False and not game.choosing_color and not player.drew:
+        draw(player, results, could_play_card=bool(len(playable)))
 
     if player.drew:
         pass_(results)
@@ -97,6 +90,18 @@ def reply_to_query(bot, update):
     other_cards(playable, player, results)
 
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
+
+
+def choose_color(results):
+    for color in c.COLORS:
+        results.append(
+            InlineQueryResultArticle(
+                id=color,
+                title="Choose Color",
+                message_text=color,
+                description=color.upper()
+            )
+        )
 
 
 def other_cards(playable, player, results):
@@ -111,11 +116,12 @@ def other_cards(playable, player, results):
     )
 
 
-def draw(player, results):
+def draw(player, results, could_play_card):
     results.append(
         InlineQueryResultArticle(
             "draw",
-            title="No suitable cards...",
+            title=("No suitable cards..." if not could_play_card else
+                   "I don't want to play a card..."),
             description="Draw!",
             message_text='Drawing %d card(s)'
                          % (player.game.draw_counter or 1)
