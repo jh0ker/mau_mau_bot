@@ -203,7 +203,8 @@ def chosen_card(bot, update):
             for i in range(game.draw_counter):
                 player.cards.append(game.deck.draw())
 
-            game.turn()
+        game.draw_counter = 0
+        game.turn()
     elif result_id == 'draw':
         for n in range(game.draw_counter or 1):
             player.cards.append(game.deck.draw())
