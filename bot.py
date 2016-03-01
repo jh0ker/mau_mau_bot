@@ -69,7 +69,7 @@ def reply_to_query(bot, update):
 
     if game.choosing_color:
         choose_color(results)
-    else:
+    elif playable:
         playable = list(sorted(player.playable_cards()))
 
     if playable is False:
@@ -233,7 +233,7 @@ def chosen_card(bot, update):
 
     player_name = player.user.first_name
     if player.user.username:
-        player_name += ' (' + player.user.username + ')'
+        player_name += ' (@' + player.user.username + ')'
     bot.sendMessage(chat_id, text="Next player: " + player_name)
 
 
