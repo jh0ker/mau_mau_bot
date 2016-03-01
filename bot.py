@@ -213,8 +213,7 @@ def chosen_card(bot, update):
         game.draw_counter = 0
         player.drew = True
 
-        if game.last_card.value == c.DRAW_TWO or \
-                not player.card_playable(player.cards[-1], list()):
+        if game.last_card.value == c.DRAW_TWO:
             game.turn()
     elif result_id == 'pass':
         game.turn()
