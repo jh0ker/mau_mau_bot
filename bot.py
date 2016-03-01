@@ -231,9 +231,10 @@ def chosen_card(bot, update):
             gm.leave_game(user)
             bot.sendMessage(chat_id, text="Player won!")
 
-    bot.sendMessage(chat_id,
-                    text="Next player: " +
-                         game.current_player.user.first_name)
+    player_name = player.user.first_name
+    if player.user.username:
+        player_name += ' (' + player.user.username + ')'
+    bot.sendMessage(chat_id, text="Next player: " + player_name)
 
 
 def error(bot, update, error):
