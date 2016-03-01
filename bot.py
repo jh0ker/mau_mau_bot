@@ -84,7 +84,9 @@ def reply_to_query(bot, update):
     if player.drew:
         pass_(results)
 
-    if game.last_card.special == c.DRAW_FOUR and not game.choosing_color:
+    if game.last_card.special == c.DRAW_FOUR \
+            and not game.choosing_color \
+            and game.draw_counter:
         call_bluff(results)
 
     other_cards(playable, player, results)
