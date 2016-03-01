@@ -69,8 +69,10 @@ def reply_to_query(bot, update):
 
     if game.choosing_color:
         choose_color(results)
-    elif playable:
-        playable = list(sorted(player.playable_cards()))
+    else:
+        playable = player.playable_cards()
+        if playable:
+            playable = list(sorted(playable))
 
     if playable is False:
         not_your_turn(game, results)
@@ -231,7 +233,8 @@ def chosen_card(bot, update):
             gm.leave_game(user)
             bot.sendMessage(chat_id, text="Player won!")
 
-    player_name = game.current_player.user.first_name
+    player = game.current_player.user
+    player_name = player.first_name
     if player.user.username:
         player_name += ' (@' + player.user.username + ')'
     bot.sendMessage(chat_id, text="Next player: " + player_name)
