@@ -25,7 +25,9 @@ class Game(object):
         self.reversed = not self.reversed
 
     def turn(self):
+        self.logger.debug("Next Player")
         self.current_player = self.current_player.next
+        self.current_player.drew = False
 
     def play_card(self, card):
         """
@@ -39,7 +41,7 @@ class Game(object):
 
         self.logger.info("Playing card " + repr(card))
         if card.value == c.SKIP:
-            self.current_player = self.current_player.next.next
+            self.turn()
         elif card.special == c.DRAW_FOUR:
             self.draw_counter += 4
             self.logger.debug("Draw counter increased by 4")
@@ -50,12 +52,12 @@ class Game(object):
             self.reverse()
 
         if card.special not in (c.CHOOSE, c.DRAW_FOUR):
-            self.current_player = self.current_player.next
+            self.turn()
         else:
             self.logger.debug("Choosing Color...")
             self.choosing_color = True
 
     def choose_color(self, color):
         self.last_card.color = color
-        self.current_player = self.current_player.next
+        self.turn()
         self.choosing_color = False

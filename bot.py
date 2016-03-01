@@ -22,7 +22,7 @@ def list_subtract(list1, list2):
     for x in list2:
         list1.remove(x)
 
-    return list1
+    return list(sorted(list1))
 
 
 def new_game(bot, update):
@@ -55,105 +55,160 @@ def start(bot, update, args):
 
 def inline(bot, update):
     if update.inline_query:
-        user_id = update.inline_query.from_user.id
-        player = gm.userid_player[user_id]
-        game = gm.userid_game[user_id]
-        results = list()
-        playable = list()
-
-        if game.choosing_color:
-            for color in c.COLORS:
-                results.append(
-                    InlineQueryResultArticle(
-                        id=color,
-                        title="Choose Color",
-                        message_text=color,
-                        description=color.upper()
-                    )
-                )
-        else:
-            playable = player.playable_cards()
-
-        if playable is False:
-            results.append(
-                InlineQueryResultArticle(
-                    "not_your_turn",
-                    title="Not your turn",
-                    description="Tap to see the current player",
-                    message_text="Current player: " +
-                                 game.current_player.user.first_name
-                )
-            )
-        elif playable:
-            for card in playable:
-                results.append(
-                    InlineQueryResultArticle(str(card),
-                                             title="Play card",
-                                             message_text=
-                                             ('<a href="%s">\xad</a>'
-                                              'Played card ' + repr(card))
-                                             % card.get_image_link(),
-                                             thumb_url=card.get_thumb_link(),
-                                             description=repr(card),
-                                             parse_mode=ParseMode.HTML)
-                )
-        elif not game.choosing_color:
-            results.append(
-                InlineQueryResultArticle(
-                    "draw",
-                    title="No suitable cards...",
-                    description="Draw!",
-                    message_text='Drawing %d card(s)'
-                                 % (player.game.draw_counter or 1)
-                )
-            )
-
-        results.append(
-            InlineQueryResultArticle(
-                "hand",
-                title="Other cards:",
-                description=', '.join([repr(card) for card in
-                                       list_subtract(player.cards, playable)]),
-                message_text='Just checking cards'
-            )
-        )
-
-        [logger.info(str(result)) for result in results]
-
-        bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
-
+        reply_to_query(bot, update)
     else:
-        user = update.chosen_inline_result.from_user
-        game = gm.userid_game[user.id]
-        player = gm.userid_player[user.id]
-        result_id = update.chosen_inline_result.result_id
-        chat_id = gm.chatid_gameid[game]
+        chosen_card(bot, update)
 
-        logger.info("Selected result: " + result_id)
 
-        if result_id == 'hand':
-            pass
-        elif result_id == 'draw':
-            for n in range(game.draw_counter or 1):
-                player.cards.append(game.deck.draw())
-            game.draw_counter = 0
-        elif result_id in c.COLORS:
-            game.choose_color(result_id)
-        else:
-            card = c.from_str(result_id)
-            game.play_card(card)
-            player.cards.remove(card)
-            if game.choosing_color:
-                bot.sendMessage(chat_id, text="Please choose a color")
-            elif len(player.cards) == 1:
-                bot.sendMessage(chat_id, text="Last Card!")
-            elif len(player.cards) == 0:
-                gm.leave_game(user)
-                bot.sendMessage(chat_id, text="Player won!")
+def reply_to_query(bot, update):
+    user_id = update.inline_query.from_user.id
+    player = gm.userid_player[user_id]
+    game = gm.userid_game[user_id]
+    results = list()
+    playable = list()
 
-        bot.sendMessage(chat_id,
-                        text="Next player: " +
-                             game.current_player.user.first_name)
+    if game.choosing_color:
+        for color in c.COLORS:
+            results.append(
+                InlineQueryResultArticle(
+                    id=color,
+                    title="Choose Color",
+                    message_text=color,
+                    description=color.upper()
+                )
+            )
+    else:
+        playable = list(sorted(player.playable_cards()))
+
+    if playable is False:
+        not_your_turn(game, results)
+    elif playable:
+        for card in playable:
+            play_card(card, results)
+    elif not game.choosing_color:
+        draw(player, results)
+
+    if player.drew:
+        pass_(results)
+
+    if game.last_card.special == c.DRAW_FOUR and not game.choosing_color:
+        call_bluff(results)
+
+    other_cards(playable, player, results)
+
+    bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
+
+
+def other_cards(playable, player, results):
+    results.append(
+        InlineQueryResultArticle(
+            "hand",
+            title="Other cards:",
+            description=', '.join([repr(card) for card in
+                                   list_subtract(player.cards, playable)]),
+            message_text='Just checking cards'
+        )
+    )
+
+
+def draw(player, results):
+    results.append(
+        InlineQueryResultArticle(
+            "draw",
+            title="No suitable cards...",
+            description="Draw!",
+            message_text='Drawing %d card(s)'
+                         % (player.game.draw_counter or 1)
+        )
+    )
+
+
+def pass_(results):
+    results.append(
+        InlineQueryResultArticle(
+            "pass",
+            title="Pass",
+            description="Don't play a card",
+            message_text='Pass'
+        )
+    )
+
+
+def call_bluff(results):
+    results.append(
+        InlineQueryResultArticle(
+            "call_bluff",
+            title="Call their bluff!",
+            description="Risk it!",
+            message_text="I'm calling your bluff!"
+        )
+    )
+
+
+def play_card(card, results):
+    results.append(
+        InlineQueryResultArticle(str(card),
+                                 title="Play card",
+                                 message_text=
+                                 ('<a href="%s">\xad</a>'
+                                  'Played card ' + repr(card))
+                                 % card.get_image_link(),
+                                 thumb_url=card.get_thumb_link(),
+                                 description=repr(card),
+                                 parse_mode=ParseMode.HTML)
+    )
+
+
+def not_your_turn(game, results):
+    results.append(
+        InlineQueryResultArticle(
+            "not_your_turn",
+            title="Not your turn",
+            description="Tap to see the current player",
+            message_text="Current player: " +
+                         game.current_player.user.first_name
+        )
+    )
+
+
+def chosen_card(bot, update):
+    user = update.chosen_inline_result.from_user
+    game = gm.userid_game[user.id]
+    player = gm.userid_player[user.id]
+    result_id = update.chosen_inline_result.result_id
+    chat_id = gm.chatid_gameid[game]
+    logger.info("Selected result: " + result_id)
+
+    if result_id in ('hand', 'not_your_turn'):
+        return
+    elif result_id == 'draw':
+        for n in range(game.draw_counter or 1):
+            player.cards.append(game.deck.draw())
+        game.draw_counter = 0
+        player.drew = True
+
+        if game.last_card.value == c.DRAW_TWO or \
+                not player.card_playable(player.cards[-1], list()):
+            game.turn()
+    elif result_id == 'pass':
+        game.turn()
+    elif result_id in c.COLORS:
+        game.choose_color(result_id)
+    else:
+        card = c.from_str(result_id)
+        game.play_card(card)
+        player.cards.remove(card)
+        if game.choosing_color:
+            bot.sendMessage(chat_id, text="Please choose a color")
+        elif len(player.cards) == 1:
+            bot.sendMessage(chat_id, text="Last Card!")
+        elif len(player.cards) == 0:
+            gm.leave_game(user)
+            bot.sendMessage(chat_id, text="Player won!")
+
+    bot.sendMessage(chat_id,
+                    text="Next player: " +
+                         game.current_player.user.first_name)
 
 
 def error(bot, update, error):

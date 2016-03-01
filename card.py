@@ -56,6 +56,9 @@ class Card(object):
     def __eq__(self, other):
         return str(self) == str(other)
 
+    def __lt__(self, other):
+        return str(self) < str(other)
+
     def get_image_link(self):
         return IMAGE_PATTERN % str(self)
 
