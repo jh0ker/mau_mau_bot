@@ -85,6 +85,9 @@ class Player(object):
 
         self.bluffing = bool(len(playable) - 1)
 
+        if len(self.cards) == 1 and self.cards[0].special == c.DRAW_FOUR:
+            return list()
+
         return playable
 
     def card_playable(self, card, playable):
@@ -97,7 +100,6 @@ class Player(object):
             is_playable = False
         if last.value == c.DRAW_TWO and not \
                 (card.value == c.DRAW_TWO or
-                 card.special == c.DRAW_FOUR or
                  not self.game.draw_counter):
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False

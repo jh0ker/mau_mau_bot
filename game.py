@@ -49,7 +49,10 @@ class Game(object):
             self.draw_counter += 2
             self.logger.debug("Draw counter increased by 2")
         elif card.value == c.REVERSE:
-            self.reverse()
+            if self.current_player is self.current_player.next.next:
+                self.turn()
+            else:
+                self.reverse()
 
         if card.special not in (c.CHOOSE, c.DRAW_FOUR):
             self.turn()
