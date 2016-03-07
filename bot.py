@@ -313,5 +313,5 @@ dp.addTelegramCommandHandler('new', new_game)
 dp.addTelegramCommandHandler('leave', leave_game)
 dp.addErrorHandler(error)
 
-start_bot()
+start_bot(u)
 u.idle()
