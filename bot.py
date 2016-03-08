@@ -146,24 +146,19 @@ def reply_to_query(bot, update):
         if game.choosing_color:
             add_choose_color(results)
         else:
-            playable = player.playable_cards()
-            if playable:
-                playable = list(sorted(playable))
+            playable = list(sorted(player.playable_cards()))
 
-        if playable:
             for card in playable:
                 add_play_card(card, results)
 
-        if playable is not False and not game.choosing_color and not player.drew:
-            add_draw(player, results, could_play_card=bool(len(playable)))
+            if not player.drew:
+                add_draw(player, results, could_play_card=bool(len(playable)))
 
-        if player.drew and not game.choosing_color:
-            add_pass(results)
+            else:
+                add_pass(results)
 
-        if game.last_card.special == c.DRAW_FOUR \
-                and not game.choosing_color \
-                and game.draw_counter:
-            add_call_bluff(results)
+            if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
+                add_call_bluff(results)
 
     add_other_cards(playable, player, results)
 
