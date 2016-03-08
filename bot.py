@@ -1,6 +1,6 @@
 import logging
 
-from telegram import Updater, InlineQueryResultPhoto, InlineQueryResultArticle, ParseMode
+from telegram import Updater, InlineQueryResultArticle, ParseMode
 
 from game_manager import GameManager
 import card as c
@@ -9,12 +9,29 @@ from start_bot import start_bot
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
 u = Updater(TOKEN)
 dp = u.dispatcher
+
+help_text = "Follow these steps:\n\n" \
+            "1. Add this bot to a group\n" \
+            "2. In the group, start a new game with /new\n" \
+            "3. The bot will send a link into the group. " \
+            "Click the link and then on the <b>Start</b> " \
+            "button to join the game.\n" \
+            "4. Go back to the group chat and wait for at least one " \
+            "other person to join the game (you can also play alone, " \
+            "but it's no fun)\n" \
+            "5. Type <code>@mau_mau_bot</code> into your chat box and hit " \
+            "space. You will see the cards that you can play, any extra " \
+            "options like drawing, your other cards (those you can not play " \
+            "at the moment) and an option to see the current game state.\n\n" \
+            "Players can join the game at any time, though you currently " \
+            "can not play more than one game at a time. To leave a game, " \
+            "send /leave into the group."
 
 
 def list_subtract(list1, list2):
@@ -98,6 +115,12 @@ def inline(bot, update):
         reply_to_query(bot, update)
     else:
         process_result(bot, update)
+
+
+def help(bot, update):
+    bot.sendMessage(update.message.chat_id,
+                    text=help_text,
+                    parse_mode=ParseMode.HTML)
 
 
 def reply_to_query(bot, update):
@@ -311,6 +334,7 @@ dp.addTelegramInlineHandler(inline)
 dp.addTelegramCommandHandler('start', start)
 dp.addTelegramCommandHandler('new', new_game)
 dp.addTelegramCommandHandler('leave', leave_game)
+dp.addTelegramCommandHandler('help', help)
 dp.addErrorHandler(error)
 
 start_bot(u)
