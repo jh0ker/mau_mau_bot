@@ -35,6 +35,7 @@ help_text = "Follow these steps:\n\n" \
 
 
 def list_subtract(list1, list2):
+    """ Helper function to subtract two lists and return the sorted result """
     list1 = list1.copy()
 
     for x in list2:
@@ -44,6 +45,7 @@ def list_subtract(list1, list2):
 
 
 def display_name(game):
+    """ Get the current players name including their username, if possible """
     user = game.current_player.user
     user_name = user.first_name
     if user.username:
@@ -52,6 +54,7 @@ def display_name(game):
 
 
 def display_color(color):
+    """ Convert a color code to actual color name """
     if color == "r":
         return "Red"
     if color == "b":
@@ -63,10 +66,12 @@ def display_color(color):
 
 
 def error(bot, update, error):
+    """ Simple error handler """
     logger.exception(error)
 
 
 def new_game(bot, update):
+    """ Handler for the /new command """
     chat_id = update.message.chat_id
     link = gm.generate_invite_link(u.bot.getMe().username, chat_id)
     bot.sendMessage(chat_id,
@@ -74,10 +79,12 @@ def new_game(bot, update):
 
 
 def leave_game(bot, update):
+    """ Handler for the /leave command """
     chat_id = update.message.chat_id
     game_id = gm.chatid_gameid[chat_id]
     game = gm.gameid_game[game_id]
     user = update.message.from_user
+
     if game.current_player.user.id == user.id:
         bot.sendMessage(chat_id,
                         text="You can't leave the game if it's your turn")
@@ -87,8 +94,9 @@ def leave_game(bot, update):
 
 
 def start(bot, update, args):
+    """ Handler for the /start command """
     if args:
-        game_id = args[0]
+        game_id = args[0]  # Contains the game id
         gm.join_game(game_id, update.message.from_user)
         game = gm.gameid_game[game_id]
         groupchat = gm.chatid_gameid[game_id]
@@ -99,6 +107,7 @@ def start(bot, update, args):
                         text=update.message.from_user.first_name +
                              " joined the game!")
 
+        # Check if user is the first player to join and if, show the first card
         if game.current_player is game.current_player.next:
             game.play_card(game.last_card)
             bot.sendPhoto(groupchat,
@@ -111,6 +120,7 @@ def start(bot, update, args):
 
 
 def inline(bot, update):
+    """ Handler for all inline stuff """
     if update.inline_query:
         reply_to_query(bot, update)
     else:
@@ -118,12 +128,14 @@ def inline(bot, update):
 
 
 def help(bot, update):
+    """ Handler for the /help command """
     bot.sendMessage(update.message.chat_id,
                     text=help_text,
                     parse_mode=ParseMode.HTML)
 
 
 def reply_to_query(bot, update):
+    """ Builds the result list for inline queries and answers to the client """
     user_id = update.inline_query.from_user.id
     player = gm.userid_player[user_id]
     game = gm.userid_game[user_id]
@@ -241,6 +253,7 @@ def add_gameinfo(game, results):
     current_player = game.current_player
     itplayer = current_player.next
     add_player(current_player, players)
+
     while itplayer is not current_player:
         add_player(itplayer, players)
         itplayer = itplayer.next
@@ -264,12 +277,13 @@ def add_player(itplayer, players):
 
 
 def process_result(bot, update):
+    """ Check the players actions and act accordingly """
     user = update.chosen_inline_result.from_user
     game = gm.userid_game[user.id]
     player = gm.userid_player[user.id]
     result_id = update.chosen_inline_result.result_id
     chat_id = gm.chatid_gameid[game]
-    logger.info("Selected result: " + result_id)
+    logger.debug("Selected result: " + result_id)
 
     if result_id in ('hand', 'gameinfo'):
         return
@@ -284,8 +298,7 @@ def process_result(bot, update):
     else:
         do_play_card(bot, chat_id, game, player, result_id, user)
 
-    user_name = display_name(game)
-    bot.sendMessage(chat_id, text="Next player: " + user_name)
+    bot.sendMessage(chat_id, text="Next player: " + display_name(game))
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):
@@ -330,6 +343,7 @@ def do_call_bluff(bot, chat_id, game, player):
     game.turn()
 
 
+# Add all handlers to the dispatcher and run the bot
 dp.addTelegramInlineHandler(inline)
 dp.addTelegramCommandHandler('start', start)
 dp.addTelegramCommandHandler('new', new_game)

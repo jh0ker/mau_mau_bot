@@ -1,16 +1,11 @@
 import logging
 
 from deck import Deck
-from card import Card
 import card as c
-from player import Player
 
 
 class Game(object):
-    """ This class represents a game of mau mau
-
-    :type current_player: Player
-    """
+    """ This class represents a game of UNO """
     current_player = None
     reversed = False
     draw_counter = 0
@@ -22,20 +17,17 @@ class Game(object):
         self.logger = logging.getLogger(__name__)
 
     def reverse(self):
+        """ Reverse the direction of play """
         self.reversed = not self.reversed
 
     def turn(self):
+        """ Mark the turn as over and change the current player """
         self.logger.debug("Next Player")
         self.current_player = self.current_player.next
         self.current_player.drew = False
 
     def play_card(self, card):
-        """
-
-        :param card:
-        :type card: Card
-        :return:
-        """
+        """ Play a card and trigger its effects """
         self.deck.dismiss(self.last_card)
         self.last_card = card
 
@@ -49,11 +41,13 @@ class Game(object):
             self.draw_counter += 2
             self.logger.debug("Draw counter increased by 2")
         elif card.value == c.REVERSE:
+            # Special rule for two players
             if self.current_player is self.current_player.next.next:
                 self.turn()
             else:
                 self.reverse()
 
+        # Don't turn if the current player has to choose a color
         if card.special not in (c.CHOOSE, c.DRAW_FOUR):
             self.turn()
         else:
@@ -61,6 +55,7 @@ class Game(object):
             self.choosing_color = True
 
     def choose_color(self, color):
+        """ Carries out the color choosing and turns the game """
         self.last_card.color = color
         self.turn()
         self.choosing_color = False

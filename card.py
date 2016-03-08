@@ -38,6 +38,9 @@ THUMB_PATTERN = 'https://raw.githubusercontent.com/jh0ker/mau_mau_bot/' \
 
 
 class Card(object):
+    """
+    This class represents a card.
+    """
 
     def __init__(self, color, value, special=None):
         self.color = color
@@ -54,19 +57,24 @@ class Card(object):
         return ' '.join([s.capitalize() for s in str(self).split('_')])
 
     def __eq__(self, other):
+        """ Needed for sorting the cards """
         return str(self) == str(other)
 
     def __lt__(self, other):
+        """ Needed for sorting the cards """
         return str(self) < str(other)
 
     def get_image_link(self):
+        """ Returns a link to the image of this card """
         return IMAGE_PATTERN % str(self)
 
     def get_thumb_link(self):
+        """ Returns a link to the thumbnail-image of this card """
         return THUMB_PATTERN % str(self)
 
 
 def from_str(string):
+    """ Decode a Card object from a string """
     if string not in SPECIALS:
         color, value = string.split('_')
         return Card(color, value)

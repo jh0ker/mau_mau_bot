@@ -4,19 +4,20 @@ import card as c
 
 
 class Player(object):
+    """
+    This class represents a player.
+    It is basically a doubly-linked ring list with the option to reverse the
+    direction. On initialization, it will connect itself to a game and its
+    other players by placing itself behind the current player.
+    """
 
     def __init__(self, game, user):
-        """
-
-        :param game:
-        :type game Game
-        :return:
-        """
         self.cards = list()
         self.game = game
         self.user = user
         self.logger = logging.getLogger(__name__)
 
+        # Check if this player is the first player in this game.
         if game.current_player:
             self.next = game.current_player
             self.prev = game.current_player.prev
@@ -34,6 +35,7 @@ class Player(object):
         self.drew = False
 
     def leave(self):
+        """ Leave the current game """
         self.next.prev = self.prev
         self.prev.next = self.next
         self.next = None
@@ -68,29 +70,30 @@ class Player(object):
             self._next = player
 
     def playable_cards(self):
-
-        if self.game.current_player.user.id is not self.user.id:
-            self.logger.debug("Player is not current player")
-            return False
+        """ Returns a list of the cards this player can play right now """
 
         playable = list()
         last = self.game.last_card
 
-        self.logger.debug("Last card was" + str(last))
+        self.logger.debug("Last card was " + str(last))
 
         for card in self.cards:
             if self.card_playable(card, playable):
                 self.logger.debug("Matching!")
                 playable.append(card)
 
+        # You may only play a +4 if it's the only card you can play
         self.bluffing = bool(len(playable) - 1)
 
+        # You may not play a +4 as your last card
         if len(self.cards) == 1 and self.cards[0].special == c.DRAW_FOUR:
             return list()
 
         return playable
 
     def card_playable(self, card, playable):
+        """ Check a single card if it can be played """
+
         is_playable = True
         last = self.game.last_card
         self.logger.debug("Checking card " + str(card))
