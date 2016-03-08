@@ -316,7 +316,9 @@ def do_draw(game, player):
         player.cards.append(game.deck.draw())
     game.draw_counter = 0
     player.drew = True
-    if game.last_card.value == c.DRAW_TWO and draw_counter_before > 0:
+    if (game.last_card.value == c.DRAW_TWO or
+        game.last_card.special == c.DRAW_FOUR) and \
+            draw_counter_before > 0:
         game.turn()
 
 
