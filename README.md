@@ -7,4 +7,4 @@ To run the bot yourself, you will need:
 
 Get a bot token from [@BotFather](http://telegram.me/BotFather), place it in `credentials.py` and run the bot with `python3 bot.py`
 
-Code documentation will be added soon™
+Code documentation is minimal but there
