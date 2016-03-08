@@ -75,7 +75,8 @@ def new_game(bot, update):
     chat_id = update.message.chat_id
     link = gm.generate_invite_link(u.bot.getMe().username, chat_id)
     bot.sendMessage(chat_id,
-                    text="Click this link to join the game: %s" % link)
+                    text="Click this link to join the game: %s" % link,
+                    disable_web_page_preview=True)
 
 
 def leave_game(bot, update):
