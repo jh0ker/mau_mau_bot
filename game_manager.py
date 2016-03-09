@@ -17,19 +17,22 @@ class GameManager(object):
         self.userid_player = dict()
         self.logger = logging.getLogger(__name__)
 
-    def generate_invite_link(self, bot_name, chat_id):
+    def generate_invite_link(self, bot_name, chat_id, join=False):
         """
         Generate a game join link with a unique ID and connect the game to the
         group chat
         """
-        game_id = str(uuid4())
-        game = Game()
+        if join and chat_id in self.chatid_gameid:
+            game_id = self.chatid_gameid[chat_id]
+        else:
+            game_id = str(uuid4())
+            game = Game()
 
-        self.logger.info("Creating new game with id " + game_id)
-        self.gameid_game[game_id] = game
-        self.chatid_gameid[chat_id] = game_id
-        self.chatid_gameid[game_id] = chat_id
-        self.chatid_gameid[game] = chat_id
+            self.logger.info("Creating new game with id " + game_id)
+            self.gameid_game[game_id] = game
+            self.chatid_gameid[chat_id] = game_id
+            self.chatid_gameid[game_id] = chat_id
+            self.chatid_gameid[game] = chat_id
 
         return LINK_PATTERN % (bot_name, game_id)
 

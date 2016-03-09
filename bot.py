@@ -1,24 +1,32 @@
 import logging
+from datetime import datetime
+from random import randint
 
-from telegram import Updater, InlineQueryResultArticle, ParseMode
+from telegram import Updater, InlineQueryResultArticle, ParseMode, Message, Chat
+from telegram.utils.botan import Botan
 
 from game_manager import GameManager
 import card as c
-from credentials import TOKEN
+from credentials import TOKEN, BOTAN_TOKEN
 from start_bot import start_bot
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
 u = Updater(TOKEN)
 dp = u.dispatcher
 
+botan = False
+if BOTAN_TOKEN:
+    botan = Botan(BOTAN_TOKEN)
+
 help_text = "Follow these steps:\n\n" \
             "1. Add this bot to a group\n" \
-            "2. In the group, start a new game with /new\n" \
+            "2. In the group, start a new game with /new or join an already" \
+            " running game with /join\n" \
             "3. The bot will send a link into the group. " \
             "Click the link and then on the <b>Start</b> " \
             "button to join the game.\n" \
@@ -31,7 +39,12 @@ help_text = "Follow these steps:\n\n" \
             "at the moment) and an option to see the current game state.\n\n" \
             "Players can join the game at any time, though you currently " \
             "can not play more than one game at a time. To leave a game, " \
-            "send /leave into the group."
+            "send /leave into the group.\n" \
+            "If you enjoy this bot, " \
+            "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">" \
+            "rate me</a>, join the " \
+            "<a href=\"https://telegram.me/unobotupdates\">update channel</a>" \
+            " and buy an UNO card game.\n"
 
 
 def list_subtract(list1, list2):
@@ -73,10 +86,30 @@ def error(bot, update, error):
 def new_game(bot, update):
     """ Handler for the /new command """
     chat_id = update.message.chat_id
-    link = gm.generate_invite_link(u.bot.getMe().username, chat_id)
-    bot.sendMessage(chat_id,
-                    text="Click this link to join the game: %s" % link,
-                    disable_web_page_preview=True)
+    if update.message.chat.type == 'private':
+        help(bot, update)
+    else:
+        link = gm.generate_invite_link(u.bot.getMe().username, chat_id)
+        bot.sendMessage(chat_id,
+                        text="Click this link and press the Start button to"
+                             " join the game: %s" % link,
+                        disable_web_page_preview=True)
+        if botan:
+            botan.track(update.message, 'New games')
+
+
+def join_game(bot, update):
+    """ Handler for the /join command """
+    chat_id = update.message.chat_id
+    if update.message.chat.type == 'private':
+        help(bot, update)
+    else:
+        link = gm.generate_invite_link(u.bot.getMe().username, chat_id,
+                                       join=True)
+        bot.sendMessage(chat_id,
+                        text="Click this link and press the Start button to"
+                             " join the game: %s" % link,
+                        disable_web_page_preview=True)
 
 
 def leave_game(bot, update):
@@ -132,38 +165,44 @@ def help(bot, update):
     """ Handler for the /help command """
     bot.sendMessage(update.message.chat_id,
                     text=help_text,
-                    parse_mode=ParseMode.HTML)
+                    parse_mode=ParseMode.HTML,
+                    disable_web_page_preview=True)
 
 
 def reply_to_query(bot, update):
     """ Builds the result list for inline queries and answers to the client """
-    user_id = update.inline_query.from_user.id
-    player = gm.userid_player[user_id]
-    game = gm.userid_game[user_id]
     results = list()
     playable = list()
 
-    if user_id == game.current_player.user.id:
-        if game.choosing_color:
-            add_choose_color(results)
-        else:
-            playable = list(sorted(player.playable_cards()))
-
-            for card in playable:
-                add_play_card(card, results)
-
-            if not player.drew:
-                add_draw(player, results, could_play_card=bool(len(playable)))
-
+    try:
+        user_id = update.inline_query.from_user.id
+        player = gm.userid_player[user_id]
+        game = gm.userid_game[user_id]
+    except KeyError:
+        add_no_game(results)
+    else:
+        if user_id == game.current_player.user.id:
+            if game.choosing_color:
+                add_choose_color(results)
             else:
-                add_pass(results)
+                playable = list(sorted(player.playable_cards()))
 
-            if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
-                add_call_bluff(results)
+                for card in playable:
+                    add_play_card(card, results)
 
-    add_other_cards(playable, player, results)
+                if not player.drew:
+                    add_draw(player, results,
+                             could_play_card=bool(len(playable)))
 
-    add_gameinfo(game, results)
+                else:
+                    add_pass(results)
+
+                if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
+                    add_call_bluff(results)
+
+        add_other_cards(playable, player, results)
+
+        add_gameinfo(game, results)
 
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
 
@@ -191,6 +230,17 @@ def add_other_cards(playable, player, results):
             description=', '.join([repr(card) for card in
                                    list_subtract(player.cards, playable)]),
             message_text='Just checking cards'
+        )
+    )
+
+
+def add_no_game(results):
+    results.append(
+        InlineQueryResultArticle(
+            "nogame",
+            title="You are not playing",
+            message_text='Not playing right now. Use /new to start a game or '
+                         '/join to join the current game in this group'
         )
     )
 
@@ -281,7 +331,7 @@ def process_result(bot, update):
     chat_id = gm.chatid_gameid[game]
     logger.debug("Selected result: " + result_id)
 
-    if result_id in ('hand', 'gameinfo'):
+    if result_id in ('hand', 'gameinfo', 'nogame'):
         return
     elif result_id == 'call_bluff':
         do_call_bluff(bot, chat_id, game, player)
@@ -308,6 +358,11 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
     if len(player.cards) == 0:
         gm.leave_game(user)
         bot.sendMessage(chat_id, text="Player won!")
+
+    if botan:
+        botan.track(Message(randint(1, 1000000000), user, datetime.now(),
+                            Chat(chat_id, 'group')),
+                    'Played cards')
 
 
 def do_draw(game, player):
@@ -345,6 +400,7 @@ def do_call_bluff(bot, chat_id, game, player):
 dp.addTelegramInlineHandler(inline)
 dp.addTelegramCommandHandler('start', start)
 dp.addTelegramCommandHandler('new', new_game)
+dp.addTelegramCommandHandler('join', join_game)
 dp.addTelegramCommandHandler('leave', leave_game)
 dp.addTelegramCommandHandler('help', help)
 dp.addErrorHandler(error)
