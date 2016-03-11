@@ -8,7 +8,7 @@ class Test(unittest.TestCase):
     game = None
 
     def setUp(self):
-        self.game = Game(0)
+        self.game = Game()
 
     def test_insert(self):
         p0 = Player(self.game, "Player 0")
