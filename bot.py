@@ -140,7 +140,8 @@ def start_game(bot, update):
         chat_id = update.message.chat_id
         game = gm.chatid_game[chat_id]
 
-        if game.current_player in (None, game.current_player.next):
+        if game.current_player is None or \
+                game.current_player is game.current_player.next:
             bot.sendMessage(chat_id, text="At least two players must /join "
                                           "the game before you can start it")
         elif game.started:
