@@ -10,6 +10,7 @@ class Game(object):
     reversed = False
     draw_counter = 0
     choosing_color = False
+    started = False
 
     def __init__(self):
         self.deck = Deck()

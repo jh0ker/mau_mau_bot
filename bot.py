@@ -27,19 +27,17 @@ help_text = "Follow these steps:\n\n" \
             "1. Add this bot to a group\n" \
             "2. In the group, start a new game with /new or join an already" \
             " running game with /join\n" \
-            "3. The bot will send a link into the group. " \
-            "Click the link and then on the <b>Start</b> " \
-            "button to join the game.\n" \
-            "4. Go back to the group chat and wait for at least one " \
-            "other person to join the game (you can also play alone, " \
-            "but it's no fun)\n" \
-            "5. Type <code>@mau_mau_bot</code> into your chat box and hit " \
-            "space. You will see the cards that you can play, any extra " \
+            "3. After at least two players have joined, start the game with" \
+            " /start\n" \
+            "4. Type <code>@mau_mau_bot</code> into your chat box and hit " \
+            "space, or click the <code>via @mau_mau_bot</code> text above " \
+            "messages. You will see the cards that you can play, any extra " \
             "options like drawing, your other cards (those you can not play " \
-            "at the moment) and an option to see the current game state.\n\n" \
+            "at the moment) and an option to see the current game state. " \
+            "Tap an option to execute the selected action. \n\n" \
             "Players can join the game at any time, though you currently " \
             "can not play more than one game at a time. To leave a game, " \
-            "send /leave into the group.\n" \
+            "use /leave.\n" \
             "If you enjoy this bot, " \
             "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">" \
             "rate me</a>, join the " \
@@ -89,11 +87,10 @@ def new_game(bot, update):
     if update.message.chat.type == 'private':
         help(bot, update)
     else:
-        link = gm.generate_invite_link(u.bot.getMe().username, chat_id)
+        gm.new_game(chat_id)
         bot.sendMessage(chat_id,
-                        text="Click this link and press the Start button to"
-                             " join the game: %s" % link,
-                        disable_web_page_preview=True)
+                        text="Created a new game! Join the game with /join "
+                             "and start the game with /start")
         if botan:
             botan.track(update.message, 'New games')
 
@@ -104,19 +101,27 @@ def join_game(bot, update):
     if update.message.chat.type == 'private':
         help(bot, update)
     else:
-        link = gm.generate_invite_link(u.bot.getMe().username, chat_id,
-                                       join=True)
-        bot.sendMessage(chat_id,
-                        text="Click this link and press the Start button to"
-                             " join the game: %s" % link,
-                        disable_web_page_preview=True)
+        joined = gm.join_game(chat_id, update.message.from_user)
+        if joined:
+            bot.sendMessage(chat_id,
+                            text="Joined the game",
+                            reply_to_message_id=update.message.message_id)
+        elif joined is None:
+            bot.sendMessage(chat_id,
+                            text="No game is running at the moment. "
+                                 "Create a new game with /new",
+                            reply_to_message_id=update.message.message_id)
+        else:
+            bot.sendMessage(chat_id,
+                            text="You already joined the game. Start the game "
+                                 "with /start",
+                            reply_to_message_id=update.message.message_id)
 
 
 def leave_game(bot, update):
     """ Handler for the /leave command """
     chat_id = update.message.chat_id
-    game_id = gm.chatid_gameid[chat_id]
-    game = gm.gameid_game[game_id]
+    game = gm.chatid_game[chat_id]
     user = update.message.from_user
 
     if game.current_player.user.id == user.id:
@@ -127,30 +132,27 @@ def leave_game(bot, update):
         bot.sendMessage(chat_id, text="Okay")
 
 
-def start(bot, update, args):
+def start_game(bot, update):
     """ Handler for the /start command """
-    if args:
-        game_id = args[0]  # Contains the game id
-        gm.join_game(game_id, update.message.from_user)
-        game = gm.gameid_game[game_id]
-        groupchat = gm.chatid_gameid[game_id]
-        bot.sendMessage(update.message.chat_id,
-                        text="Joined game! Please go back to the group chat "
-                             "and play there, via inline commands.")
-        bot.sendMessage(groupchat,
-                        text=update.message.from_user.first_name +
-                             " joined the game!")
 
-        # Check if user is the first player to join and if, show the first card
-        if game.current_player is game.current_player.next:
+    if update.message.chat.type != 'private':
+        # Show the first card
+        chat_id = update.message.chat_id
+        game = gm.chatid_game[chat_id]
+
+        if game.current_player in (None, game.current_player.next):
+            bot.sendMessage(chat_id, text="At least two players must /join "
+                                          "the game before you can start it")
+        elif game.started:
+            bot.sendMessage(chat_id, text="The game has already started")
+        else:
             game.play_card(game.last_card)
-            bot.sendPhoto(groupchat,
+            game.started = True
+            bot.sendPhoto(chat_id,
                           photo=game.last_card.get_image_link(),
                           caption="First Card")
     else:
-        bot.sendMessage(update.message.chat_id,
-                        text="Please invite me to a group and "
-                             "issue the /new command there.")
+        help(bot, update)
 
 
 def inline(bot, update):
@@ -169,6 +171,13 @@ def help(bot, update):
                     disable_web_page_preview=True)
 
 
+def news(bot, update):
+    """ Handler for the /news command """
+    bot.sendMessage(update.message.chat_id,
+                    text="All news here: https://telegram.me/unobotupdates",
+                    disable_web_page_preview=True)
+
+
 def reply_to_query(bot, update):
     """ Builds the result list for inline queries and answers to the client """
     results = list()
@@ -181,7 +190,9 @@ def reply_to_query(bot, update):
     except KeyError:
         add_no_game(results)
     else:
-        if user_id == game.current_player.user.id:
+        if not game.started:
+            add_not_started(results)
+        elif user_id == game.current_player.user.id:
             if game.choosing_color:
                 add_choose_color(results)
             else:
@@ -241,6 +252,16 @@ def add_no_game(results):
             title="You are not playing",
             message_text='Not playing right now. Use /new to start a game or '
                          '/join to join the current game in this group'
+        )
+    )
+
+
+def add_not_started(results):
+    results.append(
+        InlineQueryResultArticle(
+            "nogame",
+            title="The game wasn't started yet",
+            message_text='Start the game with /start'
         )
     )
 
@@ -328,7 +349,7 @@ def process_result(bot, update):
     game = gm.userid_game[user.id]
     player = gm.userid_player[user.id]
     result_id = update.chosen_inline_result.result_id
-    chat_id = gm.chatid_gameid[game]
+    chat_id = gm.chatid_game[game]
     logger.debug("Selected result: " + result_id)
 
     if result_id in ('hand', 'gameinfo', 'nogame'):
@@ -358,6 +379,9 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
     if len(player.cards) == 0:
         gm.leave_game(user)
         bot.sendMessage(chat_id, text="Player won!")
+        if game.current_player is game.current_player.next:
+            bot.sendMessage(chat_id, text="Game ended!")
+            gm.end_game(chat_id)
 
     if botan:
         botan.track(Message(randint(1, 1000000000), user, datetime.now(),
@@ -398,11 +422,12 @@ def do_call_bluff(bot, chat_id, game, player):
 
 # Add all handlers to the dispatcher and run the bot
 dp.addTelegramInlineHandler(inline)
-dp.addTelegramCommandHandler('start', start)
+dp.addTelegramCommandHandler('start', start_game)
 dp.addTelegramCommandHandler('new', new_game)
 dp.addTelegramCommandHandler('join', join_game)
 dp.addTelegramCommandHandler('leave', leave_game)
 dp.addTelegramCommandHandler('help', help)
+dp.addTelegramCommandHandler('news', news)
 dp.addErrorHandler(error)
 
 start_bot(u)

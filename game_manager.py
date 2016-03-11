@@ -1,54 +1,66 @@
-from uuid import uuid4
 import logging
 
 from game import Game
 from player import Player
-
-LINK_PATTERN = 'https://telegram.me/%s?start=%s'
 
 
 class GameManager(object):
     """ Manages all running games by using a confusing amount of dicts """
 
     def __init__(self):
-        self.gameid_game = dict()
+        self.chatid_game = dict()
         self.userid_game = dict()
-        self.chatid_gameid = dict()  # Goes both ways
         self.userid_player = dict()
         self.logger = logging.getLogger(__name__)
 
-    def generate_invite_link(self, bot_name, chat_id, join=False):
+    def new_game(self, chat_id):
         """
         Generate a game join link with a unique ID and connect the game to the
         group chat
         """
-        if join and chat_id in self.chatid_gameid:
-            game_id = self.chatid_gameid[chat_id]
-        else:
-            game_id = str(uuid4())
-            game = Game()
 
-            self.logger.info("Creating new game with id " + game_id)
-            self.gameid_game[game_id] = game
-            self.chatid_gameid[chat_id] = game_id
-            self.chatid_gameid[game_id] = chat_id
-            self.chatid_gameid[game] = chat_id
+        self.logger.info("Creating new game with id " + str(chat_id))
+        game = Game()
+        self.chatid_game[chat_id] = game
+        self.chatid_game[game] = chat_id
 
-        return LINK_PATTERN % (bot_name, game_id)
-
-    def join_game(self, game_id, user):
+    def join_game(self, chat_id, user):
         """ Create a player from the Telegram user and add it to the game """
-        self.logger.info("Joining game with id " + game_id)
-        game = self.gameid_game[game_id]
-        player = Player(game, user)
-        self.userid_player[user.id] = player
-        self.userid_game[user.id] = game
+        self.logger.info("Joining game with id " + str(chat_id))
+        try:
+            game = self.chatid_game[chat_id]
+        except KeyError:
+            return None
+        if user.id not in self.userid_game or \
+                self.userid_game[user.id] is not game:
+            self.leave_game(user)
+            player = Player(game, user)
+            self.userid_player[user.id] = player
+            self.userid_game[user.id] = game
+            return True
+        else:
+            return False
 
     def leave_game(self, user):
         """ Remove a player from its current game """
-        player = self.userid_player[user.id]
+        try:
+            player = self.userid_player[user.id]
 
-        player.leave()
-        del self.userid_player[user.id]
-        del self.userid_game[user.id]
+            player.leave()
+            del self.userid_player[user.id]
+            del self.userid_game[user.id]
+            return True
+        except KeyError:
+            return False
 
+    def end_game(self, chat_id):
+        """
+        Generate a game join link with a unique ID and connect the game to the
+        group chat
+        """
+
+        self.logger.info("Game with id " + str(chat_id) + " ended")
+        game = self.chatid_game[chat_id]
+        self.leave_game(game.current_player.user)
+        del self.chatid_game[chat_id]
+        del self.chatid_game[game]

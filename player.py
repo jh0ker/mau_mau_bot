@@ -77,7 +77,11 @@ class Player(object):
 
         self.logger.debug("Last card was " + str(last))
 
-        for card in self.cards:
+        cards = self.cards
+        if self.drew:
+            cards = self.cards[-1:]
+
+        for card in cards:
             if self.card_playable(card, playable):
                 self.logger.debug("Matching!")
                 playable.append(card)
@@ -85,8 +89,9 @@ class Player(object):
         # You may only play a +4 if it's the only card you can play
         self.bluffing = bool(len(playable) - 1)
 
-        # You may not play a +4 as your last card
-        if len(self.cards) == 1 and self.cards[0].special == c.DRAW_FOUR:
+        # You may not play a chooser or +4 as your last card
+        if len(self.cards) == 1 and (self.cards[0].special == c.DRAW_FOUR
+                                     or self.cards[0].special == c.CHOOSE):
             return list()
 
         return playable
