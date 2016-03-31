@@ -152,6 +152,8 @@ def start_game(bot, update):
             bot.sendPhoto(chat_id,
                           photo=game.last_card.get_image_link(),
                           caption="First Card")
+            bot.sendMessage(chat_id, text="First player: " +
+                                          display_name(game))
     else:
         help(bot, update)
 
@@ -366,7 +368,8 @@ def process_result(bot, update):
     else:
         do_play_card(bot, chat_id, game, player, result_id, user)
 
-    bot.sendMessage(chat_id, text="Next player: " + display_name(game))
+    if game.current_player is not game.current_player.next:
+        bot.sendMessage(chat_id, text="Next player: " + display_name(game))
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):

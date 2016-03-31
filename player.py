@@ -110,9 +110,12 @@ class Player(object):
            card.value == c.DRAW_TWO and self.game.draw_counter:
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False
-        if last.special == c.DRAW_FOUR and not \
-           card.special == c.DRAW_FOUR and self.game.draw_counter:
+        if last.special == c.DRAW_FOUR and self.game.draw_counter:
             self.logger.debug("Player has to draw and can't counter")
+            is_playable = False
+        if (last.special == c.CHOOSE or last.special == c.DRAW_FOUR) and \
+                (card.special == c.CHOOSE or card.special == c.DRAW_FOUR):
+            self.logger.debug("Can't play colorchooser on another one")
             is_playable = False
         if not last.color or card in playable:
             self.logger.debug("Last card has no color or the card was "
