@@ -2,7 +2,10 @@ import logging
 from datetime import datetime
 from random import randint
 
-from telegram import Updater, InlineQueryResultArticle, ParseMode, Message, Chat
+from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
+    Emoji, InputTextMessageContent
+from telegram.ext import Updater, InlineQueryHandler, \
+    ChosenInlineResultHandler, CommandHandler
 from telegram.utils.botan import Botan
 
 from game_manager import GameManager
@@ -67,13 +70,13 @@ def display_name(game):
 def display_color(color):
     """ Convert a color code to actual color name """
     if color == "r":
-        return "Red"
+        return Emoji.HEAVY_BLACK_HEART + " Red"
     if color == "b":
-        return "Blue"
+        return Emoji.BLUE_HEART + " Blue"
     if color == "g":
-        return "Green"
+        return Emoji.GREEN_HEART + " Green"
     if color == "y":
-        return "Yellow"
+        return Emoji.YELLOW_HEART + " Yellow"
 
 
 def error(bot, update, error):
@@ -158,14 +161,6 @@ def start_game(bot, update):
         help(bot, update)
 
 
-def inline(bot, update):
-    """ Handler for all inline stuff """
-    if update.inline_query:
-        reply_to_query(bot, update)
-    else:
-        process_result(bot, update)
-
-
 def help(bot, update):
     """ Handler for the /help command """
     bot.sendMessage(update.message.chat_id,
@@ -214,9 +209,7 @@ def reply_to_query(bot, update):
                 if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
                     add_call_bluff(results)
 
-        add_other_cards(playable, player, results)
-
-        add_gameinfo(game, results)
+        add_other_cards(playable, player, results, game)
 
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
 
@@ -227,98 +220,17 @@ def add_choose_color(results):
             InlineQueryResultArticle(
                 id=color,
                 title="Choose Color",
-                message_text=display_color(color),
-                description=display_color(color)
+                description=display_color(color),
+                input_message_content=
+                InputTextMessageContent(display_color(color))
             )
         )
 
 
-def add_other_cards(playable, player, results):
+def add_other_cards(playable, player, results, game):
     if not playable:
         playable = list()
 
-    results.append(
-        InlineQueryResultArticle(
-            "hand",
-            title="Other cards:",
-            description=', '.join([repr(card) for card in
-                                   list_subtract(player.cards, playable)]),
-            message_text='Just checking cards'
-        )
-    )
-
-
-def add_no_game(results):
-    results.append(
-        InlineQueryResultArticle(
-            "nogame",
-            title="You are not playing",
-            message_text='Not playing right now. Use /new to start a game or '
-                         '/join to join the current game in this group'
-        )
-    )
-
-
-def add_not_started(results):
-    results.append(
-        InlineQueryResultArticle(
-            "nogame",
-            title="The game wasn't started yet",
-            message_text='Start the game with /start'
-        )
-    )
-
-
-def add_draw(player, results, could_play_card):
-    results.append(
-        InlineQueryResultArticle(
-            "draw",
-            title=("No suitable cards..." if not could_play_card else
-                   "I don't want to play a card..."),
-            description="Draw!",
-            message_text='Drawing %d card(s)'
-                         % (player.game.draw_counter or 1)
-        )
-    )
-
-
-def add_pass(results):
-    results.append(
-        InlineQueryResultArticle(
-            "pass",
-            title="Pass",
-            description="Don't play a card",
-            message_text='Pass'
-        )
-    )
-
-
-def add_call_bluff(results):
-    results.append(
-        InlineQueryResultArticle(
-            "call_bluff",
-            title="Call their bluff!",
-            description="Risk it!",
-            message_text="I'm calling your bluff!"
-        )
-    )
-
-
-def add_play_card(card, results):
-    results.append(
-        InlineQueryResultArticle(str(card),
-                                 title="Play card",
-                                 message_text=
-                                 ('<a href="%s">\xad</a>'
-                                  'Played card ' + repr(card))
-                                 % card.get_image_link(),
-                                 thumb_url=card.get_thumb_link(),
-                                 description=repr(card),
-                                 parse_mode=ParseMode.HTML)
-    )
-
-
-def add_gameinfo(game, results):
     players = list()
     current_player = game.current_player
     itplayer = current_player.next
@@ -330,14 +242,91 @@ def add_gameinfo(game, results):
 
     results.append(
         InlineQueryResultArticle(
-            "gameinfo",
-            title="Show game info",
-            description="Tap to see the current player, player order, "
-                        "card amounts and last played card",
-            message_text="Current player: " + display_name(game) + "\n" +
-                         "Last card: " + repr(game.last_card) + "\n" +
-                         "Players: " + " -> ".join(players)
+            "hand",
+            title="Not playable (tap for game state):",
+            description=', '.join([repr(card) for card in
+                                   list_subtract(player.cards, playable)]),
+            input_message_content=InputTextMessageContent(
+                "Current player: " + display_name(game) + "\n" +
+                "Last card: " + repr(game.last_card) + "\n" +
+                "Players: " + " -> ".join(players))
         )
+    )
+
+
+def add_no_game(results):
+    results.append(
+        InlineQueryResultArticle(
+            "nogame",
+            title="You are not playing",
+            input_message_content=
+            InputTextMessageContent('Not playing right now. Use /new to start '
+                                    'a game or /join to join the current game '
+                                    'in this group')
+        )
+    )
+
+
+def add_not_started(results):
+    results.append(
+        InlineQueryResultArticle(
+            "nogame",
+            title="The game wasn't started yet",
+            input_message_content=
+            InputTextMessageContent('Start the game with /start')
+        )
+    )
+
+
+def add_draw(player, results, could_play_card):
+    results.append(
+        InlineQueryResultArticle(
+            "draw",
+            title=("No suitable cards..." if not could_play_card else
+                   "I don't want to play a card..."),
+            description="Draw!",
+            input_message_content=
+            InputTextMessageContent('Drawing %d card(s)'
+                                    % (player.game.draw_counter or 1))
+        )
+    )
+
+
+def add_pass(results):
+    results.append(
+        InlineQueryResultArticle(
+            "pass",
+            title="Pass",
+            description="Don't play a card",
+            input_message_content=InputTextMessageContent('Pass')
+        )
+    )
+
+
+def add_call_bluff(results):
+    results.append(
+        InlineQueryResultArticle(
+            "call_bluff",
+            title="Call their bluff!",
+            description="Risk it!",
+            input_message_content=
+            InputTextMessageContent("I'm calling your bluff!")
+        )
+    )
+
+
+def add_play_card(card, results):
+    results.append(
+        InlineQueryResultArticle(str(card),
+                                 title="Play card",
+                                 thumb_url=card.get_thumb_link(),
+                                 description=repr(card),
+                                 input_message_content=
+                                 InputTextMessageContent(
+                                 ('<a href="%s">\xad</a>'
+                                  'Played card ' + repr(card))
+                                 % card.get_image_link(),
+                                 parse_mode=ParseMode.HTML))
     )
 
 
@@ -348,11 +337,15 @@ def add_player(itplayer, players):
 
 def process_result(bot, update):
     """ Check the players actions and act accordingly """
-    user = update.chosen_inline_result.from_user
-    game = gm.userid_game[user.id]
-    player = gm.userid_player[user.id]
-    result_id = update.chosen_inline_result.result_id
-    chat_id = gm.chatid_game[game]
+    try:
+        user = update.chosen_inline_result.from_user
+        game = gm.userid_game[user.id]
+        player = gm.userid_player[user.id]
+        result_id = update.chosen_inline_result.result_id
+        chat_id = gm.chatid_game[game]
+    except KeyError:
+        return
+
     logger.debug("Selected result: " + result_id)
 
     if result_id in ('hand', 'gameinfo', 'nogame'):
@@ -368,7 +361,7 @@ def process_result(bot, update):
     else:
         do_play_card(bot, chat_id, game, player, result_id, user)
 
-    if game.current_player is not game.current_player.next:
+    if game.current_player.next:
         bot.sendMessage(chat_id, text="Next player: " + display_name(game))
 
 
@@ -425,13 +418,14 @@ def do_call_bluff(bot, chat_id, game, player):
 
 
 # Add all handlers to the dispatcher and run the bot
-dp.addTelegramInlineHandler(inline)
-dp.addTelegramCommandHandler('start', start_game)
-dp.addTelegramCommandHandler('new', new_game)
-dp.addTelegramCommandHandler('join', join_game)
-dp.addTelegramCommandHandler('leave', leave_game)
-dp.addTelegramCommandHandler('help', help)
-dp.addTelegramCommandHandler('news', news)
+dp.addHandler(InlineQueryHandler(reply_to_query))
+dp.addHandler(ChosenInlineResultHandler(process_result))
+dp.addHandler(CommandHandler('start', start_game))
+dp.addHandler(CommandHandler('new', new_game))
+dp.addHandler(CommandHandler('join', join_game))
+dp.addHandler(CommandHandler('leave', leave_game))
+dp.addHandler(CommandHandler('help', help))
+dp.addHandler(CommandHandler('news', news))
 dp.addErrorHandler(error)
 
 start_bot(u)
