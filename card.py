@@ -1,3 +1,4 @@
+from telegram.emoji import Emoji
 
 # Colors
 RED = 'r'
@@ -6,6 +7,13 @@ GREEN = 'g'
 YELLOW = 'y'
 
 COLORS = (RED, BLUE, GREEN, YELLOW)
+
+COLOR_ICONS = {
+    RED: Emoji.HEAVY_BLACK_HEART,
+    BLUE: Emoji.BLUE_HEART,
+    GREEN: Emoji.GREEN_HEART,
+    YELLOW: Emoji.YELLOW_HEART,
+}
 
 # Values
 ZERO = '0'
@@ -54,7 +62,12 @@ class Card(object):
             return '%s_%s' % (self.color, self.value)
 
     def __repr__(self):
-        return ' '.join([s.capitalize() for s in str(self).split('_')])
+        if self.special:
+            return '%s%s' % (Emoji.BROKEN_HEART,
+                             ' '.join([s.capitalize()
+                                       for s in self.special.split('_')]))
+        else:
+            return '%s%s' % (COLOR_ICONS[self.color], self.value.capitalize())
 
     def __eq__(self, other):
         """ Needed for sorting the cards """
