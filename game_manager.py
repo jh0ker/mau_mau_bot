@@ -33,8 +33,13 @@ class GameManager(object):
             return None
         if user.id not in self.userid_game or \
                 self.userid_game[user.id] is not game:
-            self.leave_game(user)
-            player = Player(game, user)
+
+            try:
+                self.leave_game(user)
+                player = Player(game, user)
+            except AttributeError:
+                return None
+
             self.userid_player[user.id] = player
             self.userid_game[user.id] = game
             return True
