@@ -15,6 +15,12 @@ class Game(object):
     def __init__(self):
         self.deck = Deck()
         self.last_card = self.deck.draw()
+
+        while self.last_card.special:
+            self.deck.dismiss(self.last_card)
+            self.deck.shuffle()
+            self.last_card = self.deck.draw()
+
         self.logger = logging.getLogger(__name__)
 
     def reverse(self):
