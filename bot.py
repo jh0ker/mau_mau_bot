@@ -58,9 +58,8 @@ def list_subtract(list1, list2):
     return list(sorted(list1))
 
 
-def display_name(game):
+def display_name(user):
     """ Get the current players name including their username, if possible """
-    user = game.current_player.user
     user_name = user.first_name
     if user.username:
         user_name += ' (@' + user.username + ')'
@@ -143,8 +142,8 @@ def start_game(bot, update):
         chat_id = update.message.chat_id
         game = gm.chatid_game[chat_id]
 
-        if game.current_player is None or \
-                game.current_player is game.current_player.next:
+        if False and game.current_player is None or \
+                False and game.current_player is game.current_player.next:
             bot.sendMessage(chat_id, text="At least two players must /join "
                                           "the game before you can start it")
         elif game.started:
@@ -155,8 +154,9 @@ def start_game(bot, update):
             bot.sendPhoto(chat_id,
                           photo=game.last_card.get_image_link(),
                           caption="First Card")
-            bot.sendMessage(chat_id, text="First player: " +
-                                          display_name(game))
+            bot.sendMessage(chat_id,
+                            text="First player: " +
+                                 display_name(game.current_player.user))
     else:
         help(bot, update)
 
@@ -211,6 +211,9 @@ def reply_to_query(bot, update):
 
         add_other_cards(playable, player, results, game)
 
+        for result in results:
+            result.id += ':%d' % player.anti_cheat
+
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
 
 
@@ -247,7 +250,8 @@ def add_other_cards(playable, player, results, game):
             description=', '.join([repr(card) for card in
                                    list_subtract(player.cards, playable)]),
             input_message_content=InputTextMessageContent(
-                "Current player: " + display_name(game) + "\n" +
+                "Current player: " + display_name(game.current_player.user) +
+                "\n" +
                 "Last card: " + repr(game.last_card) + "\n" +
                 "Players: " + " -> ".join(players))
         )
@@ -348,7 +352,15 @@ def process_result(bot, update):
 
     logger.debug("Selected result: " + result_id)
 
+    result_id, anti_cheat = result_id.split(':')
+    last_anti_cheat = player.anti_cheat
+    player.anti_cheat += 1
+
     if result_id in ('hand', 'gameinfo', 'nogame'):
+        return
+    elif int(anti_cheat) != last_anti_cheat:
+        bot.sendMessage(chat_id,
+                        text="Cheat attempt by %s" % display_name(player.user))
         return
     elif result_id == 'call_bluff':
         do_call_bluff(bot, chat_id, game, player)
@@ -362,7 +374,8 @@ def process_result(bot, update):
         do_play_card(bot, chat_id, game, player, result_id, user)
 
     if game.current_player.next:
-        bot.sendMessage(chat_id, text="Next player: " + display_name(game))
+        bot.sendMessage(chat_id, text="Next player: " +
+                                      display_name(game.current_player.user))
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):

@@ -33,6 +33,7 @@ class Player(object):
 
         self.bluffing = False
         self.drew = False
+        self.anti_cheat = 0
 
     def leave(self):
         """ Leave the current game """
