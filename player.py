@@ -86,12 +86,16 @@ class Player(object):
                 self.logger.debug("Matching!")
                 playable.append(card)
 
-        # You may only play a +4 if it's the only card you can play
-        self.bluffing = bool(len(playable) - 1)
+        # You may only play a +4 if you have no cards of the correct color
+        self.bluffing = False
+        for card in playable:
+            if card.color == last.color:
+                self.bluffing = True
+                break
 
         # You may not play a chooser or +4 as your last card
-        if len(self.cards) == 1 and (self.cards[0].special == c.DRAW_FOUR
-                                     or self.cards[0].special == c.CHOOSE):
+        if len(self.cards) == 1 and (self.cards[0].special == c.DRAW_FOUR or
+                                     self.cards[0].special == c.CHOOSE):
             return list()
 
         return playable
