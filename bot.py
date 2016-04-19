@@ -1,9 +1,10 @@
 import logging
 from datetime import datetime
 from random import randint
+from uuid import uuid4
 
 from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
-    Emoji, InputTextMessageContent
+    Emoji, InputTextMessageContent, InlineQueryResultCachedSticker as Sticker
 from telegram.ext import Updater, InlineQueryHandler, \
     ChosenInlineResultHandler, CommandHandler, MessageHandler, filters
 from telegram.utils.botan import Botan
@@ -33,10 +34,11 @@ help_text = "Follow these steps:\n\n" \
             "3. After at least two players have joined, start the game with" \
             " /start\n" \
             "4. Type <code>@mau_mau_bot</code> into your chat box and hit " \
-            "space, or click the <code>via @mau_mau_bot</code> text above " \
-            "messages. You will see the cards that you can play, any extra " \
-            "options like drawing, your other cards (those you can not play " \
-            "at the moment) and an option to see the current game state. " \
+            "space, or click the <code>via @mau_mau_bot</code> text next to " \
+            "messages. You will see your cards (some greyed out), any extra " \
+            "options like drawing, and a <b>?</b> to see the current game " \
+            "state. The greyed out cards are those you can not play at the " \
+            "moment." \
             "Tap an option to execute the selected action. \n\n" \
             "Players can join the game at any time, though you currently " \
             "can not play more than one game at a time. To leave a game, " \
@@ -169,8 +171,8 @@ def start_game(bot, update):
         chat_id = update.message.chat_id
         game = gm.chatid_game[chat_id]
 
-        if False and game.current_player is None or \
-                False and game.current_player is game.current_player.next:
+        if game.current_player is None or \
+                game.current_player is game.current_player.next:
             bot.sendMessage(chat_id, text="At least two players must /join "
                                           "the game before you can start it")
         elif game.started:
@@ -178,9 +180,8 @@ def start_game(bot, update):
         else:
             game.play_card(game.last_card)
             game.started = True
-            bot.sendPhoto(chat_id,
-                          photo=game.last_card.get_image_link(),
-                          caption="First Card")
+            bot.sendSticker(chat_id,
+                            sticker=c.STICKERS[str(game.last_card)])
             bot.sendMessage(chat_id,
                             text="First player: " +
                                  display_name(game.current_player.user))
@@ -221,14 +222,8 @@ def reply_to_query(bot, update):
             if game.choosing_color:
                 add_choose_color(results)
             else:
-                playable = list(sorted(player.playable_cards()))
-
-                for card in playable:
-                    add_play_card(card, results)
-
                 if not player.drew:
-                    add_draw(player, results,
-                             could_play_card=bool(len(playable)))
+                    add_draw(player, results)
 
                 else:
                     add_pass(results)
@@ -236,7 +231,19 @@ def reply_to_query(bot, update):
                 if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
                     add_call_bluff(results)
 
-        add_other_cards(playable, player, results, game)
+                playable = player.playable_cards()
+
+                for card in sorted(player.cards):
+                    add_play_card(game, card, results,
+                                  can_play=(card in playable))
+
+        if False or game.choosing_color:
+            add_other_cards(playable, player, results, game)
+        elif user_id != game.current_player.user.id or not game.started:
+            for card in sorted(player.cards):
+                add_play_card(game, card, results, can_play=False)
+        else:
+            add_gameinfo(game, results)
 
         for result in results:
             result.id += ':%d' % player.anti_cheat
@@ -261,19 +268,12 @@ def add_other_cards(playable, player, results, game):
     if not playable:
         playable = list()
 
-    players = list()
-    current_player = game.current_player
-    itplayer = current_player.next
-    add_player(current_player, players)
-
-    while itplayer is not current_player:
-        add_player(itplayer, players)
-        itplayer = itplayer.next
+    players = player_list(game)
 
     results.append(
         InlineQueryResultArticle(
             "hand",
-            title="Not playable (tap for game state):",
+            title="Cards (tap for game state):",
             description=', '.join([repr(card) for card in
                                    list_subtract(player.cards, playable)]),
             input_message_content=InputTextMessageContent(
@@ -283,6 +283,17 @@ def add_other_cards(playable, player, results, game):
                 "Players: " + " -> ".join(players))
         )
     )
+
+
+def player_list(game):
+    players = list()
+    current_player = game.current_player
+    itplayer = current_player.next
+    add_player(current_player, players)
+    while itplayer is not current_player:
+        add_player(itplayer, players)
+        itplayer = itplayer.next
+    return players
 
 
 def add_no_game(results):
@@ -309,13 +320,10 @@ def add_not_started(results):
     )
 
 
-def add_draw(player, results, could_play_card):
+def add_draw(player, results):
     results.append(
-        InlineQueryResultArticle(
-            "draw",
-            title=("No suitable cards..." if not could_play_card else
-                   "I don't want to play a card..."),
-            description="Draw!",
+        Sticker(
+            "draw", sticker_file_id=c.STICKERS['option_draw'],
             input_message_content=
             InputTextMessageContent('Drawing %d card(s)'
                                     % (player.game.draw_counter or 1))
@@ -323,12 +331,26 @@ def add_draw(player, results, could_play_card):
     )
 
 
+def add_gameinfo(game, results):
+    players = player_list(game)
+
+    results.append(
+        Sticker(
+            "gameinfo",
+            sticker_file_id=c.STICKERS['option_info'],
+            input_message_content=InputTextMessageContent(
+                "Current player: " + display_name(game.current_player.user) +
+                "\n" +
+                "Last card: " + repr(game.last_card) + "\n" +
+                "Players: " + " -> ".join(players))
+        )
+    )
+
+
 def add_pass(results):
     results.append(
-        InlineQueryResultArticle(
-            "pass",
-            title="Pass",
-            description="Don't play a card",
+        Sticker(
+            "pass", sticker_file_id=c.STICKERS['option_pass'],
             input_message_content=InputTextMessageContent('Pass')
         )
     )
@@ -336,29 +358,32 @@ def add_pass(results):
 
 def add_call_bluff(results):
     results.append(
-        InlineQueryResultArticle(
+        Sticker(
             "call_bluff",
-            title="Call their bluff!",
-            description="Risk it!",
+            sticker_file_id=c.STICKERS['option_bluff'],
             input_message_content=
             InputTextMessageContent("I'm calling your bluff!")
         )
     )
 
 
-def add_play_card(card, results):
-    results.append(
-        InlineQueryResultArticle(str(card),
-                                 title="Play card",
-                                 thumb_url=card.get_thumb_link(),
-                                 description=repr(card),
-                                 input_message_content=
-                                 InputTextMessageContent(
-                                 ('<a href="%s">\xad</a>'
-                                  'Played card ' + repr(card))
-                                 % card.get_image_link(),
-                                 parse_mode=ParseMode.HTML))
-    )
+def add_play_card(game, card, results, can_play):
+    players = player_list(game)
+
+    if can_play:
+        results.append(
+            Sticker(str(card), sticker_file_id=c.STICKERS[str(card)])
+        )
+    else:
+        results.append(
+            Sticker(str(uuid4()), sticker_file_id=c.STICKERS_GREY[str(card)],
+                    input_message_content=InputTextMessageContent(
+                        "Current player: " + display_name(
+                            game.current_player.user) +
+                        "\n" +
+                        "Last card: " + repr(game.last_card) + "\n" +
+                        "Players: " + " -> ".join(players)))
+        )
 
 
 def add_player(itplayer, players):
@@ -384,6 +409,8 @@ def process_result(bot, update):
     player.anti_cheat += 1
 
     if result_id in ('hand', 'gameinfo', 'nogame'):
+        return
+    elif len(result_id) == 36:  # UUID result
         return
     elif int(anti_cheat) != last_anti_cheat:
         bot.sendMessage(chat_id,
