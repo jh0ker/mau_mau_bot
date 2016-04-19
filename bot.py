@@ -5,7 +5,7 @@ from random import randint
 from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
     Emoji, InputTextMessageContent
 from telegram.ext import Updater, InlineQueryHandler, \
-    ChosenInlineResultHandler, CommandHandler
+    ChosenInlineResultHandler, CommandHandler, MessageHandler, filters
 from telegram.utils.botan import Botan
 
 from game_manager import GameManager
@@ -132,6 +132,33 @@ def leave_game(bot, update):
     else:
         gm.leave_game(user)
         bot.sendMessage(chat_id, text="Okay")
+
+
+def status_update(bot, update):
+    """ Remove player from game if user leaves the group """
+
+    if update.message.left_chat_member:
+        try:
+            chat_id = update.message.chat_id
+            game = gm.chatid_game[chat_id]
+            user = update.message.left_chat_member
+        except KeyError:
+            return
+
+        user_ids = list()
+        current_player = game.current_player
+        user_ids.append(current_player.user.id)
+
+        itplayer = current_player.next
+
+        while itplayer is not current_player:
+            user_ids.append(itplayer.user.id)
+            itplayer = itplayer.next
+
+        if user.id in user_ids:
+            gm.leave_game(user)
+            bot.sendMessage(chat_id, text="Removing %s from the game"
+                                          % display_name(user))
 
 
 def start_game(bot, update):
@@ -439,6 +466,7 @@ dp.addHandler(CommandHandler('join', join_game))
 dp.addHandler(CommandHandler('leave', leave_game))
 dp.addHandler(CommandHandler('help', help))
 dp.addHandler(CommandHandler('news', news))
+dp.addHandler(MessageHandler([filters.STATUS_UPDATE], status_update))
 dp.addErrorHandler(error)
 
 start_bot(u)
