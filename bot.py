@@ -38,7 +38,7 @@ help_text = "Follow these steps:\n\n" \
             "messages. You will see your cards (some greyed out), any extra " \
             "options like drawing, and a <b>?</b> to see the current game " \
             "state. The greyed out cards are those you can not play at the " \
-            "moment." \
+            "moment.\n" \
             "Tap an option to execute the selected action. \n\n" \
             "Players can join the game at any time, though you currently " \
             "can not play more than one game at a time. To leave a game, " \
@@ -232,10 +232,13 @@ def reply_to_query(bot, update):
                     add_call_bluff(results)
 
                 playable = player.playable_cards()
+                added_ids = list()
 
                 for card in sorted(player.cards):
                     add_play_card(game, card, results,
-                                  can_play=(card in playable))
+                                  can_play=(card in playable and
+                                            str(card) not in added_ids))
+                    added_ids.append(str(card))
 
         if False or game.choosing_color:
             add_other_cards(playable, player, results, game)
