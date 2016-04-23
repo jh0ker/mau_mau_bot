@@ -7,6 +7,7 @@ from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
     Emoji, InputTextMessageContent, InlineQueryResultCachedSticker as Sticker
 from telegram.ext import Updater, InlineQueryHandler, \
     ChosenInlineResultHandler, CommandHandler, MessageHandler, filters
+from telegram.ext.dispatcher import run_async
 from telegram.utils.botan import Botan
 
 from game_manager import GameManager
@@ -80,6 +81,16 @@ def display_color(color):
         return Emoji.YELLOW_HEART + " Yellow"
 
 
+@run_async
+def send_async(bot, *args, **kwargs):
+    bot.sendMessage(*args, **kwargs)
+
+
+@run_async
+def answer_async(bot, *args, **kwargs):
+    bot.answerInlineQuery(*args, **kwargs)
+
+
 def error(bot, update, error):
     """ Simple error handler """
     logger.exception(error)
@@ -107,19 +118,19 @@ def join_game(bot, update):
     else:
         joined = gm.join_game(chat_id, update.message.from_user)
         if joined:
-            bot.sendMessage(chat_id,
-                            text="Joined the game",
-                            reply_to_message_id=update.message.message_id)
+            send_async(bot, chat_id,
+                       text="Joined the game",
+                       reply_to_message_id=update.message.message_id)
         elif joined is None:
-            bot.sendMessage(chat_id,
-                            text="No game is running at the moment. "
-                                 "Create a new game with /new",
-                            reply_to_message_id=update.message.message_id)
+            send_async(bot, chat_id,
+                       text="No game is running at the moment. "
+                            "Create a new game with /new",
+                       reply_to_message_id=update.message.message_id)
         else:
-            bot.sendMessage(chat_id,
-                            text="You already joined the game. Start the game "
-                                 "with /start",
-                            reply_to_message_id=update.message.message_id)
+            send_async(bot, chat_id,
+                       text="You already joined the game. Start the game "
+                            "with /start",
+                       reply_to_message_id=update.message.message_id)
 
 
 def leave_game(bot, update):
@@ -129,11 +140,11 @@ def leave_game(bot, update):
     user = update.message.from_user
 
     if game.current_player.user.id == user.id:
-        bot.sendMessage(chat_id,
-                        text="You can't leave the game if it's your turn")
+        send_async(bot, chat_id,
+                   text="You can't leave the game if it's your turn")
     else:
         gm.leave_game(user)
-        bot.sendMessage(chat_id, text="Okay")
+        send_async(bot, chat_id, text="Okay")
 
 
 def status_update(bot, update):
@@ -159,7 +170,7 @@ def status_update(bot, update):
 
         if user.id in user_ids:
             gm.leave_game(user)
-            bot.sendMessage(chat_id, text="Removing %s from the game"
+            send_async(bot, chat_id, text="Removing %s from the game" 
                                           % display_name(user))
 
 
@@ -173,35 +184,33 @@ def start_game(bot, update):
 
         if game.current_player is None or \
                 game.current_player is game.current_player.next:
-            bot.sendMessage(chat_id, text="At least two players must /join "
+            send_async(bot, chat_id, text="At least two players must /join "
                                           "the game before you can start it")
         elif game.started:
-            bot.sendMessage(chat_id, text="The game has already started")
+            send_async(bot, chat_id, text="The game has already started")
         else:
             game.play_card(game.last_card)
             game.started = True
             bot.sendSticker(chat_id,
                             sticker=c.STICKERS[str(game.last_card)])
-            bot.sendMessage(chat_id,
-                            text="First player: " +
-                                 display_name(game.current_player.user))
+            send_async(bot, chat_id, 
+                       text="First player: " + 
+                            display_name(game.current_player.user))
     else:
         help(bot, update)
 
 
 def help(bot, update):
     """ Handler for the /help command """
-    bot.sendMessage(update.message.chat_id,
-                    text=help_text,
-                    parse_mode=ParseMode.HTML,
-                    disable_web_page_preview=True)
+    send_async(bot, update.message.chat_id, text=help_text, 
+               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 def news(bot, update):
     """ Handler for the /news command """
-    bot.sendMessage(update.message.chat_id,
-                    text="All news here: https://telegram.me/unobotupdates",
-                    disable_web_page_preview=True)
+    send_async(bot, update.message.chat_id, 
+               text="All news here: https://telegram.me/unobotupdates",
+               disable_web_page_preview=True)
 
 
 def reply_to_query(bot, update):
@@ -251,7 +260,7 @@ def reply_to_query(bot, update):
         for result in results:
             result.id += ':%d' % player.anti_cheat
 
-    bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
+        answer_async(bot, update.inline_query.id, results, cache_time=0)
 
 
 def add_choose_color(results):
@@ -416,8 +425,8 @@ def process_result(bot, update):
     elif len(result_id) == 36:  # UUID result
         return
     elif int(anti_cheat) != last_anti_cheat:
-        bot.sendMessage(chat_id,
-                        text="Cheat attempt by %s" % display_name(player.user))
+        send_async(bot, chat_id, 
+                   text="Cheat attempt by %s" % display_name(player.user))
         return
     elif result_id == 'call_bluff':
         do_call_bluff(bot, chat_id, game, player)
@@ -431,7 +440,7 @@ def process_result(bot, update):
         do_play_card(bot, chat_id, game, player, result_id, user)
 
     if game.current_player.next:
-        bot.sendMessage(chat_id, text="Next player: " +
+        send_async(bot, chat_id, text="Next player: " +
                                       display_name(game.current_player.user))
 
 
@@ -440,14 +449,14 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
     game.play_card(card)
     player.cards.remove(card)
     if game.choosing_color:
-        bot.sendMessage(chat_id, text="Please choose a color")
+        send_async(bot, chat_id, text="Please choose a color")
     if len(player.cards) == 1:
-        bot.sendMessage(chat_id, text="Last Card!")
+        send_async(bot, chat_id, text="Last Card!")
     if len(player.cards) == 0:
         gm.leave_game(user)
-        bot.sendMessage(chat_id, text="Player won!")
+        send_async(bot, chat_id, text="Player won!")
         if game.current_player is game.current_player.next:
-            bot.sendMessage(chat_id, text="Game ended!")
+            send_async(bot, chat_id, text="Game ended!")
             gm.end_game(chat_id)
 
     if botan:
@@ -470,14 +479,13 @@ def do_draw(game, player):
 
 def do_call_bluff(bot, chat_id, game, player):
     if player.prev.bluffing:
-        bot.sendMessage(chat_id, text="Bluff called! Giving %d cards to %s"
+        send_async(bot, chat_id, text="Bluff called! Giving %d cards to %s"
                                       % (game.draw_counter,
                                          player.prev.user.first_name))
         for i in range(game.draw_counter):
             player.prev.cards.append(game.deck.draw())
     else:
-        bot.sendMessage(chat_id, text="%s didn't bluff! Giving %d cards to"
-                                      " %s"
+        send_async(bot, chat_id, text="%s didn't bluff! Giving %d cards to %s"
                                       % (player.prev.user.first_name,
                                          game.draw_counter + 2,
                                          player.user.first_name))
