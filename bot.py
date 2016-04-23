@@ -139,7 +139,11 @@ def leave_game(bot, update):
     game = gm.chatid_game[chat_id]
     user = update.message.from_user
 
-    if game.current_player.user.id == user.id:
+    if (game.current_player is game.current_player.next or
+            game.current_player is game.current_player.next.next):
+        send_async(bot, chat_id, text="Game ended!")
+        gm.end_game(chat_id)
+    elif game.current_player.user.id == user.id:
         send_async(bot, chat_id,
                    text="You can't leave the game if it's your turn")
     else:
