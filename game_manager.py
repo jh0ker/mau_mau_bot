@@ -9,18 +9,19 @@ class GameManager(object):
 
     def __init__(self):
         self.chatid_game = dict()
-        self.userid_game = dict()
-        self.userid_player = dict()
+        self.userid_players = dict()
+        self.userid_current = dict()
         self.logger = logging.getLogger(__name__)
 
-    def new_game(self, chat_id):
+    def new_game(self, chat):
         """
         Generate a game join link with a unique ID and connect the game to the
         group chat
         """
+        chat_id = chat.id
 
         self.logger.info("Creating new game with id " + str(chat_id))
-        game = Game()
+        game = Game(chat)
         self.chatid_game[chat_id] = game
         self.chatid_game[game] = chat_id
 
@@ -31,41 +32,61 @@ class GameManager(object):
             game = self.chatid_game[chat_id]
         except KeyError:
             return None
-        if user.id not in self.userid_game or \
-                self.userid_game[user.id] is not game:
 
+        players = self.userid_players.get(user.id, list())
+
+        if not players:
+            self.userid_players[user.id] = players
+        else:
+            self.leave_game(user, chat_id)
+
+        if game not in [player.game for player in players]:
             try:
-                self.leave_game(user)
                 player = Player(game, user)
             except AttributeError:
                 return None
 
-            self.userid_player[user.id] = player
-            self.userid_game[user.id] = game
+            players.append(player)
+            self.userid_current[user.id] = player
             return True
         else:
             return False
 
-    def leave_game(self, user):
+    def leave_game(self, user, chat_id):
         """ Remove a player from its current game """
         try:
-            player = self.userid_player[user.id]
+            players = self.userid_players[user.id]
 
-            player.leave()
-            del self.userid_player[user.id]
-            del self.userid_game[user.id]
+            for player in list(players):
+                if player.game.chat.id == chat_id:
+                    player.leave()
+                    players.remove(player)
+                    if self.userid_current[user.id] is player:
+                        if len(players):
+                            self.userid_current[user.id] = players[0]
+                        else:
+                            del self.userid_current[user.id]
+                    break
+            else:
+                return False
+
             return True
         except KeyError:
+            self.logger.info("Leaving game failed")
             return False
 
-    def end_game(self, chat_id):
+    def end_game(self, chat_id, user):
         """
         Generate a game join link with a unique ID and connect the game to the
         group chat
         """
 
         self.logger.info("Game with id " + str(chat_id) + " ended")
-        game = self.chatid_game[chat_id]
-        self.leave_game(game.current_player.user)
-        del self.chatid_game[chat_id]
-        del self.chatid_game[game]
+        players = self.userid_players[user.id]
+        for player in players:
+            if not player.game.chat.id == chat_id:
+                game = player.game
+                del self.chatid_game[game]
+                break
+
+        self.leave_game(user, chat_id)

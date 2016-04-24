@@ -12,7 +12,8 @@ class Game(object):
     choosing_color = False
     started = False
 
-    def __init__(self):
+    def __init__(self, chat):
+        self.chat = chat
         self.deck = Deck()
         self.last_card = self.deck.draw()
 
