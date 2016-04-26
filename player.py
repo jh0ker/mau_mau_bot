@@ -29,7 +29,7 @@ class Player(object):
             game.current_player = self
             game.owner = self
 
-        for i in range(2):
+        for i in range(7):
             self.cards.append(self.game.deck.draw())
 
         self.bluffing = False
