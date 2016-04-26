@@ -8,7 +8,7 @@ class GameManager(object):
     """ Manages all running games by using a confusing amount of dicts """
 
     def __init__(self):
-        self.chatid_game = dict()
+        self.chatid_games = dict()
         self.userid_players = dict()
         self.userid_current = dict()
         self.logger = logging.getLogger(__name__)
@@ -22,57 +22,65 @@ class GameManager(object):
 
         self.logger.info("Creating new game with id " + str(chat_id))
         game = Game(chat)
-        self.chatid_game[chat_id] = game
-        self.chatid_game[game] = chat_id
+
+        if chat_id not in self.chatid_games:
+            self.chatid_games[chat_id] = list()
+
+        self.chatid_games[chat_id].append(game)
 
     def join_game(self, chat_id, user):
         """ Create a player from the Telegram user and add it to the game """
         self.logger.info("Joining game with id " + str(chat_id))
         try:
-            game = self.chatid_game[chat_id]
-        except KeyError:
+            game = self.chatid_games[chat_id][-1]
+        except (KeyError, IndexError):
             return None
 
-        players = self.userid_players.get(user.id, list())
+        if user.id not in self.userid_players:
+            self.userid_players[user.id] = list()
 
-        if not players:
-            self.userid_players[user.id] = players
+        players = self.userid_players[user.id]
+
+        # Don not re-add a player and remove the player from previous games in
+        # this chat
+        for player in players:
+            if player in game.players:
+                return False
         else:
             self.leave_game(user, chat_id)
 
-        if game not in [player.game for player in players]:
-            try:
-                player = Player(game, user)
-            except AttributeError:
-                return None
+        player = Player(game, user)
 
-            players.append(player)
-            self.userid_current[user.id] = player
-            return True
-        else:
-            return False
+        players.append(player)
+        self.userid_current[user.id] = player
+        return True
 
     def leave_game(self, user, chat_id):
         """ Remove a player from its current game """
         try:
             players = self.userid_players[user.id]
+            games = self.chatid_games[chat_id]
 
-            for player in list(players):
-                if player.game.chat.id == chat_id:
-                    player.leave()
-                    players.remove(player)
-                    if self.userid_current[user.id] is player:
-                        if len(players):
-                            self.userid_current[user.id] = players[0]
-                        else:
-                            del self.userid_current[user.id]
-                    break
+            for player in players:
+                for game in games:
+                    if player in game.players:
+                        if player is game.current_player:
+                            game.turn()
+
+                        player.leave()
+                        players.remove(player)
+
+                        # If this is the selected game, switch to another
+                        if self.userid_current[user.id] is player:
+                            if len(players):
+                                self.userid_current[user.id] = players[0]
+                            else:
+                                del self.userid_current[user.id]
+                        return True
             else:
                 return False
 
-            return True
         except KeyError:
-            self.logger.info("Leaving game failed")
             return False
 
     def end_game(self, chat_id, user):
@@ -81,12 +89,27 @@ class GameManager(object):
         group chat
         """
 
-        self.logger.info("Game with id " + str(chat_id) + " ended")
+        self.logger.info("Game in chat " + str(chat_id) + " ended")
         players = self.userid_players[user.id]
-        for player in players:
-            if not player.game.chat.id == chat_id:
-                game = player.game
-                del self.chatid_game[game]
-                break
+        games = self.chatid_games[chat_id]
+        the_game = None
 
-        self.leave_game(user, chat_id)
+        # Find the correct game instance to end
+        logging.info(str(players))
+        logging.info(str(games))
+        for player in players:
+            for game in games:
+                if player in game.players:
+                    the_game = game
+                    break
+            if the_game:
+                break
+        else:
+            return
+
+        for player in the_game.players:
+            self.userid_players[player.user.id].remove(player)
+            if len(self.userid_players[player.user.id]) is 0:
+                del self.userid_players[player.user.id]
+        self.chatid_games[chat_id].remove(the_game)
+        return

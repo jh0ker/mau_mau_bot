@@ -11,6 +11,8 @@ class Game(object):
     draw_counter = 0
     choosing_color = False
     started = False
+    owner = None
+    open = True
 
     def __init__(self, chat):
         self.chat = chat
@@ -23,6 +25,20 @@ class Game(object):
             self.last_card = self.deck.draw()
 
         self.logger = logging.getLogger(__name__)
+
+    @property
+    def players(self):
+        players = list()
+        if not self.current_player:
+            return players
+
+        current_player = self.current_player
+        itplayer = current_player.next
+        players.append(current_player)
+        while itplayer and itplayer is not current_player:
+            players.append(itplayer)
+            itplayer = itplayer.next
+        return players
 
     def reverse(self):
         """ Reverse the direction of play """

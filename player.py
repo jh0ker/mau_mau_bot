@@ -27,8 +27,9 @@ class Player(object):
             self._next = self
             self._prev = self
             game.current_player = self
+            game.owner = self
 
-        for i in range(7):
+        for i in range(2):
             self.cards.append(self.game.deck.draw())
 
         self.bluffing = False
@@ -37,6 +38,9 @@ class Player(object):
 
     def leave(self):
         """ Leave the current game """
+        if self.next is self:
+            return
+
         self.next.prev = self.prev
         self.prev.next = self.next
         self.next = None

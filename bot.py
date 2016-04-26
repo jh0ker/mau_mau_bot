@@ -20,7 +20,7 @@ from start_bot import start_bot
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
@@ -44,14 +44,18 @@ help_text = "Follow these steps:\n\n" \
             "state. The greyed out cards are those you can not play at the " \
             "moment. Tap an option to execute the selected action. \n" \
             "Players can join the game at any time. To leave a game, " \
-            "use /leave.\n" \
+            "use /leave.\n\n" \
+            "Other commands (only game creator):\n" \
+            "/close - Close lobby\n" \
+            "/open - Open lobby\n" \
+            "/skip - Skip current player\n\n" \
             "<b>Experimental:</b> Play multiple games at the same time. " \
             "Press the <code>Current game: </code> button and select the " \
             "group you want to play a card in.\n" \
             "If you enjoy this bot, " \
             "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">" \
             "rate me</a>, join the " \
-            "<a href=\"https://telegram.me/unobotupdates\">update channel</a>" \
+            "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"\
             " and buy an UNO card game.\n"
 
 
@@ -87,11 +91,15 @@ def display_color(color):
 
 @run_async
 def send_async(bot, *args, **kwargs):
+    if 'timeout' not in kwargs:
+        kwargs['timeout'] = 2.5
     bot.sendMessage(*args, **kwargs)
 
 
 @run_async
 def answer_async(bot, *args, **kwargs):
+    # if 'timeout' not in kwargs:
+    #     kwargs['timeout'] = 2.5
     bot.answerInlineQuery(*args, **kwargs)
 
 
@@ -120,6 +128,13 @@ def join_game(bot, update):
     if update.message.chat.type == 'private':
         help(bot, update)
     else:
+        try:
+            game = gm.chatid_games[chat_id][-1]
+            if not game.open:
+                send_async(bot, chat_id, text="The lobby is closed")
+        except (KeyError, IndexError):
+            pass
+
         joined = gm.join_game(chat_id, update.message.from_user)
         if joined:
             send_async(bot, chat_id,
@@ -141,23 +156,21 @@ def leave_game(bot, update):
     """ Handler for the /leave command """
     chat_id = update.message.chat_id
     user = update.message.from_user
-    players = gm.userid_players[user.id]
+    players = gm.userid_players.get(user.id, list())
     for player in players:
         if player.game.chat.id == chat_id:
             game = player.game
             break
     else:
-        game = gm.chatid_game[chat_id]
+        send_async(bot, chat_id, text="You are not playing in a game in "
+                                      "this group.")
+        return
+
     user = update.message.from_user
 
-    if (game.current_player is None or
-            game.current_player is game.current_player.next or
-            game.current_player is game.current_player.next.next):
+    if len(game.players) < 3:
         gm.end_game(chat_id, user)
         send_async(bot, chat_id, text="Game ended!")
-    elif game.current_player.user.id == user.id:
-        send_async(bot, chat_id,
-                   text="You can't leave the game if it's your turn")
     else:
         if gm.leave_game(user, chat_id):
             send_async(bot, chat_id, text="Okay")
@@ -180,14 +193,20 @@ def select_game(bot, update):
                    text="Game not found :(")
         return
 
-    back = [[InlineKeyboardButton(text='Back', switch_inline_query='')]]
+    back = [[InlineKeyboardButton(text='Back to last group',
+                                  switch_inline_query='')]]
 
     bot.answerCallbackQuery(update.callback_query.id,
-                            text="Sending you back...")
-    send_async(bot, chat_id=update.callback_query.message.chat_id,
-               text="Selected game: " +
-                    gm.userid_current[user_id].game.chat.title,
-               reply_markup=InlineKeyboardMarkup(back))
+                            text="Please switch to the group you selected!",
+                            show_alert=False)
+    bot.editMessageText(chat_id=update.callback_query.message.chat_id,
+                        message_id=update.callback_query.message.message_id,
+                        text="Selected game: %s\n"
+                             "<b>Make sure that you switch to the correct "
+                             "group!</b>"
+                             % gm.userid_current[user_id].game.chat.title,
+                        reply_markup=InlineKeyboardMarkup(back),
+                        parse_mode=ParseMode.HTML)
 
 
 def status_update(bot, update):
@@ -196,23 +215,11 @@ def status_update(bot, update):
     if update.message.left_chat_member:
         try:
             chat_id = update.message.chat_id
-            game = gm.chatid_game[chat_id]
             user = update.message.left_chat_member
         except KeyError:
             return
 
-        user_ids = list()
-        current_player = game.current_player
-        user_ids.append(current_player.user.id)
-
-        itplayer = current_player.next
-
-        while itplayer is not current_player:
-            user_ids.append(itplayer.user.id)
-            itplayer = itplayer.next
-
-        if user.id in user_ids:
-            gm.leave_game(user, chat_id)
+        if gm.leave_game(user, chat_id):
             send_async(bot, chat_id, text="Removing %s from the game" 
                                           % display_name(user))
 
@@ -223,7 +230,12 @@ def start_game(bot, update, args):
     if update.message.chat.type != 'private':
         # Show the first card
         chat_id = update.message.chat_id
-        game = gm.chatid_game[chat_id]
+        try:
+            game = gm.chatid_games[chat_id][-1]
+        except (KeyError, IndexError):
+            send_async(bot, chat_id, text="There is no game running in this "
+                                          "chat. Create a new one with /new")
+            return
 
         if game.current_player is None or \
                 game.current_player is game.current_player.next:
@@ -248,10 +260,67 @@ def start_game(bot, update, args):
                                                 callback_data=
                                                 str(player.game.chat.id))])
         send_async(bot, update.message.chat_id,
-                   text='Please select the group you want to play in:',
+                   text='Please select the group you want to play in. ',
                    reply_markup=InlineKeyboardMarkup(groups))
     else:
         help(bot, update)
+
+
+def close_game(bot, update):
+    """ Handler for the /close command """
+    chat_id = update.message.chat_id
+    user = update.message.from_user
+    games = gm.chatid_games[chat_id]
+    players = gm.userid_players[user.id]
+
+    for game in games:
+        for player in players:
+            if player in game.players:
+                if player is game.owner:
+                    game.open = False
+                    send_async(bot, chat_id, text="Closed the lobby")
+                else:
+                    send_async(bot, chat_id,
+                               text="Only the game creator can do that")
+
+
+def open_game(bot, update):
+    """ Handler for the /open command """
+    chat_id = update.message.chat_id
+    user = update.message.from_user
+    games = gm.chatid_games[chat_id]
+    players = gm.userid_players[user.id]
+
+    for game in games:
+        for player in players:
+            if player in game.players:
+                if player is game.owner:
+                    game.open = True
+                    send_async(bot, chat_id, text="Opened the lobby")
+                else:
+                    send_async(bot, chat_id,
+                               text="Only the game creator can do that")
+
+
+def skip_player(bot, update):
+    """ Handler for the /skip command """
+    chat_id = update.message.chat_id
+    user = update.message.from_user
+    games = gm.chatid_games[chat_id]
+    players = gm.userid_players[user.id]
+
+    for game in games:
+        for player in players:
+            if player in game.players:
+                if player is game.owner:
+                    game.current_player.anti_cheat += 1
+                    game.turn()
+                    send_async(bot, chat_id,
+                               text="Next player: %s"
+                                    % display_name(game.current_player.user))
+                else:
+                    send_async(bot, chat_id,
+                               text="Only the game creator can do that")
 
 
 def help(bot, update):
@@ -359,12 +428,8 @@ def add_other_cards(playable, player, results, game):
 
 def player_list(game):
     players = list()
-    current_player = game.current_player
-    itplayer = current_player.next
-    add_player(current_player, players)
-    while itplayer is not current_player:
-        add_player(itplayer, players)
-        itplayer = itplayer.next
+    for player in game.players:
+        add_player(player, players)
     return players
 
 
@@ -470,7 +535,7 @@ def process_result(bot, update):
         player = gm.userid_current[user.id]
         game = player.game
         result_id = update.chosen_inline_result.result_id
-        chat_id = gm.chatid_game[game]
+        chat_id = game.chat.id
     except KeyError:
         return
 
@@ -499,7 +564,7 @@ def process_result(bot, update):
     else:
         do_play_card(bot, chat_id, game, player, result_id, user)
 
-    if game.current_player.next:
+    if game in gm.chatid_games.get(chat_id, list()):
         send_async(bot, chat_id, text="Next player: " +
                                       display_name(game.current_player.user))
 
@@ -511,11 +576,10 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
     if game.choosing_color:
         send_async(bot, chat_id, text="Please choose a color")
     if len(player.cards) == 1:
-        send_async(bot, chat_id, text="Last Card!")
+        send_async(bot, chat_id, text="UNO!")
     if len(player.cards) == 0:
-        gm.leave_game(user, chat_id)
-        send_async(bot, chat_id, text="Player won!")
-        if game.current_player is game.current_player.next:
+        send_async(bot, chat_id, text="%s won!" % user.first_name)
+        if len(game.players) < 3:
             send_async(bot, chat_id, text="Game ended!")
             gm.end_game(chat_id, user)
 
@@ -563,6 +627,9 @@ dp.addHandler(CommandHandler('start', start_game, pass_args=True))
 dp.addHandler(CommandHandler('new', new_game))
 dp.addHandler(CommandHandler('join', join_game))
 dp.addHandler(CommandHandler('leave', leave_game))
+dp.addHandler(CommandHandler('open', open_game))
+dp.addHandler(CommandHandler('close', close_game))
+dp.addHandler(CommandHandler('skip', skip_player))
 dp.addHandler(CommandHandler('help', help))
 dp.addHandler(CommandHandler('news', news))
 dp.addHandler(MessageHandler([filters.STATUS_UPDATE], status_update))
