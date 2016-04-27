@@ -115,9 +115,9 @@ def new_game(bot, update):
         help(bot, update)
     else:
         gm.new_game(update.message.chat)
-        bot.sendMessage(chat_id,
-                        text="Created a new game! Join the game with /join "
-                             "and start the game with /start")
+        send_async(bot, chat_id,
+                   text="Created a new game! Join the game with /join "
+                        "and start the game with /start")
         if botan:
             botan.track(update.message, 'New games')
 
@@ -132,6 +132,7 @@ def join_game(bot, update):
             game = gm.chatid_games[chat_id][-1]
             if not game.open:
                 send_async(bot, chat_id, text="The lobby is closed")
+                return
         except (KeyError, IndexError):
             pass
 
@@ -163,7 +164,8 @@ def leave_game(bot, update):
             break
     else:
         send_async(bot, chat_id, text="You are not playing in a game in "
-                                      "this group.")
+                                      "this group.",
+                   reply_to_message_id=update.message.message_id)
         return
 
     user = update.message.from_user
@@ -173,10 +175,12 @@ def leave_game(bot, update):
         send_async(bot, chat_id, text="Game ended!")
     else:
         if gm.leave_game(user, chat_id):
-            send_async(bot, chat_id, text="Okay")
+            send_async(bot, chat_id, text="Okay",
+                       reply_to_message_id=update.message.message_id)
         else:
             send_async(bot, chat_id, text="You are not playing in a game in "
-                                          "this group.")
+                                          "this group.",
+                       reply_to_message_id=update.message.message_id)
 
 
 def select_game(bot, update):
@@ -281,7 +285,8 @@ def close_game(bot, update):
                     send_async(bot, chat_id, text="Closed the lobby")
                 else:
                     send_async(bot, chat_id,
-                               text="Only the game creator can do that")
+                               text="Only the game creator can do that",
+                               reply_to_message_id=update.message.message_id)
 
 
 def open_game(bot, update):
@@ -299,7 +304,8 @@ def open_game(bot, update):
                     send_async(bot, chat_id, text="Opened the lobby")
                 else:
                     send_async(bot, chat_id,
-                               text="Only the game creator can do that")
+                               text="Only the game creator can do that",
+                               reply_to_message_id=update.message.message_id)
 
 
 def skip_player(bot, update):
@@ -320,7 +326,8 @@ def skip_player(bot, update):
                                     % display_name(game.current_player.user))
                 else:
                     send_async(bot, chat_id,
-                               text="Only the game creator can do that")
+                               text="Only the game creator can do that",
+                               reply_to_message_id=update.message.message_id)
 
 
 def help(bot, update):
