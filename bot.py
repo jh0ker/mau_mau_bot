@@ -8,7 +8,7 @@ from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
     InlineQueryResultCachedSticker as Sticker, InlineKeyboardMarkup, \
     InlineKeyboardButton
 from telegram.ext import Updater, InlineQueryHandler, \
-    ChosenInlineResultHandler, CommandHandler, MessageHandler, filters, \
+    ChosenInlineResultHandler, CommandHandler, MessageHandler, Filters, \
     CallbackQueryHandler
 from telegram.ext.dispatcher import run_async
 from telegram.utils.botan import Botan
@@ -640,7 +640,7 @@ dp.addHandler(CommandHandler('close', close_game))
 dp.addHandler(CommandHandler('skip', skip_player))
 dp.addHandler(CommandHandler('help', help))
 dp.addHandler(CommandHandler('news', news))
-dp.addHandler(MessageHandler([filters.STATUS_UPDATE], status_update))
+dp.addHandler(MessageHandler([Filters.status_update], status_update))
 dp.addErrorHandler(error)
 
 start_bot(u)

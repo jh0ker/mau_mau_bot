@@ -3,7 +3,7 @@ Telegram Bot that allows you to play the popular card game UNO via inline querie
 
 To run the bot yourself, you will need: 
 - Python (tested with 3.4)
-- The [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) module (currently using ``dispatcher-rework`` beta branch)
+- The [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) module version 4.0.1
 
 Get a bot token from [@BotFather](http://telegram.me/BotFather), place it in `credentials.py` and run the bot with `python3 bot.py`
 
