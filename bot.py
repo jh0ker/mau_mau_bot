@@ -1,11 +1,8 @@
 import logging
 from datetime import datetime
 from random import randint
-from uuid import uuid4
 
-from telegram import InlineQueryResultArticle, ParseMode, Message, Chat, \
-    Emoji, InputTextMessageContent, \
-    InlineQueryResultCachedSticker as Sticker, InlineKeyboardMarkup, \
+from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
     InlineKeyboardButton
 from telegram.ext import Updater, InlineQueryHandler, \
     ChosenInlineResultHandler, CommandHandler, MessageHandler, Filters, \
@@ -14,9 +11,10 @@ from telegram.ext.dispatcher import run_async
 from telegram.utils.botan import Botan
 
 from game_manager import GameManager
-import card as c
 from credentials import TOKEN, BOTAN_TOKEN
 from start_bot import start_bot
+from results import *
+from utils import *
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -57,36 +55,6 @@ help_text = "Follow these steps:\n\n" \
             "rate me</a>, join the " \
             "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"\
             " and buy an UNO card game.\n"
-
-
-def list_subtract(list1, list2):
-    """ Helper function to subtract two lists and return the sorted result """
-    list1 = list1.copy()
-
-    for x in list2:
-        list1.remove(x)
-
-    return list(sorted(list1))
-
-
-def display_name(user):
-    """ Get the current players name including their username, if possible """
-    user_name = user.first_name
-    if user.username:
-        user_name += ' (@' + user.username + ')'
-    return user_name
-
-
-def display_color(color):
-    """ Convert a color code to actual color name """
-    if color == "r":
-        return Emoji.HEAVY_BLACK_HEART + " Red"
-    if color == "b":
-        return Emoji.BLUE_HEART + " Blue"
-    if color == "g":
-        return Emoji.GREEN_HEART + " Green"
-    if color == "y":
-        return Emoji.YELLOW_HEART + " Yellow"
 
 
 @run_async
@@ -397,142 +365,6 @@ def reply_to_query(bot, update):
 
     answer_async(bot, update.inline_query.id, results, cache_time=0,
                  switch_pm_text=switch, switch_pm_parameter='select')
-
-
-def add_choose_color(results):
-    for color in c.COLORS:
-        results.append(
-            InlineQueryResultArticle(
-                id=color,
-                title="Choose Color",
-                description=display_color(color),
-                input_message_content=
-                InputTextMessageContent(display_color(color))
-            )
-        )
-
-
-def add_other_cards(playable, player, results, game):
-    if not playable:
-        playable = list()
-
-    players = player_list(game)
-
-    results.append(
-        InlineQueryResultArticle(
-            "hand",
-            title="Cards (tap for game state):",
-            description=', '.join([repr(card) for card in
-                                   list_subtract(player.cards, playable)]),
-            input_message_content=InputTextMessageContent(
-                "Current player: " + display_name(game.current_player.user) +
-                "\n" +
-                "Last card: " + repr(game.last_card) + "\n" +
-                "Players: " + " -> ".join(players))
-        )
-    )
-
-
-def player_list(game):
-    players = list()
-    for player in game.players:
-        add_player(player, players)
-    return players
-
-
-def add_no_game(results):
-    results.append(
-        InlineQueryResultArticle(
-            "nogame",
-            title="You are not playing",
-            input_message_content=
-            InputTextMessageContent('Not playing right now. Use /new to start '
-                                    'a game or /join to join the current game '
-                                    'in this group')
-        )
-    )
-
-
-def add_not_started(results):
-    results.append(
-        InlineQueryResultArticle(
-            "nogame",
-            title="The game wasn't started yet",
-            input_message_content=
-            InputTextMessageContent('Start the game with /start')
-        )
-    )
-
-
-def add_draw(player, results):
-    results.append(
-        Sticker(
-            "draw", sticker_file_id=c.STICKERS['option_draw'],
-            input_message_content=
-            InputTextMessageContent('Drawing %d card(s)'
-                                    % (player.game.draw_counter or 1))
-        )
-    )
-
-
-def add_gameinfo(game, results):
-    players = player_list(game)
-
-    results.append(
-        Sticker(
-            "gameinfo",
-            sticker_file_id=c.STICKERS['option_info'],
-            input_message_content=InputTextMessageContent(
-                "Current player: " + display_name(game.current_player.user) +
-                "\n" +
-                "Last card: " + repr(game.last_card) + "\n" +
-                "Players: " + " -> ".join(players))
-        )
-    )
-
-
-def add_pass(results):
-    results.append(
-        Sticker(
-            "pass", sticker_file_id=c.STICKERS['option_pass'],
-            input_message_content=InputTextMessageContent('Pass')
-        )
-    )
-
-
-def add_call_bluff(results):
-    results.append(
-        Sticker(
-            "call_bluff",
-            sticker_file_id=c.STICKERS['option_bluff'],
-            input_message_content=
-            InputTextMessageContent("I'm calling your bluff!")
-        )
-    )
-
-
-def add_play_card(game, card, results, can_play):
-    players = player_list(game)
-
-    if can_play:
-        results.append(
-            Sticker(str(card), sticker_file_id=c.STICKERS[str(card)])
-        )
-    else:
-        results.append(
-            Sticker(str(uuid4()), sticker_file_id=c.STICKERS_GREY[str(card)],
-                    input_message_content=InputTextMessageContent(
-                        "Current player: " + display_name(
-                            game.current_player.user) +
-                        "\n" +
-                        "Last card: " + repr(game.last_card) + "\n" +
-                        "Players: " + " -> ".join(players)))
-        )
-
-
-def add_player(itplayer, players):
-    players.append(itplayer.user.first_name + " (%d cards)"
-                   % len(itplayer.cards))
 
 
 def process_result(bot, update):
