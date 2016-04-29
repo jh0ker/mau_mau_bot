@@ -586,7 +586,8 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
         send_async(bot, chat_id, text="UNO!")
     if len(player.cards) == 0:
         send_async(bot, chat_id, text="%s won!" % user.first_name)
-        if len(game.players) < 3:
+        gm.leave_game(user, chat_id)
+        if len(game.players) < 2:
             send_async(bot, chat_id, text="Game ended!")
             gm.end_game(chat_id, user)
 
