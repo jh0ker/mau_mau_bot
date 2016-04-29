@@ -5,14 +5,16 @@ RED = 'r'
 BLUE = 'b'
 GREEN = 'g'
 YELLOW = 'y'
+BLACK = 'x'
 
-COLORS = (RED, BLUE, GREEN, YELLOW)
+COLORS = (RED, BLUE, GREEN, YELLOW, BLACK)
 
 COLOR_ICONS = {
     RED: Emoji.HEAVY_BLACK_HEART,
     BLUE: Emoji.BLUE_HEART,
     GREEN: Emoji.GREEN_HEART,
     YELLOW: Emoji.YELLOW_HEART,
+    BLACK: '⬛️'
 }
 
 # Values
@@ -176,9 +178,10 @@ class Card(object):
 
     def __repr__(self):
         if self.special:
-            return '%s%s' % (Emoji.BROKEN_HEART,
-                             ' '.join([s.capitalize()
-                                       for s in self.special.split('_')]))
+            return '%s%s%s' % (COLOR_ICONS.get(self.color, ''),
+                               COLOR_ICONS[BLACK],
+                               ' '.join([s.capitalize()
+                                         for s in self.special.split('_')]))
         else:
             return '%s%s' % (COLOR_ICONS[self.color], self.value.capitalize())
 
