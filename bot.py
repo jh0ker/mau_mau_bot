@@ -47,7 +47,7 @@ help_text = "Follow these steps:\n\n" \
             "/close - Close lobby\n" \
             "/open - Open lobby\n" \
             "/skip - Skip current player\n\n" \
-            "<b>Experimental:</b> Play multiple games at the same time. " \
+            "<b>Experimental:</b> Play in multiple groups at the same time. " \
             "Press the <code>Current game: </code> button and select the " \
             "group you want to play a card in.\n" \
             "If you enjoy this bot, " \
@@ -66,8 +66,8 @@ def send_async(bot, *args, **kwargs):
 
 @run_async
 def answer_async(bot, *args, **kwargs):
-    # if 'timeout' not in kwargs:
-    #     kwargs['timeout'] = 2.5
+    if 'timeout' not in kwargs:
+        kwargs['timeout'] = 2.5
     bot.answerInlineQuery(*args, **kwargs)
 
 
