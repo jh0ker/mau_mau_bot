@@ -143,7 +143,9 @@ def leave_game(bot, update):
         send_async(bot, chat_id, text="Game ended!")
     else:
         if gm.leave_game(user, chat_id):
-            send_async(bot, chat_id, text="Okay",
+            send_async(bot, chat_id,
+                       text="Okay. Next Player: " +
+                            display_name(game.current_player.user),
                        reply_to_message_id=update.message.message_id)
         else:
             send_async(bot, chat_id, text="You are not playing in a game in "
