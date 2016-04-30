@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from deck import Deck
 import card as c
@@ -49,6 +50,7 @@ class Game(object):
         self.logger.debug("Next Player")
         self.current_player = self.current_player.next
         self.current_player.drew = False
+        self.current_player.turn_started = datetime.now()
 
     def play_card(self, card):
         """ Play a card and trigger its effects """

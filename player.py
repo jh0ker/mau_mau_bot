@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import card as c
 
@@ -35,6 +36,7 @@ class Player(object):
         self.bluffing = False
         self.drew = False
         self.anti_cheat = 0
+        self.turn_started = datetime.now()
 
     def leave(self):
         """ Leave the current game """
