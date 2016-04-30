@@ -253,10 +253,12 @@ def close_game(bot, update):
                 if player is game.owner:
                     game.open = False
                     send_async(bot, chat_id, text="Closed the lobby")
+                    return
                 else:
                     send_async(bot, chat_id,
                                text="Only the game creator can do that",
                                reply_to_message_id=update.message.message_id)
+                    return
 
 
 def open_game(bot, update):
@@ -272,10 +274,12 @@ def open_game(bot, update):
                 if player is game.owner:
                     game.open = True
                     send_async(bot, chat_id, text="Opened the lobby")
+                    return
                 else:
                     send_async(bot, chat_id,
                                text="Only the game creator can do that",
                                reply_to_message_id=update.message.message_id)
+                    return
 
 
 def skip_player(bot, update):
@@ -289,15 +293,29 @@ def skip_player(bot, update):
         for player in players:
             if player in game.players:
                 if player is game.owner:
+                    started = game.current_player.turn_started
+                    now = datetime.now()
+                    delta = (now - started).seconds
+
+                    if delta < 120:
+                        send_async(bot, chat_id,
+                                   text="Please wait %d seconds"
+                                        % (120 - delta),
+                                   reply_to_message_id=
+                                   update.message.message_id)
+                        return
+
                     game.current_player.anti_cheat += 1
                     game.turn()
                     send_async(bot, chat_id,
                                text="Next player: %s"
                                     % display_name(game.current_player.user))
+                    return
                 else:
                     send_async(bot, chat_id,
                                text="Only the game creator can do that",
                                reply_to_message_id=update.message.message_id)
+                    return
 
 
 def help(bot, update):
@@ -420,10 +438,11 @@ def do_play_card(bot, chat_id, game, player, result_id, user):
         send_async(bot, chat_id, text="UNO!")
     if len(player.cards) == 0:
         send_async(bot, chat_id, text="%s won!" % user.first_name)
-        gm.leave_game(user, chat_id)
-        if len(game.players) < 2:
+        if len(game.players) < 3:
             send_async(bot, chat_id, text="Game ended!")
             gm.end_game(chat_id, user)
+        else:
+            gm.leave_game(user, chat_id)
 
     if botan:
         botan.track(Message(randint(1, 1000000000), user, datetime.now(),
