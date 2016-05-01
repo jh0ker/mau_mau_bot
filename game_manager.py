@@ -27,6 +27,7 @@ class GameManager(object):
             self.chatid_games[chat_id] = list()
 
         self.chatid_games[chat_id].append(game)
+        return game
 
     def join_game(self, chat_id, user):
         """ Create a player from the Telegram user and add it to the game """

@@ -18,7 +18,7 @@ from utils import *
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
@@ -61,14 +61,22 @@ help_text = "Follow these steps:\n\n" \
 def send_async(bot, *args, **kwargs):
     if 'timeout' not in kwargs:
         kwargs['timeout'] = 2.5
-    bot.sendMessage(*args, **kwargs)
+
+    try:
+        bot.sendMessage(*args, **kwargs)
+    except Exception as e:
+        error(None, None, e)
 
 
 @run_async
 def answer_async(bot, *args, **kwargs):
     if 'timeout' not in kwargs:
         kwargs['timeout'] = 2.5
-    bot.answerInlineQuery(*args, **kwargs)
+
+    try:
+        bot.answerInlineQuery(*args, **kwargs)
+    except Exception as e:
+        error(None, None, e)
 
 
 def error(bot, update, error):
@@ -82,7 +90,8 @@ def new_game(bot, update):
     if update.message.chat.type == 'private':
         help(bot, update)
     else:
-        gm.new_game(update.message.chat)
+        game = gm.new_game(update.message.chat)
+        game.owner = update.message.from_user
         send_async(bot, chat_id,
                    text="Created a new game! Join the game with /join "
                         "and start the game with /start")
@@ -175,7 +184,7 @@ def select_game(bot, update):
                             show_alert=False)
     bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                         message_id=update.callback_query.message.message_id,
-                        text="Selected game: %s\n"
+                        text="Selected group: %s\n"
                              "<b>Make sure that you switch to the correct "
                              "group!</b>"
                              % gm.userid_current[user_id].game.chat.title,
@@ -244,78 +253,88 @@ def close_game(bot, update):
     """ Handler for the /close command """
     chat_id = update.message.chat_id
     user = update.message.from_user
-    games = gm.chatid_games[chat_id]
-    players = gm.userid_players[user.id]
+    games = gm.chatid_games.get(chat_id)
 
-    for game in games:
-        for player in players:
-            if player in game.players:
-                if player is game.owner:
-                    game.open = False
-                    send_async(bot, chat_id, text="Closed the lobby")
-                    return
-                else:
-                    send_async(bot, chat_id,
-                               text="Only the game creator can do that",
-                               reply_to_message_id=update.message.message_id)
-                    return
+    if not games:
+        send_async(bot, chat_id, text="There is no running game")
+        return
+
+    game = games[-1]
+
+    if game.owner.id == user.id:
+        game.open = False
+        send_async(bot, chat_id, text="Closed the lobby. "
+                                      "No more players can join this game.")
+        return
+    else:
+        send_async(bot, chat_id,
+                   text="Only the game creator (%s) can do that"
+                        % game.owner.first_name,
+                   reply_to_message_id=update.message.message_id)
+        return
 
 
 def open_game(bot, update):
     """ Handler for the /open command """
     chat_id = update.message.chat_id
     user = update.message.from_user
-    games = gm.chatid_games[chat_id]
-    players = gm.userid_players[user.id]
+    games = gm.chatid_games.get(chat_id)
 
-    for game in games:
-        for player in players:
-            if player in game.players:
-                if player is game.owner:
-                    game.open = True
-                    send_async(bot, chat_id, text="Opened the lobby")
-                    return
-                else:
-                    send_async(bot, chat_id,
-                               text="Only the game creator can do that",
-                               reply_to_message_id=update.message.message_id)
-                    return
+    if not games:
+        send_async(bot, chat_id, text="There is no running game")
+        return
+
+    game = games[-1]
+
+    if game.owner.id == user.id:
+        game.open = True
+        send_async(bot, chat_id, text="Opened the lobby. "
+                                      "New players may /join the game.")
+        return
+    else:
+        send_async(bot, chat_id,
+                   text="Only the game creator (%s) can do that"
+                        % game.owner.first_name,
+                   reply_to_message_id=update.message.message_id)
+        return
 
 
 def skip_player(bot, update):
     """ Handler for the /skip command """
     chat_id = update.message.chat_id
     user = update.message.from_user
-    games = gm.chatid_games[chat_id]
-    players = gm.userid_players[user.id]
+    games = gm.chatid_games.get(chat_id)
+    players = gm.userid_players.get(user.id)
+
+    if not games:
+        send_async(bot, chat_id, text="There is no running game")
+        return
+
+    if not players:
+        send_async(bot, chat_id, text="You are not playing")
+        return
 
     for game in games:
         for player in players:
             if player in game.players:
-                if player is game.owner:
-                    started = game.current_player.turn_started
-                    now = datetime.now()
-                    delta = (now - started).seconds
+                started = game.current_player.turn_started
+                now = datetime.now()
+                delta = (now - started).seconds
 
-                    if delta < 120:
-                        send_async(bot, chat_id,
-                                   text="Please wait %d seconds"
-                                        % (120 - delta),
-                                   reply_to_message_id=
-                                   update.message.message_id)
-                        return
+                if delta < 120:
+                    send_async(bot, chat_id,
+                               text="Please wait %d seconds"
+                                    % (120 - delta),
+                               reply_to_message_id=
+                               update.message.message_id)
+                    return
 
-                    game.current_player.anti_cheat += 1
-                    game.turn()
-                    send_async(bot, chat_id,
-                               text="Next player: %s"
-                                    % display_name(game.current_player.user))
-                    return
-                else:
-                    send_async(bot, chat_id,
-                               text="Only the game creator can do that",
-                               reply_to_message_id=update.message.message_id)
-                    return
+                game.current_player.anti_cheat += 1
+                game.turn()
+                send_async(bot, chat_id,
+                           text="Next player: %s"
+                                % display_name(game.current_player.user))
+                return
 
 
 def help(bot, update):

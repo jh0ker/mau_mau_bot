@@ -28,7 +28,6 @@ class Player(object):
             self._next = self
             self._prev = self
             game.current_player = self
-            game.owner = self
 
         for i in range(7):
             self.cards.append(self.game.deck.draw())
