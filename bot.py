@@ -42,13 +42,13 @@ help_text = "Follow these steps:\n\n" \
             "state. The greyed out cards are those you can not play at the " \
             "moment. Tap an option to execute the selected action. \n" \
             "Players can join the game at any time. To leave a game, " \
-            "use /leave.\n\n" \
+            "use /leave. If a player takes more than 90 seconds to play, " \
+            "you can use /skip to skip that player.\n\n" \
             "Other commands (only game creator):\n" \
             "/close - Close lobby\n" \
-            "/open - Open lobby\n" \
-            "/skip - Skip current player\n\n" \
+            "/open - Open lobby\n\n" \
             "<b>Experimental:</b> Play in multiple groups at the same time. " \
-            "Press the <code>Current game: </code> button and select the " \
+            "Press the <code>Current game: ...</code> button and select the " \
             "group you want to play a card in.\n" \
             "If you enjoy this bot, " \
             "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">" \
@@ -321,10 +321,10 @@ def skip_player(bot, update):
                 now = datetime.now()
                 delta = (now - started).seconds
 
-                if delta < 120:
+                if delta < 90:
                     send_async(bot, chat_id,
                                text="Please wait %d seconds"
-                                    % (120 - delta),
+                                    % (90 - delta),
                                reply_to_message_id=
                                update.message.message_id)
                     return
