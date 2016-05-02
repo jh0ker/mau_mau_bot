@@ -47,6 +47,11 @@ class Player(object):
         self.next = None
         self.prev = None
 
+        for card in self.cards:
+            self.game.deck.dismiss(card)
+
+        self.cards = list()
+
     def __repr__(self):
         return repr(self.user)
 
