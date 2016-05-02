@@ -22,7 +22,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
-u = Updater(TOKEN)
+u = Updater(token=TOKEN, workers=20)
 dp = u.dispatcher
 
 botan = False
@@ -330,6 +330,7 @@ def skip_player(bot, update):
                     return
 
                 game.current_player.anti_cheat += 1
+                game.current_player.cards.append(game.deck.draw())
                 game.turn()
                 send_async(bot, chat_id,
                            text="Next player: %s"
