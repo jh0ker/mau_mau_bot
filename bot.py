@@ -1,3 +1,22 @@
+#!/usr/bin/env python3
+#
+# Telegram bot to play UNO in group chats
+# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 import logging
 from datetime import datetime
 from random import randint
@@ -29,32 +48,37 @@ botan = False
 if BOTAN_TOKEN:
     botan = Botan(BOTAN_TOKEN)
 
-help_text = "Follow these steps:\n\n" \
-            "1. Add this bot to a group\n" \
-            "2. In the group, start a new game with /new or join an already" \
-            " running game with /join\n" \
-            "3. After at least two players have joined, start the game with" \
-            " /start\n" \
-            "4. Type <code>@mau_mau_bot</code> into your chat box and hit " \
-            "space, or click the <code>via @mau_mau_bot</code> text next to " \
-            "messages. You will see your cards (some greyed out), any extra " \
-            "options like drawing, and a <b>?</b> to see the current game " \
-            "state. The greyed out cards are those you can not play at the " \
-            "moment. Tap an option to execute the selected action. \n" \
-            "Players can join the game at any time. To leave a game, " \
-            "use /leave. If a player takes more than 90 seconds to play, " \
-            "you can use /skip to skip that player.\n\n" \
-            "Other commands (only game creator):\n" \
-            "/close - Close lobby\n" \
-            "/open - Open lobby\n\n" \
-            "<b>Experimental:</b> Play in multiple groups at the same time. " \
-            "Press the <code>Current game: ...</code> button and select the " \
-            "group you want to play a card in.\n" \
-            "If you enjoy this bot, " \
-            "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">" \
-            "rate me</a>, join the " \
-            "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"\
-            " and buy an UNO card game.\n"
+help_text = ("Follow these steps:\n\n"
+             "1. Add this bot to a group\n"
+             "2. In the group, start a new game with /new or join an already"
+             " running game with /join\n"
+             "3. After at least two players have joined, start the game with"
+             " /start\n"
+             "4. Type <code>@mau_mau_bot</code> into your chat box and hit "
+             "<b>space</b>, or click the <code>via @mau_mau_bot</code> text "
+             "next to messages. You will see your cards (some greyed out), "
+             "any extra options like drawing, and a <b>?</b> to see the "
+             "current game state. The <b>greyed out cards</b> are those you "
+             "<b>can not play</b> at the moment. Tap an option to execute "
+             "the selected action.\n"
+             "Players can join the game at any time. To leave a game, "
+             "use /leave. If a player takes more than 90 seconds to play, "
+             "you can use /skip to skip that player.\n\n"
+             "Other commands (only game creator):\n"
+             "/close - Close lobby\n"
+             "/open - Open lobby\n\n"
+             "<b>Experimental:</b> Play in multiple groups at the same time. "
+             "Press the <code>Current game: ...</code> button and select the "
+             "group you want to play a card in.\n"
+             "If you enjoy this bot, "
+             "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">"
+             "rate me</a>, join the "
+             "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"
+             " and buy an UNO card game.\n")
+
+source_text = ("This bot is Free Software and licensed under the AGPL. "
+               "The code is available here: \n"
+               "https://github.com/jh0ker/mau_mau_bot")
 
 
 @run_async
@@ -181,7 +205,8 @@ def select_game(bot, update):
 
     bot.answerCallbackQuery(update.callback_query.id,
                             text="Please switch to the group you selected!",
-                            show_alert=False)
+                            show_alert=False,
+                            timeout=2.5)
     bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                         message_id=update.callback_query.message.message_id,
                         text="Selected group: %s\n"
@@ -189,7 +214,8 @@ def select_game(bot, update):
                              "group!</b>"
                              % gm.userid_current[user_id].game.chat.title,
                         reply_markup=InlineKeyboardMarkup(back),
-                        parse_mode=ParseMode.HTML)
+                        parse_mode=ParseMode.HTML,
+                        timeout=2.5)
 
 
 def status_update(bot, update):
@@ -230,7 +256,8 @@ def start_game(bot, update, args):
             game.play_card(game.last_card)
             game.started = True
             bot.sendSticker(chat_id,
-                            sticker=c.STICKERS[str(game.last_card)])
+                            sticker=c.STICKERS[str(game.last_card)],
+                            timeout=2.5)
             send_async(bot, chat_id, 
                        text="First player: " + 
                             display_name(game.current_player.user))
@@ -341,6 +368,12 @@ def skip_player(bot, update):
 def help(bot, update):
     """ Handler for the /help command """
     send_async(bot, update.message.chat_id, text=help_text, 
+               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+
+
+def source(bot, update):
+    """ Handler for the /help command """
+    send_async(bot, update.message.chat_id, text=source_text,
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
@@ -512,6 +545,7 @@ dp.addHandler(CommandHandler('open', open_game))
 dp.addHandler(CommandHandler('close', close_game))
 dp.addHandler(CommandHandler('skip', skip_player))
 dp.addHandler(CommandHandler('help', help))
+dp.addHandler(CommandHandler('source', source))
 dp.addHandler(CommandHandler('news', news))
 dp.addHandler(MessageHandler([Filters.status_update], status_update))
 dp.addErrorHandler(error)
