@@ -356,13 +356,39 @@ def skip_player(bot, update):
                                update.message.message_id)
                     return
 
-                game.current_player.anti_cheat += 1
-                game.current_player.cards.append(game.deck.draw())
-                game.turn()
-                send_async(bot, chat_id,
-                           text="Next player: %s"
-                                % display_name(game.current_player.user))
-                return
+                elif game.current_player.waiting_time > 0:
+                    game.current_player.anti_cheat += 1
+                    game.current_player.waiting_time -= 30
+                    game.current_player.cards.append(game.deck.draw())
+                    game.turn()
+                    send_async(bot, chat_id,
+                               text="Waiting time to skip this player has "
+                                    "been reduced to %d seconds.\n"
+                                    "Next player: %s"
+                                    % (game.current_player.waiting_time,
+                                       display_name(game.current_player.user)))
+                    return
+
+                elif len(game.players) > 2:
+                    send_async(bot, chat_id,
+                               text="%s was skipped four times in a row "
+                                    "and has been removed from the game.\n"
+                                    "Next player: %s"
+                                    % (display_name(game.current_player.user),
+                                       display_name(
+                                           game.current_player.next.user)))
+
+                    gm.leave_game(game.current_player.user, chat_id)
+                    return
+                else:
+                    send_async(bot, chat_id,
+                               text="%s was skipped four times in a row "
+                                    "and has been removed from the game.\n"
+                                    "The game ended."
+                                    % display_name(game.current_player.user))
+
+                    gm.end_game(chat_id, game.current_player.user)
+                    return
 
 
 def help(bot, update):
@@ -482,6 +508,10 @@ def process_result(bot, update):
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):
+    if player.waiting_time < 90:
+        player.waiting_time = 90
+        send_async(bot, chat_id, text="Waiting time for %s has been reset to "
+                                      "90 seconds" % display_name(user))
     card = c.from_str(result_id)
     game.play_card(card)
     player.cards.remove(card)

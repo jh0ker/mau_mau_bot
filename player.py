@@ -55,6 +55,7 @@ class Player(object):
         self.drew = False
         self.anti_cheat = 0
         self.turn_started = datetime.now()
+        self.waiting_time = 90
 
     def leave(self):
         """ Leave the current game """
