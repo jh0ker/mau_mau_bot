@@ -485,11 +485,6 @@ def process_result(bot, update):
     last_anti_cheat = player.anti_cheat
     player.anti_cheat += 1
 
-    if player.waiting_time < 90:
-        player.waiting_time = 90
-        send_async(bot, chat_id, text="Waiting time for %s has been reset to "
-                                      "90 seconds" % display_name(user))
-
     if result_id in ('hand', 'gameinfo', 'nogame'):
         return
     elif len(result_id) == 36:  # UUID result
@@ -499,19 +494,29 @@ def process_result(bot, update):
                    text="Cheat attempt by %s" % display_name(player.user))
         return
     elif result_id == 'call_bluff':
+        reset_waiting_time(bot, chat_id, player)
         do_call_bluff(bot, chat_id, game, player)
     elif result_id == 'draw':
+        reset_waiting_time(bot, chat_id, player)
         do_draw(game, player)
     elif result_id == 'pass':
         game.turn()
     elif result_id in c.COLORS:
         game.choose_color(result_id)
     else:
+        reset_waiting_time(bot, chat_id, player)
         do_play_card(bot, chat_id, game, player, result_id, user)
 
     if game in gm.chatid_games.get(chat_id, list()):
         send_async(bot, chat_id, text="Next player: " +
                                       display_name(game.current_player.user))
+
+
+def reset_waiting_time(bot, chat_id, player):
+    if player.waiting_time < 90:
+        player.waiting_time = 90
+        send_async(bot, chat_id, text="Waiting time for %s has been reset to "
+                                      "90 seconds" % display_name(player.user))
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):
