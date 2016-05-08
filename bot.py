@@ -366,7 +366,8 @@ def skip_player(bot, update):
                                     "been reduced to %d seconds.\n"
                                     "Next player: %s"
                                     % (game.current_player.waiting_time,
-                                       display_name(game.current_player.user)))
+                                       display_name(
+                                           game.current_player.user.next)))
                     game.turn()
                     return
 
@@ -480,14 +481,14 @@ def process_result(bot, update):
 
     logger.debug("Selected result: " + result_id)
 
+    result_id, anti_cheat = result_id.split(':')
+    last_anti_cheat = player.anti_cheat
+    player.anti_cheat += 1
+
     if player.waiting_time < 90:
         player.waiting_time = 90
         send_async(bot, chat_id, text="Waiting time for %s has been reset to "
                                       "90 seconds" % display_name(user))
-
-    result_id, anti_cheat = result_id.split(':')
-    last_anti_cheat = player.anti_cheat
-    player.anti_cheat += 1
 
     if result_id in ('hand', 'gameinfo', 'nogame'):
         return
