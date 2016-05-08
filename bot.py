@@ -367,7 +367,7 @@ def skip_player(bot, update):
                                     "Next player: %s"
                                     % (game.current_player.waiting_time,
                                        display_name(
-                                           game.current_player.user.next)))
+                                           game.current_player.next.user)))
                     game.turn()
                     return
 
