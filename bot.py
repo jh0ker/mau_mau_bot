@@ -41,7 +41,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 gm = GameManager()
-u = Updater(token=TOKEN, workers=20)
+u = Updater(token=TOKEN, workers=32)
 dp = u.dispatcher
 
 botan = False
