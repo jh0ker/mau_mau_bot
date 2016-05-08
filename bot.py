@@ -348,10 +348,11 @@ def skip_player(bot, update):
                 now = datetime.now()
                 delta = (now - started).seconds
 
-                if delta < 90:
+                if delta < game.current_player.waiting_time:
                     send_async(bot, chat_id,
                                text="Please wait %d seconds"
-                                    % (90 - delta),
+                                    % (game.current_player.waiting_time -
+                                       delta),
                                reply_to_message_id=
                                update.message.message_id)
                     return
