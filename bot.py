@@ -360,13 +360,13 @@ def skip_player(bot, update):
                     game.current_player.anti_cheat += 1
                     game.current_player.waiting_time -= 30
                     game.current_player.cards.append(game.deck.draw())
-                    game.turn()
                     send_async(bot, chat_id,
                                text="Waiting time to skip this player has "
                                     "been reduced to %d seconds.\n"
                                     "Next player: %s"
                                     % (game.current_player.waiting_time,
                                        display_name(game.current_player.user)))
+                    game.turn()
                     return
 
                 elif len(game.players) > 2:
@@ -479,6 +479,11 @@ def process_result(bot, update):
 
     logger.debug("Selected result: " + result_id)
 
+    if player.waiting_time < 90:
+        player.waiting_time = 90
+        send_async(bot, chat_id, text="Waiting time for %s has been reset to "
+                                      "90 seconds" % display_name(user))
+
     result_id, anti_cheat = result_id.split(':')
     last_anti_cheat = player.anti_cheat
     player.anti_cheat += 1
@@ -508,10 +513,6 @@ def process_result(bot, update):
 
 
 def do_play_card(bot, chat_id, game, player, result_id, user):
-    if player.waiting_time < 90:
-        player.waiting_time = 90
-        send_async(bot, chat_id, text="Waiting time for %s has been reset to "
-                                      "90 seconds" % display_name(user))
     card = c.from_str(result_id)
     game.play_card(card)
     player.cards.remove(card)
