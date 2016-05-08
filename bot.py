@@ -259,8 +259,9 @@ def start_game(bot, update, args):
                             sticker=c.STICKERS[str(game.last_card)],
                             timeout=2.5)
             send_async(bot, chat_id, 
-                       text="First player: " + 
-                            display_name(game.current_player.user))
+                       text="First player: %s\n"
+                            "Use /close to stop people from joining the game."
+                            % display_name(game.current_player.user))
     elif len(args) and args[0] == 'select':
         players = gm.userid_players[update.message.from_user.id]
 
