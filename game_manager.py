@@ -34,8 +34,7 @@ class GameManager(object):
 
     def new_game(self, chat):
         """
-        Generate a game join link with a unique ID and connect the game to the
-        group chat
+        Create a new game in this chat
         """
         chat_id = chat.id
 
@@ -105,8 +104,7 @@ class GameManager(object):
 
     def end_game(self, chat_id, user):
         """
-        Generate a game join link with a unique ID and connect the game to the
-        group chat
+        End a game
         """
 
         self.logger.info("Game in chat " + str(chat_id) + " ended")
@@ -115,8 +113,6 @@ class GameManager(object):
         the_game = None
 
         # Find the correct game instance to end
-        logging.info(str(players))
-        logging.info(str(games))
         for player in players:
             for game in games:
                 if player in game.players:
@@ -128,8 +124,13 @@ class GameManager(object):
             return
 
         for player in the_game.players:
-            self.userid_players[player.user.id].remove(player)
-            if len(self.userid_players[player.user.id]) is 0:
+            this_users_players = self.userid_players[player.user.id]
+            this_users_players.remove(player)
+            if len(this_users_players) is 0:
                 del self.userid_players[player.user.id]
+                del self.userid_current[player.user.id]
+            else:
+                self.userid_current[player.user.id] = this_users_players[0]
+
         self.chatid_games[chat_id].remove(the_game)
         return
