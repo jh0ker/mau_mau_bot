@@ -20,6 +20,8 @@
 import logging
 from datetime import datetime
 
+from telegram import User
+
 import card as c
 
 
@@ -31,7 +33,7 @@ class Player(object):
     other players by placing itself behind the current player.
     """
 
-    def __init__(self, game, user):
+    def __init__(self, game, user, ai=False):
         self.cards = list()
         self.game = game
         self.user = user
@@ -56,6 +58,10 @@ class Player(object):
         self.anti_cheat = 0
         self.turn_started = datetime.now()
         self.waiting_time = 90
+        self.ai = ai
+
+        if ai and not user:
+            self.user = User(-1, "Computer")
 
     def leave(self):
         """ Leave the current game """
@@ -73,10 +79,10 @@ class Player(object):
         self.cards = list()
 
     def __repr__(self):
-        return repr(self.user)
+        return repr(self.user) if not self.ai else "computer"
 
     def __str__(self):
-        return str(self.user)
+        return str(self.user) if not self.ai else "Computer"
 
     @property
     def next(self):

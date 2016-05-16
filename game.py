@@ -40,7 +40,7 @@ class Game(object):
         self.last_card = self.deck.draw()
 
         while self.last_card.special:
-            self.deck.dismiss(self.last_card)
+            self.deck.cards.append(self.last_card)
             self.deck.shuffle()
             self.last_card = self.deck.draw()
 

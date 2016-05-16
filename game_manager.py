@@ -124,6 +124,8 @@ class GameManager(object):
             return
 
         for player in the_game.players:
+            if player.ai:
+                continue
             this_users_players = self.userid_players[player.user.id]
             this_users_players.remove(player)
             if len(this_users_players) is 0:

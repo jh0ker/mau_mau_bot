@@ -30,6 +30,22 @@ def list_subtract(list1, list2):
     return list(sorted(list1))
 
 
+def list_subtract_unsorted(list1, list2):
+    """ Helper function to subtract two lists and return the sorted result """
+    list1 = list1.copy()
+
+    for x in list2:
+        try:
+            list1.remove(x)
+        except ValueError:
+            print(list1)
+            print(list2)
+            print(x)
+            raise
+
+    return list1
+
+
 def display_name(user):
     """ Get the current players name including their username, if possible """
     user_name = user.first_name

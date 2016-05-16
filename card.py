@@ -114,7 +114,15 @@ STICKERS = {
     'y_skip': 'BQADBAADQwIAAl9XmQABO_AZKtxY6IMC',
     'y_reverse': 'BQADBAADQQIAAl9XmQABZdQFahGG6UQC',
     'draw_four': 'BQADBAAD9QEAAl9XmQABVlkSNfhn76cC',
+    'draw_four_r': 'BQADBAAD9QEAAl9XmQABVlkSNfhn76cC',
+    'draw_four_b': 'BQADBAAD9QEAAl9XmQABVlkSNfhn76cC',
+    'draw_four_g': 'BQADBAAD9QEAAl9XmQABVlkSNfhn76cC',
+    'draw_four_y': 'BQADBAAD9QEAAl9XmQABVlkSNfhn76cC',
     'colorchooser': 'BQADBAAD8wEAAl9XmQABl9rUOPqx4E4C',
+    'colorchooser_r': 'BQADBAAD8wEAAl9XmQABl9rUOPqx4E4C',
+    'colorchooser_b': 'BQADBAAD8wEAAl9XmQABl9rUOPqx4E4C',
+    'colorchooser_g': 'BQADBAAD8wEAAl9XmQABl9rUOPqx4E4C',
+    'colorchooser_y': 'BQADBAAD8wEAAl9XmQABl9rUOPqx4E4C',
     'option_draw': 'BQADBAADzAIAAl9XmQABTkPaOqA5HIMC',
     'option_pass': 'BQADBAADzgIAAl9XmQABWSDq3RIg3c0C',
     'option_bluff': 'BQADBAADygIAAl9XmQABJoLfB9ntI2UC',
@@ -191,7 +199,10 @@ class Card(object):
 
     def __str__(self):
         if self.special:
-            return self.special
+            if self.color:
+                return '%s_%s' % (self.special, self.color)
+            else:
+                return self.special
         else:
             return '%s_%s' % (self.color, self.value)
 
@@ -206,7 +217,14 @@ class Card(object):
 
     def __eq__(self, other):
         """ Needed for sorting the cards """
-        return str(self) == str(other)
+        s1 = str(self)
+        s2 = str(other)
+        return (s1 == s2
+                if not self.special else
+                s1 == s2 or
+                s1[:-2] == s2[:-2] or
+                s1[:-2] == s2 or
+                s1 == s2[:-2])
 
     def __lt__(self, other):
         """ Needed for sorting the cards """

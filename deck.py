@@ -53,6 +53,8 @@ class Deck(object):
         """ Draw a card from this deck """
         try:
             card = self.cards.pop()
+            if card.special:
+                card = Card(None, None, card.special)
             self.logger.debug("Drawing card " + str(card))
             return card
         except IndexError:
@@ -63,4 +65,6 @@ class Deck(object):
 
     def dismiss(self, card):
         """ All played cards should be returned into the deck """
+        # if card.special:
+        #     card.color = None
         self.graveyard.append(card)

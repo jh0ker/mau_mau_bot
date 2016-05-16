@@ -34,19 +34,12 @@ from credentials import TOKEN, BOTAN_TOKEN
 from start_bot import start_bot
 from results import *
 from utils import *
+from player import Player  # for ai players
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG)
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
-
-gm = GameManager()
-u = Updater(token=TOKEN, workers=32)
-dp = u.dispatcher
-
-botan = False
-if BOTAN_TOKEN:
-    botan = Botan(BOTAN_TOKEN)
 
 help_text = ("Follow these steps:\n\n"
              "1. Add this bot to a group\n"
@@ -80,6 +73,7 @@ source_text = ("This bot is Free Software and licensed under the AGPL. "
                "The code is available here: \n"
                "https://github.com/jh0ker/mau_mau_bot")
 
+ai_iterations = 100
 
 @run_async
 def send_async(bot, *args, **kwargs):
@@ -88,6 +82,17 @@ def send_async(bot, *args, **kwargs):
 
     try:
         bot.sendMessage(*args, **kwargs)
+    except Exception as e:
+        error(None, None, e)
+
+
+@run_async
+def sticker_async(bot, *args, **kwargs):
+    if 'timeout' not in kwargs:
+        kwargs['timeout'] = 2.5
+
+    try:
+        bot.sendSticker(*args, **kwargs)
     except Exception as e:
         error(None, None, e)
 
@@ -154,6 +159,29 @@ def join_game(bot, update):
                        reply_to_message_id=update.message.message_id)
 
 
+def add_ai(bot, update):
+    """ Handler for the /add_ai command """
+    chat_id = update.message.chat_id
+    if update.message.chat.type == 'private':
+        help(bot, update)
+    else:
+        try:
+            game = gm.chatid_games[chat_id][-1]
+            if not game.open:
+                send_async(bot, chat_id, text="The lobby is closed")
+                return
+            else:
+                Player(game, None, ai=True)
+                send_async(bot, chat_id,
+                           text="Added computer player",
+                           reply_to_message_id=update.message.message_id)
+        except (KeyError, IndexError):
+            send_async(bot, chat_id,
+                       text="No game is running at the moment. "
+                            "Create a new game with /new",
+                       reply_to_message_id=update.message.message_id)
+
+
 def leave_game(bot, update):
     """ Handler for the /leave command """
     chat_id = update.message.chat_id
@@ -180,6 +208,7 @@ def leave_game(bot, update):
                        text="Okay. Next Player: " +
                             display_name(game.current_player.user),
                        reply_to_message_id=update.message.message_id)
+            ai_turn(bot, game)
         else:
             send_async(bot, chat_id, text="You are not playing in a game in "
                                           "this group.",
@@ -262,6 +291,7 @@ def start_game(bot, update, args):
                        text="First player: %s\n"
                             "Use /close to stop people from joining the game."
                             % display_name(game.current_player.user))
+            ai_turn(bot, game)
     elif len(args) and args[0] == 'select':
         players = gm.userid_players[update.message.from_user.id]
 
@@ -370,6 +400,7 @@ def skip_player(bot, update):
                                        display_name(
                                            game.current_player.next.user)))
                     game.turn()
+                    ai_turn(bot, game)
                     return
 
                 elif len(game.players) > 2:
@@ -382,6 +413,7 @@ def skip_player(bot, update):
                                            game.current_player.next.user)))
 
                     gm.leave_game(game.current_player.user, chat_id)
+                    ai_turn(bot, game)
                     return
                 else:
                     send_async(bot, chat_id,
@@ -511,6 +543,7 @@ def process_result(bot, update):
     if game in gm.chatid_games.get(chat_id, list()):
         send_async(bot, chat_id, text="Next player: " +
                                       display_name(game.current_player.user))
+        ai_turn(bot, game)
 
 
 def reset_waiting_time(bot, chat_id, player):
@@ -555,7 +588,10 @@ def do_draw(game, player):
 
 
 def do_call_bluff(bot, chat_id, game, player):
-    if player.prev.bluffing:
+    if player.prev.ai:
+        send_async(bot, chat_id, text="Computer doesn't know bluffing yet")
+        return
+    elif player.prev.bluffing:
         send_async(bot, chat_id, text="Bluff called! Giving %d cards to %s"
                                       % (game.draw_counter,
                                          player.prev.user.first_name))
@@ -570,24 +606,76 @@ def do_call_bluff(bot, chat_id, game, player):
             player.cards.append(game.deck.draw())
     game.draw_counter = 0
     game.turn()
+    ai_turn(bot, game)
 
 
-# Add all handlers to the dispatcher and run the bot
-dp.addHandler(InlineQueryHandler(reply_to_query))
-dp.addHandler(ChosenInlineResultHandler(process_result))
-dp.addHandler(CallbackQueryHandler(select_game))
-dp.addHandler(CommandHandler('start', start_game, pass_args=True))
-dp.addHandler(CommandHandler('new', new_game))
-dp.addHandler(CommandHandler('join', join_game))
-dp.addHandler(CommandHandler('leave', leave_game))
-dp.addHandler(CommandHandler('open', open_game))
-dp.addHandler(CommandHandler('close', close_game))
-dp.addHandler(CommandHandler('skip', skip_player))
-dp.addHandler(CommandHandler('help', help))
-dp.addHandler(CommandHandler('source', source))
-dp.addHandler(CommandHandler('news', news))
-dp.addHandler(MessageHandler([Filters.status_update], status_update))
-dp.addErrorHandler(error)
+def ai_turn(bot, game):
+    player = game.current_player
+    while player.ai:
+        reply = ''
 
-start_bot(u)
-u.idle()
+        from ISMCTS import UNOState, ISMCTS
+        chat_id = game.chat.id
+        state = UNOState(game)
+        move = ISMCTS(state, itermax=ai_iterations, verbose=False)
+        if move == 'draw':
+            reply += 'Drawing\n'
+        else:
+            sticker_async(bot, chat_id,
+                          sticker=c.STICKERS[str(move)])
+            if move.special:
+                reply += "Choosing color: %s\n" % display_color(move.color)
+
+        state.DoMove(move)
+        if len(player.cards) == 1:
+            reply += "UNO!\n"
+        if len(player.cards) == 0:
+            reply += "%s won!\n" % player.user.first_name
+            if len(game.players) < 3:
+                reply += "Game ended!"
+                gm.end_game(chat_id, player.next.user)
+            else:
+                player.leave()
+
+        player = game.current_player
+        if game in gm.chatid_games.get(chat_id, list()):
+            reply += "Next player: " + display_name(player.user)
+
+        send_async(bot, chat_id, text=reply)
+
+
+def set_ai_iterations(bot, update, args):
+    global ai_iterations
+    ai_iterations = int(args[0])
+
+
+if __name__ == '__main__':
+    gm = GameManager()
+    u = Updater(token=TOKEN, workers=32)
+    dp = u.dispatcher
+
+    botan = False
+    if BOTAN_TOKEN:
+        botan = Botan(BOTAN_TOKEN)
+
+    # Add all handlers to the dispatcher and run the bot
+    dp.addHandler(InlineQueryHandler(reply_to_query))
+    dp.addHandler(ChosenInlineResultHandler(process_result))
+    dp.addHandler(CallbackQueryHandler(select_game))
+    dp.addHandler(CommandHandler('start', start_game, pass_args=True))
+    dp.addHandler(CommandHandler('new', new_game))
+    dp.addHandler(CommandHandler('join', join_game))
+    dp.addHandler(CommandHandler('add_ai', add_ai))
+    dp.addHandler(CommandHandler('set_ai', set_ai_iterations, pass_args=True))
+    dp.addHandler(CommandHandler('leave', leave_game))
+    dp.addHandler(CommandHandler('open', open_game))
+    dp.addHandler(CommandHandler('close', close_game))
+    dp.addHandler(CommandHandler('skip', skip_player))
+    dp.addHandler(CommandHandler('help', help))
+    dp.addHandler(CommandHandler('source', source))
+    dp.addHandler(CommandHandler('news', news))
+    dp.addHandler(MessageHandler([Filters.status_update], status_update))
+    dp.addErrorHandler(error)
+
+    start_bot(u)
+    u.idle()
