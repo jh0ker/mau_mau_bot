@@ -17,6 +17,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""Defines helper functions to build the inline result list"""
+
 from uuid import uuid4
 
 from telegram import InlineQueryResultArticle, InputTextMessageContent, \
@@ -27,6 +29,7 @@ from utils import *
 
 
 def add_choose_color(results):
+    """Add choose color options"""
     for color in c.COLORS:
         results.append(
             InlineQueryResultArticle(
@@ -40,6 +43,7 @@ def add_choose_color(results):
 
 
 def add_other_cards(playable, player, results, game):
+    """Add hand cards when choosing colors"""
     if not playable:
         playable = list()
 
@@ -61,13 +65,15 @@ def add_other_cards(playable, player, results, game):
 
 
 def player_list(game):
+    """Generate list of player strings"""
     players = list()
     for player in game.players:
-        add_player(player, players)
+        player.user.first_name + " (%d cards)" % len(player.cards)
     return players
 
 
 def add_no_game(results):
+    """Add text result if user is not playing"""
     results.append(
         InlineQueryResultArticle(
             "nogame",
@@ -81,6 +87,7 @@ def add_no_game(results):
 
 
 def add_not_started(results):
+    """Add text result if the game has not yet started"""
     results.append(
         InlineQueryResultArticle(
             "nogame",
@@ -92,6 +99,7 @@ def add_not_started(results):
 
 
 def add_draw(player, results):
+    """Add option to draw"""
     results.append(
         Sticker(
             "draw", sticker_file_id=c.STICKERS['option_draw'],
@@ -103,6 +111,7 @@ def add_draw(player, results):
 
 
 def add_gameinfo(game, results):
+    """Add option to show game info"""
     players = player_list(game)
 
     results.append(
@@ -119,6 +128,7 @@ def add_gameinfo(game, results):
 
 
 def add_pass(results):
+    """Add option to pass"""
     results.append(
         Sticker(
             "pass", sticker_file_id=c.STICKERS['option_pass'],
@@ -128,6 +138,7 @@ def add_pass(results):
 
 
 def add_call_bluff(results):
+    """Add option to call a bluff"""
     results.append(
         Sticker(
             "call_bluff",
@@ -138,7 +149,8 @@ def add_call_bluff(results):
     )
 
 
-def add_play_card(game, card, results, can_play):
+def add_card(game, card, results, can_play):
+    """Add an option that represents a card"""
     players = player_list(game)
 
     if can_play:
@@ -155,9 +167,4 @@ def add_play_card(game, card, results, can_play):
                         "Last card: " + repr(game.last_card) + "\n" +
                         "Players: " + " -> ".join(players)))
         )
-
-
-def add_player(itplayer, players):
-    players.append(itplayer.user.first_name + " (%d cards)"
-                   % len(itplayer.cards))
 

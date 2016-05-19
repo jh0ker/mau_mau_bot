@@ -58,7 +58,7 @@ class Player(object):
         self.waiting_time = 90
 
     def leave(self):
-        """ Leave the current game """
+        """Removes player from the game and closes the gap in the list"""
         if self.next is self:
             return
 
@@ -100,8 +100,23 @@ class Player(object):
         else:
             self._next = player
 
+    def draw(self):
+        """Draws 1+ cards from the deck, depending on the draw counter"""
+        _amount = self.game.draw_counter or 1
+
+        for i in range(_amount):
+            self.cards.append(self.game.deck.draw())
+
+        self.game.draw_counter = 0
+        self.drew = True
+
+    def play(self, card):
+        """Plays a card and removes it from hand"""
+        self.cards.remove(card)
+        self.game.play_card(card)
+
     def playable_cards(self):
-        """ Returns a list of the cards this player can play right now """
+        """Returns a list of the cards this player can play right now"""
 
         playable = list()
         last = self.game.last_card
@@ -115,7 +130,7 @@ class Player(object):
         # You may only play a +4 if you have no cards of the correct color
         self.bluffing = False
         for card in cards:
-            if self.card_playable(card, playable):
+            if self._card_playable(card):
                 self.logger.debug("Matching!")
                 playable.append(card)
 
@@ -127,8 +142,8 @@ class Player(object):
 
         return playable
 
-    def card_playable(self, card, playable):
-        """ Check a single card if it can be played """
+    def _card_playable(self, card):
+        """Check a single card if it can be played"""
 
         is_playable = True
         last = self.game.last_card
@@ -149,9 +164,8 @@ class Player(object):
                 (card.special == c.CHOOSE or card.special == c.DRAW_FOUR):
             self.logger.debug("Can't play colorchooser on another one")
             is_playable = False
-        elif not last.color or card in playable:
-            self.logger.debug("Last card has no color or the card was "
-                              "already added to the list")
+        elif not last.color:
+            self.logger.debug("Last card has no color")
             is_playable = False
 
         return is_playable
