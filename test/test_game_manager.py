@@ -71,3 +71,37 @@ class Test(unittest.TestCase):
         self.assertRaises(AlreadyJoinedError,
                           self.gm.join_game,
                           *(self.user1, self.chat0))
+
+    def test_leave_game(self):
+        g0 = self.gm.new_game(self.chat0)
+
+        self.gm.join_game(self.user0, self.chat0)
+        self.gm.join_game(self.user1, self.chat0)
+
+        self.assertRaises(NotEnoughPlayersError,
+                          self.gm.leave_game,
+                          *(self.user1, self.chat0))
+
+        self.gm.join_game(self.user2, self.chat0)
+        self.gm.leave_game(self.user0, self.chat0)
+
+        self.assertRaises(NoGameInChatError,
+                          self.gm.leave_game,
+                          *(self.user0, self.chat0))
+
+    def test_end_game(self):
+        g0 = self.gm.new_game(self.chat0)
+
+        self.gm.join_game(self.user0, self.chat0)
+        self.gm.join_game(self.user1, self.chat0)
+
+        self.assertEqual(len(self.gm.userid_players[0]), 1)
+
+        g1 = self.gm.new_game(self.chat0)
+        self.gm.join_game(self.user2, self.chat0)
+
+        self.gm.end_game(self.chat0, self.user0)
+        self.assertEqual(len(self.gm.chatid_games[0]), 1)
+
+        self.gm.end_game(self.chat0, self.user2)
+        self.assertFalse(0 in self.gm.chatid_games)

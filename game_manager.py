@@ -127,16 +127,18 @@ class GameManager(object):
 
         # Clear game
         for player_in_game in game.players:
-            this_users_players = self.userid_players[player.user.id]
+            this_users_players = self.userid_players[player_in_game.user.id]
             this_users_players.remove(player_in_game)
 
             if this_users_players:
                 self.userid_current[player.user.id] = this_users_players[0]
             else:
-                del self.userid_players[player.user.id]
-                del self.userid_current[player.user.id]
+                del self.userid_players[player_in_game.user.id]
+                del self.userid_current[player_in_game.user.id]
 
         self.chatid_games[chat.id].remove(game)
+        if not self.chatid_games[chat.id]:
+            del self.chatid_games[chat.id]
 
     def player_for_user_in_chat(self, user, chat):
         players = self.userid_players.get(user.id, list())
