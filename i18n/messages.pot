@@ -1,0 +1,313 @@
+# Telegram bot to play UNO in group chats
+# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+#: bot.py:224
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mau_mau_bot 0.1\n"
+"Report-Msgid-Bugs-To: uno@jhoeke.de\n"
+"POT-Creation-Date: 2016-05-19 22:38+0200\n"
+"PO-Revision-Date: 2016-05-19 22:38+0200\n"
+"Last-Translator: Jannes Höke <uno@jhoeke.de>\n"
+"Language-Team: en <uno@jhoeke.de>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: bot.py:60
+msgid "Follow these steps:\n"
+"\n"
+"1. Add this bot to a group\n"
+"2. In the group, start a new game with /new or join an already running game "
+"with /join\n"
+"3. After at least two players have joined, start the game with /start\n"
+"4. Type <code>@mau_mau_bot</code> into your chat box and hit <b>space</b>, "
+"or click the <code>via @mau_mau_bot</code> text next to messages. You will "
+"see your cards (some greyed out), any extra options like drawing, and a <b>?"
+"</b> to see the current game state. The <b>greyed out cards</b> are those "
+"you <b>can not play</b> at the moment. Tap an option to execute the selected "
+"action.\n"
+"Players can join the game at any time. To leave a game, use /leave. If a "
+"player takes more than 90 seconds to play, you can use /skip to skip that "
+"player.\n"
+"\n"
+"Other commands (only game creator):\n"
+"/close - Close lobby\n"
+"/open - Open lobby\n"
+"\n"
+"<b>Experimental:</b> Play in multiple groups at the same time. Press the "
+"<code>Current game: ...</code> button and select the group you want to play "
+"a card in.\n"
+"If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
+"unobotupdates\">update channel</a> and buy an UNO card game.\n"
+msgstr ""
+
+#: bot.py:88
+msgid "This bot is Free Software and licensed under the AGPL. The code is available "
+"here: \n"
+"https://github.com/jh0ker/mau_mau_bot"
+msgstr ""
+
+#: bot.py:133
+msgid "Created a new game! Join the game with /join and start the game with /start"
+msgstr ""
+
+#: bot.py:152
+msgid "The lobby is closed"
+msgstr ""
+
+#: bot.py:156
+msgid "No game is running at the moment. Create a new game with /new"
+msgstr ""
+
+#: bot.py:162
+msgid "You already joined the game. Start the game with /start"
+msgstr ""
+
+#: bot.py:167
+msgid "Joined the game"
+msgstr ""
+
+#: bot.py:179 bot.py:191
+msgid "You are not playing in a game in this group."
+msgstr ""
+
+#: bot.py:197 bot.py:258 bot.py:595
+msgid "Game ended!"
+msgstr ""
+
+#: bot.py:201
+msgid "Okay. Next Player: "
+msgstr ""
+
+#: bot.py:219
+msgid "Game not found."
+msgstr ""
+
+#: bot.py:223
+msgid "Back to last group"
+msgstr ""
+
+#: bot.py:227
+msgid "Please switch to the group you selected!"
+msgstr ""
+
+#: bot.py:233
+#, python-format
+msgid "Selected group: ${group}\n"
+"<b>Make sure that you switch to the correct group!</b>"
+msgstr ""
+
+#: bot.py:260
+#, python-format
+msgid "Removing ${name} from the game"
+msgstr ""
+
+
+#: bot.py:273
+msgid "There is no game running in this chat. Create a new one with /new"
+msgstr ""
+
+#: bot.py:278
+msgid "The game has already started"
+msgstr ""
+
+#: bot.py:281
+msgid "At least two players must /join the game before you can start it"
+msgstr ""
+
+
+#: bot.py:297
+#, python-format
+msgid "First player: ${name}\n"
+"Use /close to stop people from joining the game."
+msgstr ""
+
+#: bot.py:321
+msgid "Please select the group you want to play in."
+msgstr ""
+
+
+#: bot.py:335 bot.py:361
+msgid "There is no running game in this chat."
+msgstr ""
+
+#: bot.py:342
+msgid "Closed the lobby. No more players can join this game."
+msgstr ""
+
+#: bot.py:348 bot.py:373
+#, python-format
+msgid "Only the game creator (${name}) can do that."
+msgstr ""
+
+#: bot.py:368
+msgid "Opened the lobby. New players may /join the game."
+msgstr ""
+
+#: bot.py:386
+msgid "You are not playing in a game in this chat."
+msgstr ""
+
+#: bot.py:400
+#, python-format
+msgid "Please wait ${time} seconds"
+msgstr ""
+
+#: bot.py:413
+#, python-format
+msgid "Waiting time to skip this player has been reduced to ${time} seconds.\n"
+"Next player: ${name}"
+msgstr ""
+
+#: bot.py:424
+#, python-format
+msgid "${name1} was skipped four times in a row and has been removed from the game.\n"
+"Next player: ${name2}"
+msgstr ""
+
+#: bot.py:432
+#, python-format
+msgid "${name} was skipped four times in a row and has been removed from the game.\n"
+"The game ended."
+msgstr ""
+
+#: bot.py:455
+msgid "All news here: https://telegram.me/unobotupdates"
+msgstr ""
+
+#: bot.py:513
+#, python-format
+msgid "Current game: %s"
+msgstr ""
+
+#: bot.py:533
+msgid "Selected result: "
+msgstr ""
+
+#: bot.py:545
+#, python-format
+msgid "Cheat attempt by %s"
+msgstr ""
+
+#: bot.py:562
+msgid "Next player: "
+msgstr ""
+
+#: bot.py:572
+#, python-format
+msgid "Waiting time for ${name} has been reset to 90 seconds"
+msgstr ""
+
+#: bot.py:577
+msgid "Plays the selected card and sends an update to the group if needed"
+msgstr ""
+
+#: bot.py:585
+msgid "Please choose a color"
+msgstr ""
+
+#: bot.py:588
+msgid "UNO!"
+msgstr ""
+
+#: bot.py:591
+#, python-format
+msgid "${name} won!"
+msgstr ""
+
+#: bot.py:601
+msgid "Played cards"
+msgstr ""
+
+#: bot.py:613 bot.py:635 bot.py:647
+msgid "There are no more cards in the deck."
+msgstr ""
+
+#: bot.py:627
+#, python-format
+msgid "Bluff called! Giving ${number} cards to ${name}"
+msgstr ""
+
+#: bot.py:639
+#, python-format
+msgid "${name1} didn't bluff! Giving ${number} cards to ${name2}"
+msgstr ""
+
+#: results.py:38
+msgid "Choose Color"
+msgstr ""
+
+#: results.py:56
+msgid "Cards (tap for game state):"
+msgstr ""
+
+#: results.py:60 results.py:123 results.py:165
+msgid "Current player: "
+msgstr ""
+
+#: results.py:61 results.py:124 results.py:167
+msgid "\n"
+"Last card: "
+msgstr ""
+
+#: results.py:62 results.py:125 results.py:168
+msgid "\n"
+"Players: "
+msgstr ""
+
+
+#: results.py:72
+#, python-format
+msgid " (${number} cards)"
+msgstr ""
+
+#: results.py:81
+msgid "You are not playing"
+msgstr ""
+
+#: results.py:83
+msgid "Not playing right now. Use /new to start a game or /join to join the current "
+"game in this group"
+msgstr ""
+
+#: results.py:95
+msgid "The game wasn't started yet"
+msgstr ""
+
+#: results.py:97
+msgid "Start the game with /start"
+msgstr ""
+
+#: results.py:108
+#, python-format
+msgid "Drawing one card"
+msgid_plural "Drawing ${number} cards"
+msgstr ""
+
+#: results.py:136
+msgid "Pass"
+msgstr ""
+
+#: results.py:148
+msgid "I'm calling your bluff!"
+msgstr ""
+
