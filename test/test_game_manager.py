@@ -105,3 +105,6 @@ class Test(unittest.TestCase):
 
         self.gm.end_game(self.chat0, self.user2)
         self.assertFalse(0 in self.gm.chatid_games)
+        self.assertFalse(0 in self.gm.userid_players)
+        self.assertFalse(1 in self.gm.userid_players)
+        self.assertFalse(2 in self.gm.userid_players)
