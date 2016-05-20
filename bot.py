@@ -30,6 +30,9 @@ from telegram.ext import Updater, InlineQueryHandler, \
 from telegram.ext.dispatcher import run_async
 from telegram.utils.botan import Botan
 
+from flufl.i18n import registry
+from flufl.i18n import PackageStrategy
+
 from game_manager import GameManager
 from credentials import TOKEN, BOTAN_TOKEN
 from start_bot import start_bot
@@ -41,6 +44,7 @@ import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
 from database import db_session
+import i18n
 
 TIMEOUT = 2.5
 
@@ -48,6 +52,10 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+strategy = PackageStrategy('uno', i18n)
+application = registry.register(strategy)
+_ = application._
 
 gm = GameManager()
 u = Updater(token=TOKEN, workers=32)
@@ -162,6 +170,13 @@ def join_game(bot, update):
                    text="You already joined the game. Start the game "
                         "with /start",
                    reply_to_message_id=update.message.message_id)
+
+    except DeckEmptyError:
+        send_async(bot, chat.id,
+                   text="There are not enough cards left in the deck for new "
+                        "players to join.",
+                   reply_to_message_id=update.message.message_id)
+
     else:
         send_async(bot, chat.id,
                    text="Joined the game",
@@ -439,7 +454,7 @@ def skip_player(bot, update):
 
 def help(bot, update):
     """Handler for the /help command"""
-    send_async(bot, update.message.chat_id, text=help_text, 
+    send_async(bot, update.message.chat_id, text=_(help_text),
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 

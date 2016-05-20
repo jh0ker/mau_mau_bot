@@ -22,6 +22,7 @@ import logging
 from datetime import datetime
 
 import card as c
+from errors import DeckEmptyError
 
 
 class Player(object):
@@ -38,6 +39,15 @@ class Player(object):
         self.user = user
         self.logger = logging.getLogger(__name__)
 
+        try:
+            for i in range(7):
+                self.cards.append(self.game.deck.draw())
+        except DeckEmptyError:
+            for card in self.cards:
+                self.game.deck.dismiss(card)
+
+            raise
+
         # Check if this player is the first player in this game.
         if game.current_player:
             self.next = game.current_player
@@ -48,9 +58,6 @@ class Player(object):
             self._next = self
             self._prev = self
             game.current_player = self
-
-        for i in range(7):
-            self.cards.append(self.game.deck.draw())
 
         self.bluffing = False
         self.drew = False
