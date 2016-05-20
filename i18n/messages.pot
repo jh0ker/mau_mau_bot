@@ -112,13 +112,13 @@ msgstr ""
 
 #: bot.py:233
 #, python-format
-msgid "Selected group: ${group}\n"
+msgid "Selected group: {group}\n"
 "<b>Make sure that you switch to the correct group!</b>"
 msgstr ""
 
 #: bot.py:260
 #, python-format
-msgid "Removing ${name} from the game"
+msgid "Removing {name} from the game"
 msgstr ""
 
 
@@ -137,7 +137,7 @@ msgstr ""
 
 #: bot.py:297
 #, python-format
-msgid "First player: ${name}\n"
+msgid "First player: {name}\n"
 "Use /close to stop people from joining the game."
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 
 #: bot.py:348 bot.py:373
 #, python-format
-msgid "Only the game creator (${name}) can do that."
+msgid "Only the game creator ({name}) can do that."
 msgstr ""
 
 #: bot.py:368
@@ -169,24 +169,24 @@ msgstr ""
 
 #: bot.py:400
 #, python-format
-msgid "Please wait ${time} seconds"
+msgid "Please wait {time} seconds"
 msgstr ""
 
 #: bot.py:413
 #, python-format
-msgid "Waiting time to skip this player has been reduced to ${time} seconds.\n"
-"Next player: ${name}"
+msgid "Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
 msgstr ""
 
 #: bot.py:424
 #, python-format
-msgid "${name1} was skipped four times in a row and has been removed from the game.\n"
-"Next player: ${name2}"
+msgid "{name1} was skipped four times in a row and has been removed from the game.\n"
+"Next player: {name2}"
 msgstr ""
 
 #: bot.py:432
 #, python-format
-msgid "${name} was skipped four times in a row and has been removed from the game.\n"
+msgid "{name} was skipped four times in a row and has been removed from the game.\n"
 "The game ended."
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 
 #: bot.py:572
 #, python-format
-msgid "Waiting time for ${name} has been reset to 90 seconds"
+msgid "Waiting time for {name} has been reset to 90 seconds"
 msgstr ""
 
 #: bot.py:577
@@ -231,7 +231,7 @@ msgstr ""
 
 #: bot.py:591
 #, python-format
-msgid "${name} won!"
+msgid "{name} won!"
 msgstr ""
 
 #: bot.py:601
@@ -244,12 +244,12 @@ msgstr ""
 
 #: bot.py:627
 #, python-format
-msgid "Bluff called! Giving ${number} cards to ${name}"
+msgid "Bluff called! Giving {number} cards to {name}"
 msgstr ""
 
 #: bot.py:639
 #, python-format
-msgid "${name1} didn't bluff! Giving ${number} cards to ${name2}"
+msgid "{name1} didn't bluff! Giving {number} cards to {name2}"
 msgstr ""
 
 #: results.py:38
@@ -277,7 +277,7 @@ msgstr ""
 
 #: results.py:72
 #, python-format
-msgid " (${number} cards)"
+msgid " ({number} cards)"
 msgstr ""
 
 #: results.py:81
@@ -300,7 +300,7 @@ msgstr ""
 #: results.py:108
 #, python-format
 msgid "Drawing one card"
-msgid_plural "Drawing ${number} cards"
+msgid_plural "Drawing {number} cards"
 msgstr[0] ""
 msgstr[1] ""
 
