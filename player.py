@@ -112,11 +112,16 @@ class Player(object):
         """Draws 1+ cards from the deck, depending on the draw counter"""
         _amount = self.game.draw_counter or 1
 
-        for i in range(_amount):
-            self.cards.append(self.game.deck.draw())
+        try:
+            for i in range(_amount):
+                self.cards.append(self.game.deck.draw())
 
-        self.game.draw_counter = 0
-        self.drew = True
+        except DeckEmptyError:
+            raise
+
+        finally:
+            self.game.draw_counter = 0
+            self.drew = True
 
     def play(self, card):
         """Plays a card and removes it from hand"""
