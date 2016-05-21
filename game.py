@@ -37,12 +37,10 @@ class Game(object):
 
     def __init__(self, chat):
         self.chat = chat
-        self.deck = Deck()
-        self.last_card = self.deck.draw()
+        self.last_card = None
 
-        while self.last_card.special:
-            self.deck.dismiss(self.last_card)
-            self.deck.shuffle()
+        while not self.last_card or self.last_card.special:
+            self.deck = Deck()
             self.last_card = self.deck.draw()
 
         self.logger = logging.getLogger(__name__)
