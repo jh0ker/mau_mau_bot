@@ -564,7 +564,7 @@ def process_result(bot, update):
         do_call_bluff(bot, player)
     elif result_id == 'draw':
         reset_waiting_time(bot, player)
-        do_draw(player)
+        do_draw(bot, player)
     elif result_id == 'pass':
         game.turn()
     elif result_id in c.COLORS:
