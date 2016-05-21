@@ -67,10 +67,9 @@ def add_other_cards(playable, player, results, game):
 
 def player_list(game):
     """Generate list of player strings"""
-    players = list()
-    for player in game.players:
-        player.user.first_name + " (%d cards)" % len(player.cards)
-    return players
+    return [player.user.first_name + " (%d cards)" % len(player.cards)
+            for player in game.players]
+
 
 
 def add_no_game(results):
