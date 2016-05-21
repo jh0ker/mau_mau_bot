@@ -18,7 +18,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+from flufl.i18n import registry
+from flufl.i18n import PackageStrategy
+
 from telegram import Emoji
+import locales
+
+strategy = PackageStrategy('unobot', locales)
+application = registry.register(strategy)
+_ = application._
 
 
 def list_subtract(list1, list2):

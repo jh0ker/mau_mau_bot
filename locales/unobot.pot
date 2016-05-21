@@ -25,10 +25,10 @@ msgstr ""
 "PO-Revision-Date: 2016-05-19 22:38+0200\n"
 "Last-Translator: Jannes Höke <uno@jhoeke.de>\n"
 "Language-Team: en <uno@jhoeke.de>\n"
-"Language: en\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: utf-8\n"
 
 
 #: bot.py:60
@@ -57,7 +57,7 @@ msgid "Follow these steps:\n"
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game.\n"
+"unobotupdates\">update channel</a> and buy an UNO card game."
 msgstr ""
 
 #: bot.py:88
@@ -95,7 +95,7 @@ msgid "Game ended!"
 msgstr ""
 
 #: bot.py:201
-msgid "Okay. Next Player: "
+msgid "Okay. Next Player: {name}"
 msgstr ""
 
 #: bot.py:219
@@ -196,20 +196,16 @@ msgstr ""
 
 #: bot.py:513
 #, python-format
-msgid "Current game: %s"
-msgstr ""
-
-#: bot.py:533
-msgid "Selected result: "
+msgid "Current game: {group}"
 msgstr ""
 
 #: bot.py:545
 #, python-format
-msgid "Cheat attempt by %s"
+msgid "Cheat attempt by {name}"
 msgstr ""
 
 #: bot.py:562
-msgid "Next player: "
+msgid "Next player: {name}"
 msgstr ""
 
 #: bot.py:572
@@ -217,25 +213,13 @@ msgstr ""
 msgid "Waiting time for {name} has been reset to 90 seconds"
 msgstr ""
 
-#: bot.py:577
-msgid "Plays the selected card and sends an update to the group if needed"
-msgstr ""
-
 #: bot.py:585
 msgid "Please choose a color"
-msgstr ""
-
-#: bot.py:588
-msgid "UNO!"
 msgstr ""
 
 #: bot.py:591
 #, python-format
 msgid "{name} won!"
-msgstr ""
-
-#: bot.py:601
-msgid "Played cards"
 msgstr ""
 
 #: bot.py:613 bot.py:635 bot.py:647
@@ -244,12 +228,12 @@ msgstr ""
 
 #: bot.py:627
 #, python-format
-msgid "Bluff called! Giving {number} cards to {name}"
+msgid "Bluff called! Giving 4 cards to {name}"
 msgstr ""
 
 #: bot.py:639
 #, python-format
-msgid "{name1} didn't bluff! Giving {number} cards to {name2}"
+msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
 msgstr ""
 
 #: results.py:38
@@ -261,23 +245,20 @@ msgid "Cards (tap for game state):"
 msgstr ""
 
 #: results.py:60 results.py:123 results.py:165
-msgid "Current player: "
+msgid "Current player: {name}"
 msgstr ""
 
 #: results.py:61 results.py:124 results.py:167
-msgid "\n"
-"Last card: "
+msgid "Last card: {card}"
 msgstr ""
 
 #: results.py:62 results.py:125 results.py:168
-msgid "\n"
-"Players: "
+msgid "Players: {player_list}"
 msgstr ""
-
 
 #: results.py:72
 #, python-format
-msgid " ({number} cards)"
+msgid "{name} ({number} cards)"
 msgstr ""
 
 #: results.py:81
@@ -299,10 +280,11 @@ msgstr ""
 
 #: results.py:108
 #, python-format
-msgid "Drawing one card"
-msgid_plural "Drawing {number} cards"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Drawing 1 card"
+msgstr ""
+
+msgid "Drawing {number} cards"
+msgstr ""
 
 #: results.py:136
 msgid "Pass"
