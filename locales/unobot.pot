@@ -19,7 +19,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mau_mau_bot 0.1\n"
+"Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-19 22:38+0200\n"
 "PO-Revision-Date: 2016-05-19 22:38+0200\n"
@@ -32,6 +32,7 @@ msgstr ""
 
 
 #: bot.py:60
+#, fuzzy
 msgid "Follow these steps:\n"
 "\n"
 "1. Add this bot to a group\n"
@@ -48,10 +49,13 @@ msgid "Follow these steps:\n"
 "player takes more than 90 seconds to play, you can use /skip to skip that "
 "player.\n"
 "\n"
+"<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
 "/close - Close lobby\n"
 "/open - Open lobby\n"
-"\n"
+"/enable_translations - Translate relevant texts into all "
+"languages spoken in a game\n"
+"/disable_translations - Use English for those texts\n\n"
 "<b>Experimental:</b> Play in multiple groups at the same time. Press the "
 "<code>Current game: ...</code> button and select the group you want to play "
 "a card in.\n"
@@ -136,9 +140,10 @@ msgstr ""
 
 
 #: bot.py:297
-#, python-format
+#, python-format, fuzzy
 msgid "First player: {name}\n"
-"Use /close to stop people from joining the game."
+"Use /close to stop people from joining the game.\n"
+"Enable multi-translations with /enable_translations"
 msgstr ""
 
 #: bot.py:321
@@ -157,6 +162,16 @@ msgstr ""
 #: bot.py:348 bot.py:373
 #, python-format
 msgid "Only the game creator ({name}) can do that."
+msgstr ""
+
+#: bot.py:349
+#, python-format
+msgid "Enabled multi-translations. Disable with /disable_translations"
+msgstr ""
+
+#: bot.py:377
+#, python-format
+msgid "Disabled multi-translations. Enable them again with /enable_translations"
 msgstr ""
 
 #: bot.py:368

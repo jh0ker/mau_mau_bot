@@ -77,6 +77,8 @@ class GameManager(object):
                 self.leave_game(user, chat)
             except NoGameInChatError:
                 pass
+            except NotEnoughPlayersError:
+                self.end_game(chat, user)
 
         player = Player(game, user)
 

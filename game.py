@@ -34,6 +34,7 @@ class Game(object):
     started = False
     owner = None
     open = True
+    translate = False
 
     def __init__(self, chat):
         self.chat = chat

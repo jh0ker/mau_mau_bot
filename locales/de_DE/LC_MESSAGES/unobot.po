@@ -18,7 +18,7 @@
 #: bot.py:224
 msgid ""
 msgstr ""
-"Project-Id-Version: mau_mau_bot 0.1\n"
+"Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-19 22:38+0200\n"
 "PO-Revision-Date: 2016-05-21 21:16+0200\n"
@@ -32,8 +32,7 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 
 #: bot.py:60
-msgid ""
-"Follow these steps:\n"
+msgid "Follow these steps:\n"
 "\n"
 "1. Add this bot to a group\n"
 "2. In the group, start a new game with /new or join an already running game "
@@ -49,9 +48,13 @@ msgid ""
 "player takes more than 90 seconds to play, you can use /skip to skip that "
 "player.\n"
 "\n"
+"<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
 "/close - Close lobby\n"
 "/open - Open lobby\n"
+"/enable_translations - Translate relevant texts into all "
+"languages spoken in a game\n"
+"/disable_translations - Use English for those texts\n"
 "\n"
 "<b>Experimental:</b> Play in multiple groups at the same time. Press the "
 "<code>Current game: ...</code> button and select the group you want to play "
@@ -78,9 +81,13 @@ msgstr ""
 "benutze /leave. Wenn ein Spieler länger als 90 Sekunden braucht, kannst du "
 "ihn mit /skip überspringen.\n"
 "\n"
+"<b>Sprache</b> und andere Einstellungen: /settings\n"
 "Weitere Kommandos (nur Spiel-Ersteller):\n"
 "/close - Lobby schließen\n"
 "/open - Lobby öffnen\n"
+"/enable_translations - Übersetze relevante Texte in alle im Spiel gesprochenen"
+" Sprachen\n"
+"/disable_translations - Verwende Englisch für diese Texte\n"
 "\n"
 "<b>Experimentell</b>: Spiele in mehreren Gruppen gleichzeitig. Um die "
 "Gruppe, in der du deine Karte spielen willst, auszuwählen, tippe auf den "
@@ -170,15 +177,14 @@ msgstr "Das Spiel hat bereits begonnen"
 
 #: bot.py:281
 msgid "At least two players must /join the game before you can start it"
-msgstr ""
-"Es müssen mindestens zwei Spieler dem Spiel beitreten, bevor du es starten "
-"kannst"
+msgstr "Es müssen mindestens zwei Spieler dem Spiel beitreten, bevor du es "
+"starten kannst"
 
 #: bot.py:297
-#, python-format
-msgid ""
-"First player: {name}\n"
-"Use /close to stop people from joining the game."
+#, python-format, fuzzy
+msgid "First player: {name}\n"
+"Use /close to stop people from joining the game.\n"
+"Enable multi-translations with /enable_translations"
 msgstr ""
 "Erster Spieler: {name}\n"
 "Benutze /close, um zu verhindern, dass weitere Spieler beitreten."
@@ -200,6 +206,17 @@ msgstr ""
 #, python-format
 msgid "Only the game creator ({name}) can do that."
 msgstr "Dies kann nur der Ersteller des Spiels ({name}) tun."
+
+#: bot.py:349
+#, python-format
+msgid "Enabled multi-translations. Disable with /disable_translations"
+msgstr "Multi-Übersetzungen aktiviert. Deaktivieren mit /disable_translations"
+
+#: bot.py:377
+#, python-format
+msgid "Disabled multi-translations. Enable them again with /enable_translations"
+msgstr "Multi-Übersetzungen deaktiviert. Aktiviere sie wieder mit "
+"/enable_translations"
 
 #: bot.py:368
 msgid "Opened the lobby. New players may /join the game."
@@ -259,7 +276,7 @@ msgid "Cheat attempt by %s"
 msgstr "{name} hat versucht zu schummeln!"
 
 #: bot.py:562
-msgid "Next player: "
+msgid "Next player: {name}"
 msgstr "Nächster Spieler: {name}"
 
 #: bot.py:572

@@ -29,6 +29,7 @@ from telegram.ext.dispatcher import run_async
 import locales
 from database import db_session
 from user_setting import UserSetting
+from shared_vars import gm
 
 strategy = PackageStrategy('unobot', locales)
 application = registry.register(strategy)
@@ -38,27 +39,28 @@ logger = logging.getLogger(__name__)
 TIMEOUT = 2.5
 
 
-def __(string):
+def __(string, multi_translate):
     """Translates text into all locales on the stack"""
     translations = list()
     locales = list()
 
-    while True:
-        translation = _(string)
-
-        if translation not in translations:
-            translations.append(translation)
-
-        l = _.code
+    if not multi_translate:
+        _.push('en_US')
+        translations.append(_(string))
         _.pop()
 
-        if l is None:
-            break
-        else:
-            locales.append(l)
+    else:
+        while _.code:
+            translation = _(string)
 
-    for l in reversed(locales):
-        _.push(l)
+            if translation not in translations:
+                translations.append(translation)
+
+            locales.append(_.code)
+            _.pop()
+
+        for l in reversed(locales):
+            _.push(l)
 
     return '\n'.join(translations)  # TODO
 
@@ -126,12 +128,16 @@ def user_locale(func):
     @wraps(func)
     @db_session
     def wrapped(bot, update, *pargs, **kwargs):
+        user, chat = _user_chat_from_update(update)
+
         with db_session:
-            us = UserSetting.get(id=update.message.from_user.id)
+            us = UserSetting.get(id=user.id)
+
             if us:
                 _.push(us.lang)
             else:
                 _.push('en_US')
+
         result = func(bot, update, *pargs, **kwargs)
         _.pop()
         return result
@@ -141,15 +147,50 @@ def user_locale(func):
 def game_locales(func):
     @wraps(func)
     @db_session
-    def wrapped(*pargs, **kwargs):
-        num_locales = 0
-        for loc in ('en_US', 'de_DE'):  # TODO: Get user locales from Database
-            _.push(loc)
-            num_locales += 1
+    def wrapped(bot, update, *pargs, **kwargs):
+        user, chat = _user_chat_from_update(update)
+        player = gm.player_for_user_in_chat(user, chat)
+        locales = list()
 
-        result = func(*pargs, **kwargs)
+        if player:
+            for player in player.game.players:
+                us = UserSetting.get(id=player.user.id)
 
-        for i in range(num_locales):
+                if us:
+                    loc = us.lang
+                else:
+                    loc = 'en_US'
+
+                if loc in locales:
+                    continue
+
+                _.push(loc)
+                locales.append(loc)
+
+        result = func(bot, update, *pargs, **kwargs)
+
+        for i in locales:
             _.pop()
         return result
     return wrapped
+
+
+def _user_chat_from_update(update):
+
+    try:
+        user = update.message.from_user
+        chat = update.message.chat
+    except (NameError, AttributeError):
+        try:
+            user = update.inline_query.from_user
+            chat = gm.userid_current[user.id].game.chat
+        except KeyError:
+            chat = None
+        except (NameError, AttributeError):
+            try:
+                user = update.chosen_inline_result.from_user
+                chat = gm.userid_current[user.id].game.chat
+            except (NameError, AttributeError):
+                chat = None
+
+    return user, chat

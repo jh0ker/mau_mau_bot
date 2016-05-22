@@ -100,9 +100,10 @@ def add_draw(player, results):
         Sticker(
             "draw", sticker_file_id=c.STICKERS['option_draw'],
             input_message_content=
-            InputTextMessageContent(__('Drawing 1 card')
+            InputTextMessageContent(__('Drawing 1 card', player.game.translate)
                                     if n == 1 else
-                                    __('Drawing {number} cards')
+                                    __('Drawing {number} cards',
+                                       player.game.translate)
                                     .format(number=n))
         )
     )
@@ -120,24 +121,26 @@ def add_gameinfo(game, results):
     )
 
 
-def add_pass(results):
+def add_pass(results, game):
     """Add option to pass"""
     results.append(
         Sticker(
             "pass", sticker_file_id=c.STICKERS['option_pass'],
-            input_message_content=InputTextMessageContent(__('Pass'))
+            input_message_content=InputTextMessageContent(__('Pass',
+                                                             game.translate))
         )
     )
 
 
-def add_call_bluff(results):
+def add_call_bluff(results, game):
     """Add option to call a bluff"""
     results.append(
         Sticker(
             "call_bluff",
             sticker_file_id=c.STICKERS['option_bluff'],
             input_message_content=
-            InputTextMessageContent(__("I'm calling your bluff!"))
+            InputTextMessageContent(__("I'm calling your bluff!",
+                                       game.translate))
         )
     )
 

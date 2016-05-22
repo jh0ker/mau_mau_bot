@@ -41,6 +41,7 @@ from utils import _, __, send_async, answer_async, user_locale, game_locales, \
 from shared_vars import botan, gm, updater, dispatcher
 
 import simple_commands, settings
+from simple_commands import help
 
 
 logging.basicConfig(
@@ -134,11 +135,11 @@ def leave_game(bot, update):
 
     except NotEnoughPlayersError:
         gm.end_game(chat, user)
-        send_async(bot, chat.id, text=__("Game ended!"))
+        send_async(bot, chat.id, text=__("Game ended!", game.translate))
 
     else:
         send_async(bot, chat.id,
-                   text=__("Okay. Next Player: {name}").format(
+                   text=__("Okay. Next Player: {name}", game.translate).format(
                        name=display_name(game.current_player.user)),
                    reply_to_message_id=update.message.message_id)
 
@@ -185,20 +186,20 @@ def status_update(bot, update):
     chat = update.message.chat
 
     if update.message.left_chat_member:
-        try:
-            user = update.message.left_chat_member
-        except KeyError:
-            return
+        user = update.message.left_chat_member
 
         try:
             gm.leave_game(user, chat)
+            game = gm.player_for_user_in_chat(user, chat).game
+
         except NoGameInChatError:
             pass
         except NotEnoughPlayersError:
             gm.end_game(chat, user)
-            send_async(bot, chat.id, text=__("Game ended!"))
+            send_async(bot, chat.id, text=__("Game ended!", game.translate))
         else:
-            send_async(bot, chat.id, text=__("Removing {name} from the game")
+            send_async(bot, chat.id, text=__("Removing {name} from the game",
+                                             game.translate)
                        .format(name=display_name(user)))
 
 
@@ -230,6 +231,13 @@ def start_game(bot, update, args):
             game.play_card(game.last_card)
             game.started = True
 
+            first_message = (
+                __("First player: {name}\n"
+                   "Use /close to stop people from joining the game.\n"
+                   "Enable multi-translations with /enable_translations",
+                   game.translate)
+                .format(name=display_name(game.current_player.user)))
+
             @run_async
             def send_first():
                 """Send the first card and player"""
@@ -239,12 +247,7 @@ def start_game(bot, update, args):
                                 timeout=TIMEOUT)
 
                 bot.sendMessage(chat.id,
-                                text=__("First player: {name}\n"
-                                        "Use /close to stop people from "
-                                        "joining the game.")
-                                .format(
-                                    name=display_name(game.current_player.user)
-                                ),
+                                text=first_message,
                                 timeout=TIMEOUT)
 
             send_first()
@@ -327,6 +330,63 @@ def open_game(bot, update):
         return
 
 
+@user_locale
+def enable_translations(bot, update):
+    """Handler for the /enable_translations command"""
+    chat = update.message.chat
+    user = update.message.from_user
+    games = gm.chatid_games.get(chat.id)
+
+    if not games:
+        send_async(bot, chat.id,
+                   text=_("There is no running game in this chat."))
+        return
+
+    game = games[-1]
+
+    if game.owner.id == user.id:
+        game.translate = True
+        send_async(bot, chat.id, text=_("Enabled multi-translations. "
+                                        "Disable with /disable_translations"))
+        return
+
+    else:
+        send_async(bot, chat.id,
+                   text=_("Only the game creator ({name}) can do that")
+                   .format(name=game.owner.first_name),
+                   reply_to_message_id=update.message.message_id)
+        return
+
+
+@user_locale
+def disable_translations(bot, update):
+    """Handler for the /disable_translations command"""
+    chat = update.message.chat
+    user = update.message.from_user
+    games = gm.chatid_games.get(chat.id)
+
+    if not games:
+        send_async(bot, chat.id,
+                   text=_("There is no running game in this chat."))
+        return
+
+    game = games[-1]
+
+    if game.owner.id == user.id:
+        game.translate = False
+        send_async(bot, chat.id, text=_("Disabled multi-translations. "
+                                        "Enable them again with "
+                                        "/enable_translations"))
+        return
+
+    else:
+        send_async(bot, chat.id,
+                   text=_("Only the game creator ({name}) can do that")
+                   .format(name=game.owner.first_name),
+                   reply_to_message_id=update.message.message_id)
+        return
+
+
 @game_locales
 @user_locale
 def skip_player(bot, update):
@@ -365,7 +425,7 @@ def skip_player(bot, update):
         send_async(bot, chat.id,
                    text=__("Waiting time to skip this player has "
                            "been reduced to {time} seconds.\n"
-                           "Next player: {name}")
+                           "Next player: {name}", game.translate)
                    .format(time=skipped_player.waiting_time,
                            name=display_name(next_player.user)))
         game.turn()
@@ -376,7 +436,7 @@ def skip_player(bot, update):
             send_async(bot, chat.id,
                        text=__("{name1} was skipped four times in a row "
                                "and has been removed from the game.\n"
-                               "Next player: {name2}")
+                               "Next player: {name2}", game.translate)
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
 
@@ -384,10 +444,11 @@ def skip_player(bot, update):
             send_async(bot, chat.id,
                        text=__("{name} was skipped four times in a row "
                                "and has been removed from the game.\n"
-                               "The game ended.")
+                               "The game ended.", game.translate)
                        .format(name=display_name(skipped_player.user)))
 
             gm.end_game(chat.id, skipped_player.user)
+
 
 @game_locales
 @user_locale
@@ -420,10 +481,10 @@ def reply_to_query(bot, update):
                     add_draw(player, results)
 
                 else:
-                    add_pass(results)
+                    add_pass(results, game)
 
                 if game.last_card.special == c.DRAW_FOUR and game.draw_counter:
-                    add_call_bluff(results)
+                    add_call_bluff(results, game)
 
                 playable = player.playable_cards()
                 added_ids = list()  # Duplicates are not allowed
@@ -479,7 +540,7 @@ def process_result(bot, update):
         return
     elif int(anti_cheat) != last_anti_cheat:
         send_async(bot, chat.id,
-                   text=__("Cheat attempt by {name}")
+                   text=__("Cheat attempt by {name}", game.translate)
                    .format(name=display_name(player.user)))
         return
     elif result_id == 'call_bluff':
@@ -498,7 +559,7 @@ def process_result(bot, update):
 
     if game in gm.chatid_games.get(chat.id, list()):
         send_async(bot, chat.id,
-                   text=__("Next player: {name}")
+                   text=__("Next player: {name}", game.translate)
                    .format(name=display_name(game.current_player.user)))
 
 
@@ -510,7 +571,8 @@ def reset_waiting_time(bot, player):
         player.waiting_time = 90
         send_async(bot, chat.id,
                    text=__("Waiting time for {name} has been reset to 90 "
-                           "seconds").format(name=display_name(player.user)))
+                           "seconds", player.game.translate)
+                   .format(name=display_name(player.user)))
 
 
 def do_play_card(bot, player, result_id):
@@ -529,11 +591,12 @@ def do_play_card(bot, player, result_id):
 
     if len(player.cards) == 0:
         send_async(bot, chat.id,
-                   text=__("{name} won!").format(name=user.first_name))
+                   text=__("{name} won!", game.translate)
+                   .format(name=user.first_name))
         try:
             gm.leave_game(user, chat)
         except NotEnoughPlayersError:
-            send_async(bot, chat.id, text=__("Game ended!"))
+            send_async(bot, chat.id, text=__("Game ended!", game.translate))
             gm.end_game(chat, user)
 
     if botan:
@@ -551,7 +614,8 @@ def do_draw(bot, player):
         player.draw()
     except DeckEmptyError:
         send_async(bot, player.game.chat.id,
-                   text=__("There are no more cards in the deck."))
+                   text=__("There are no more cards in the deck.",
+                           game.translate))
 
     if (game.last_card.value == c.DRAW_TWO or
         game.last_card.special == c.DRAW_FOUR) and \
@@ -566,26 +630,30 @@ def do_call_bluff(bot, player):
 
     if player.prev.bluffing:
         send_async(bot, chat.id,
-                   text=__("Bluff called! Giving 4 cards to {name}")
+                   text=__("Bluff called! Giving 4 cards to {name}",
+                           game.translate)
                         .format(name=player.prev.user.first_name))
 
         try:
             player.prev.draw()
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
-                       text=__("There are no more cards in the deck."))
+                       text=__("There are no more cards in the deck.",
+                               game.translate))
 
     else:
         game.draw_counter += 2
         send_async(bot, chat.id,
-                   text=__("{name1} didn't bluff! Giving 6 cards to {name2}")
+                   text=__("{name1} didn't bluff! Giving 6 cards to {name2}",
+                           game.translate)
                    .format(name1=player.prev.user.first_name,
                            name2=player.user.first_name))
         try:
             player.draw()
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
-                       text=__("There are no more cards in the deck."))
+                       text=__("There are no more cards in the deck.",
+                               game.translate))
 
     game.turn()
 
@@ -600,6 +668,10 @@ dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
 dispatcher.add_handler(CommandHandler('open', open_game))
 dispatcher.add_handler(CommandHandler('close', close_game))
+dispatcher.add_handler(CommandHandler('enable_translations',
+                                      enable_translations))
+dispatcher.add_handler(CommandHandler('disable_translations',
+                                      disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
 dispatcher.add_error_handler(error)
