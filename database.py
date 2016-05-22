@@ -18,21 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from functools import wraps
-
 from pony.orm import Database, db_session, Optional, Required, Set, PrimaryKey
-
-from utils import _
 
 # Database singleton
 db = Database()
-
-
-def user_locale(func):
-    @wraps(func)
-    def wrapped(*pargs, **kwargs):
-        _.push('de_DE')  # TODO: Get user locale from Database
-        result = func(*pargs, **kwargs)
-        _.pop()
-        return result
-    return wrapped

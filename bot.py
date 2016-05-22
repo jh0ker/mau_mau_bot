@@ -20,6 +20,7 @@
 
 import logging
 from datetime import datetime
+from functools import wraps
 from random import randint
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
@@ -40,8 +41,7 @@ from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from database import db_session, user_locale
-from utils import _
+from utils import _, __
 
 
 TIMEOUT = 2.5
@@ -90,6 +90,32 @@ help_text = ("Follow these steps:\n\n"
 source_text = ("This bot is Free Software and licensed under the AGPL. "
                "The code is available here: \n"
                "https://github.com/jh0ker/mau_mau_bot")
+
+
+def user_locale(func):
+    @wraps(func)
+    def wrapped(*pargs, **kwargs):
+        _.push('de_DE')  # TODO: Get user locale from Database
+        result = func(*pargs, **kwargs)
+        _.pop()
+        return result
+    return wrapped
+
+
+def game_locales(func):
+    @wraps(func)
+    def wrapped(*pargs, **kwargs):
+        num_locales = 0
+        for loc in ('en_US', 'de_DE'):  # TODO: Get user locales from Database
+            _.push(loc)
+            num_locales += 1
+
+        result = func(*pargs, **kwargs)
+
+        for i in range(num_locales):
+            _.pop()
+        return result
+    return wrapped
 
 
 @run_async
@@ -169,8 +195,8 @@ def join_game(bot, update):
 
     except DeckEmptyError:
         send_async(bot, chat.id,
-                   text=_("There are not enough cards left in the deck for new "
-                          "players to join."),
+                   text=_("There are not enough cards left in the deck for "
+                          "new players to join."),
                    reply_to_message_id=update.message.message_id)
 
     else:
@@ -206,11 +232,11 @@ def leave_game(bot, update):
 
     except NotEnoughPlayersError:
         gm.end_game(chat, user)
-        send_async(bot, chat.id, text=_("Game ended!"))
+        send_async(bot, chat.id, text=__("Game ended!"))
 
     else:
         send_async(bot, chat.id,
-                   text=_("Okay. Next Player: {name}").format(
+                   text=__("Okay. Next Player: {name}").format(
                        name=display_name(game.current_player.user)),
                    reply_to_message_id=update.message.message_id)
 
@@ -251,7 +277,7 @@ def select_game(bot, update):
                         timeout=TIMEOUT)
 
 
-@user_locale
+@game_locales
 def status_update(bot, update):
     """Remove player from game if user leaves the group"""
     chat = update.message.chat
@@ -268,12 +294,13 @@ def status_update(bot, update):
             pass
         except NotEnoughPlayersError:
             gm.end_game(chat, user)
-            send_async(bot, chat.id, text=_("Game ended!"))
+            send_async(bot, chat.id, text=__("Game ended!"))
         else:
-            send_async(bot, chat.id, text=_("Removing {name} from the game")
+            send_async(bot, chat.id, text=__("Removing {name} from the game")
                        .format(name=display_name(user)))
 
 
+@game_locales
 @user_locale
 def start_game(bot, update, args):
     """Handler for the /start command"""
@@ -310,9 +337,9 @@ def start_game(bot, update, args):
                                 timeout=TIMEOUT)
 
                 bot.sendMessage(chat.id,
-                                text=_("First player: {name}\n"
-                                       "Use /close to stop people from "
-                                       "joining the game.")
+                                text=__("First player: {name}\n"
+                                        "Use /close to stop people from "
+                                        "joining the game.")
                                 .format(
                                     name=display_name(game.current_player.user)
                                 ),
@@ -398,6 +425,7 @@ def open_game(bot, update):
         return
 
 
+@game_locales
 @user_locale
 def skip_player(bot, update):
     """Handler for the /skip command"""
@@ -433,9 +461,9 @@ def skip_player(bot, update):
             pass
 
         send_async(bot, chat.id,
-                   text=_("Waiting time to skip this player has "
-                          "been reduced to {time} seconds.\n"
-                          "Next player: {name}")
+                   text=__("Waiting time to skip this player has "
+                           "been reduced to {time} seconds.\n"
+                           "Next player: {name}")
                    .format(time=skipped_player.waiting_time,
                            name=display_name(next_player.user)))
         game.turn()
@@ -444,17 +472,17 @@ def skip_player(bot, update):
         try:
             gm.leave_game(skipped_player.user, chat)
             send_async(bot, chat.id,
-                       text=_("{name1} was skipped four times in a row "
-                              "and has been removed from the game.\n"
-                              "Next player: {name2}")
+                       text=__("{name1} was skipped four times in a row "
+                               "and has been removed from the game.\n"
+                               "Next player: {name2}")
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
 
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
-                       text=_("{name} was skipped four times in a row "
-                              "and has been removed from the game.\n"
-                              "The game ended.")
+                       text=__("{name} was skipped four times in a row "
+                               "and has been removed from the game.\n"
+                               "The game ended.")
                        .format(name=display_name(skipped_player.user)))
 
             gm.end_game(chat.id, skipped_player.user)
@@ -482,6 +510,7 @@ def news(bot, update):
                disable_web_page_preview=True)
 
 
+@game_locales
 @user_locale
 def reply_to_query(bot, update):
     """
@@ -543,6 +572,7 @@ def reply_to_query(bot, update):
                  switch_pm_text=switch, switch_pm_parameter='select')
 
 
+@game_locales
 @user_locale
 def process_result(bot, update):
     """
@@ -570,7 +600,7 @@ def process_result(bot, update):
         return
     elif int(anti_cheat) != last_anti_cheat:
         send_async(bot, chat.id,
-                   text=_("Cheat attempt by {name}")
+                   text=__("Cheat attempt by {name}")
                    .format(name=display_name(player.user)))
         return
     elif result_id == 'call_bluff':
@@ -589,7 +619,7 @@ def process_result(bot, update):
 
     if game in gm.chatid_games.get(chat.id, list()):
         send_async(bot, chat.id,
-                   text=_("Next player: {name}")
+                   text=__("Next player: {name}")
                    .format(name=display_name(game.current_player.user)))
 
 
@@ -600,8 +630,8 @@ def reset_waiting_time(bot, player):
     if player.waiting_time < 90:
         player.waiting_time = 90
         send_async(bot, chat.id,
-                   text=_("Waiting time for {name} has been reset to 90 "
-                          "seconds").format(name=display_name(player.user)))
+                   text=__("Waiting time for {name} has been reset to 90 "
+                           "seconds").format(name=display_name(player.user)))
 
 
 def do_play_card(bot, player, result_id):
@@ -616,15 +646,15 @@ def do_play_card(bot, player, result_id):
         send_async(bot, chat.id, text=_("Please choose a color"))
 
     if len(player.cards) == 1:
-        send_async(bot, chat.id, text=_("UNO!"))
+        send_async(bot, chat.id, text="UNO!")
 
     if len(player.cards) == 0:
         send_async(bot, chat.id,
-                   text=_("{name} won!").format(name=user.first_name))
+                   text=__("{name} won!").format(name=user.first_name))
         try:
             gm.leave_game(user, chat)
         except NotEnoughPlayersError:
-            send_async(bot, chat.id, text=_("Game ended!"))
+            send_async(bot, chat.id, text=__("Game ended!"))
             gm.end_game(chat, user)
 
     if botan:
@@ -642,7 +672,7 @@ def do_draw(bot, player):
         player.draw()
     except DeckEmptyError:
         send_async(bot, player.game.chat.id,
-                   text=_("There are no more cards in the deck."))
+                   text=__("There are no more cards in the deck."))
 
     if (game.last_card.value == c.DRAW_TWO or
         game.last_card.special == c.DRAW_FOUR) and \
@@ -657,26 +687,26 @@ def do_call_bluff(bot, player):
 
     if player.prev.bluffing:
         send_async(bot, chat.id,
-                   text=_("Bluff called! Giving 4 cards to {name}")
+                   text=__("Bluff called! Giving 4 cards to {name}")
                         .format(name=player.prev.user.first_name))
 
         try:
             player.prev.draw()
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
-                       text=_("There are no more cards in the deck."))
+                       text=__("There are no more cards in the deck."))
 
     else:
         game.draw_counter += 2
         send_async(bot, chat.id,
-                   text="{name1} didn't bluff! Giving 6 cards to {name2}"
+                   text=__("{name1} didn't bluff! Giving 6 cards to {name2}")
                    .format(name1=player.prev.user.first_name,
                            name2=player.user.first_name))
         try:
             player.draw()
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
-                       text=_("There are no more cards in the deck."))
+                       text=__("There are no more cards in the deck."))
 
     game.turn()
 

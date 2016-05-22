@@ -18,6 +18,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import logging
+
 from flufl.i18n import registry
 from flufl.i18n import PackageStrategy
 
@@ -27,6 +29,32 @@ import locales
 strategy = PackageStrategy('unobot', locales)
 application = registry.register(strategy)
 _ = application._
+logger = logging.getLogger(__name__)
+
+
+def __(string):
+    """Translates text into all locales on the stack"""
+    translations = list()
+    locales = list()
+
+    while True:
+        translation = _(string)
+
+        if translation not in translations:
+            translations.append(translation)
+
+        l = _.code
+        _.pop()
+
+        if l is None:
+            break
+        else:
+            locales.append(l)
+
+    for l in reversed(locales):
+        _.push(l)
+
+    return '\n'.join(translations)  # TODO
 
 
 def list_subtract(list1, list2):

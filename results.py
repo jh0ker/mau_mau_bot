@@ -26,7 +26,7 @@ from telegram import InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultCachedSticker as Sticker
 
 import card as c
-from utils import display_color, display_name, list_subtract, _
+from utils import display_color, display_name, list_subtract, _, __
 
 
 def add_choose_color(results):
@@ -61,7 +61,7 @@ def add_other_cards(playable, player, results, game):
 
 def player_list(game):
     """Generate list of player strings"""
-    return ["{name} ({number} cards)"
+    return [_("{name} ({number} cards)")
             .format(name=player.user.first_name, number=len(player.cards))
             for player in game.players]
 
@@ -100,9 +100,9 @@ def add_draw(player, results):
         Sticker(
             "draw", sticker_file_id=c.STICKERS['option_draw'],
             input_message_content=
-            InputTextMessageContent(_('Drawing 1 card')
+            InputTextMessageContent(__('Drawing 1 card')
                                     if n == 1 else
-                                    _('Drawing {number} cards')
+                                    __('Drawing {number} cards')
                                     .format(number=n))
         )
     )
@@ -125,7 +125,7 @@ def add_pass(results):
     results.append(
         Sticker(
             "pass", sticker_file_id=c.STICKERS['option_pass'],
-            input_message_content=InputTextMessageContent(_('Pass'))
+            input_message_content=InputTextMessageContent(__('Pass'))
         )
     )
 
@@ -137,7 +137,7 @@ def add_call_bluff(results):
             "call_bluff",
             sticker_file_id=c.STICKERS['option_bluff'],
             input_message_content=
-            InputTextMessageContent(_("I'm calling your bluff!"))
+            InputTextMessageContent(__("I'm calling your bluff!"))
         )
     )
 
