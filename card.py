@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # Telegram bot to play UNO in group chats
 # Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
@@ -180,9 +181,7 @@ STICKERS_GREY = {
 
 
 class Card(object):
-    """
-    This class represents a card.
-    """
+    """This class represents an UNO card"""
 
     def __init__(self, color, value, special=None):
         self.color = color
@@ -205,16 +204,16 @@ class Card(object):
             return '%s%s' % (COLOR_ICONS[self.color], self.value.capitalize())
 
     def __eq__(self, other):
-        """ Needed for sorting the cards """
+        """Needed for sorting the cards"""
         return str(self) == str(other)
 
     def __lt__(self, other):
-        """ Needed for sorting the cards """
+        """Needed for sorting the cards"""
         return str(self) < str(other)
 
 
 def from_str(string):
-    """ Decode a Card object from a string """
+    """Decodes a Card object from a string"""
     if string not in SPECIALS:
         color, value = string.split('_')
         return Card(color, value)

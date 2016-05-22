@@ -47,7 +47,7 @@ coverage.xml
 
 # Translations
 *.mo
-*.pot
+# *.pot
 
 # Django stuff:
 *.log
@@ -63,3 +63,6 @@ target/
 
 # PyCharm
 .idea
+
+# Database file
+uno.sqlite3

@@ -17,9 +17,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Modify this file if you want a different startup sequence, for example using
-# a Webhook
 
+from telegram.ext import Updater
+from telegram.utils.botan import Botan
 
-def start_bot(updater):
-    updater.start_polling()
+from game_manager import GameManager
+from database import db
+from credentials import TOKEN, BOTAN_TOKEN
+
+db.bind('sqlite', 'uno.sqlite3', create_db=True)
+db.generate_mapping(create_tables=True)
+
+gm = GameManager()
+updater = Updater(token=TOKEN, workers=32)
+dispatcher = updater.dispatcher
+
+botan = False
+if BOTAN_TOKEN:
+    botan = Botan(BOTAN_TOKEN)

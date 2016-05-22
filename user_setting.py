@@ -17,9 +17,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Modify this file if you want a different startup sequence, for example using
-# a Webhook
+
+from database import db, Optional, Required, PrimaryKey, db_session
 
 
-def start_bot(updater):
-    updater.start_polling()
+class UserSetting(db.Entity):
+
+    id = PrimaryKey(int, auto=False, size=64)  # Telegram User ID
+    lang = Optional(str, default='en')  # The language setting for this user
+    stats = Optional(bool, default=False)  # Opt-in to keep game statistics
+    first_places = Optional(int, default=0)  # Nr. of games won in first place
+    games_played = Optional(int, default=0)  # Nr. of games completed
+    cards_played = Optional(int, default=0)  # Nr. of cards played total
+    use_keyboards = Optional(bool, default=False)  # Use keyboards (unused)

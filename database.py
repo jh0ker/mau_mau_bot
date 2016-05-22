@@ -17,9 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Modify this file if you want a different startup sequence, for example using
-# a Webhook
 
+from pony.orm import Database, db_session, Optional, Required, Set, PrimaryKey
 
-def start_bot(updater):
-    updater.start_polling()
+# Database singleton
+db = Database()

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # Telegram bot to play UNO in group chats
 # Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
@@ -18,9 +19,11 @@
 
 
 from random import shuffle
+import logging
+
 import card as c
 from card import Card
-import logging
+from errors import DeckEmptyError
 
 
 class Deck(object):
@@ -45,22 +48,25 @@ class Deck(object):
         self.shuffle()
 
     def shuffle(self):
-        """ Shuffle the deck """
+        """Shuffles the deck"""
         self.logger.debug("Shuffling Deck")
         shuffle(self.cards)
 
     def draw(self):
-        """ Draw a card from this deck """
+        """Draws a card from this deck"""
         try:
             card = self.cards.pop()
             self.logger.debug("Drawing card " + str(card))
             return card
         except IndexError:
-            while len(self.graveyard):
-                self.cards.append(self.graveyard.pop())
-            self.shuffle()
-            return self.draw()
+            if len(self.graveyard):
+                while len(self.graveyard):
+                    self.cards.append(self.graveyard.pop())
+                self.shuffle()
+                return self.draw()
+            else:
+                raise DeckEmptyError()
 
     def dismiss(self, card):
-        """ All played cards should be returned into the deck """
+        """Returns a card to the deck"""
         self.graveyard.append(card)

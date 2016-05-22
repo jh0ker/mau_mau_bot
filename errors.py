@@ -17,9 +17,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Modify this file if you want a different startup sequence, for example using
-# a Webhook
+
+class NoGameInChatError(Exception):
+    pass
 
 
-def start_bot(updater):
-    updater.start_polling()
+class AlreadyJoinedError(Exception):
+    pass
+
+
+class LobbyClosedError(Exception):
+    pass
+
+
+class NotEnoughPlayersError(Exception):
+    pass
+
+
+class DeckEmptyError(Exception):
+    pass
