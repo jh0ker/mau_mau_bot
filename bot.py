@@ -20,19 +20,14 @@
 
 import logging
 from datetime import datetime
-from functools import wraps
 from random import randint
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
     InlineKeyboardButton
-from telegram.ext import Updater, InlineQueryHandler, \
-    ChosenInlineResultHandler, CommandHandler, MessageHandler, Filters, \
-    CallbackQueryHandler
+from telegram.ext import InlineQueryHandler, ChosenInlineResultHandler, \
+    CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext.dispatcher import run_async
-from telegram.utils.botan import Botan
 
-from game_manager import GameManager
-from credentials import TOKEN, BOTAN_TOKEN
 from start_bot import start_bot
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
@@ -41,110 +36,17 @@ from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from utils import _, __
+from utils import _, __, send_async, answer_async, user_locale, game_locales, \
+    error, TIMEOUT
+from shared_vars import botan, gm, updater, dispatcher
 
+import simple_commands, settings
 
-TIMEOUT = 2.5
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-gm = GameManager()
-u = Updater(token=TOKEN, workers=32)
-dp = u.dispatcher
-
-botan = False
-if BOTAN_TOKEN:
-    botan = Botan(BOTAN_TOKEN)
-
-help_text = ("Follow these steps:\n\n"
-             "1. Add this bot to a group\n"
-             "2. In the group, start a new game with /new or join an already"
-             " running game with /join\n"
-             "3. After at least two players have joined, start the game with"
-             " /start\n"
-             "4. Type <code>@mau_mau_bot</code> into your chat box and hit "
-             "<b>space</b>, or click the <code>via @mau_mau_bot</code> text "
-             "next to messages. You will see your cards (some greyed out), "
-             "any extra options like drawing, and a <b>?</b> to see the "
-             "current game state. The <b>greyed out cards</b> are those you "
-             "<b>can not play</b> at the moment. Tap an option to execute "
-             "the selected action.\n"
-             "Players can join the game at any time. To leave a game, "
-             "use /leave. If a player takes more than 90 seconds to play, "
-             "you can use /skip to skip that player.\n\n"
-             "Other commands (only game creator):\n"
-             "/close - Close lobby\n"
-             "/open - Open lobby\n\n"
-             "<b>Experimental:</b> Play in multiple groups at the same time. "
-             "Press the <code>Current game: ...</code> button and select the "
-             "group you want to play a card in.\n"
-             "If you enjoy this bot, "
-             "<a href=\"https://telegram.me/storebot?start=mau_mau_bot\">"
-             "rate me</a>, join the "
-             "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"
-             " and buy an UNO card game.")
-
-source_text = ("This bot is Free Software and licensed under the AGPL. "
-               "The code is available here: \n"
-               "https://github.com/jh0ker/mau_mau_bot")
-
-
-def user_locale(func):
-    @wraps(func)
-    def wrapped(*pargs, **kwargs):
-        _.push('de_DE')  # TODO: Get user locale from Database
-        result = func(*pargs, **kwargs)
-        _.pop()
-        return result
-    return wrapped
-
-
-def game_locales(func):
-    @wraps(func)
-    def wrapped(*pargs, **kwargs):
-        num_locales = 0
-        for loc in ('en_US', 'de_DE'):  # TODO: Get user locales from Database
-            _.push(loc)
-            num_locales += 1
-
-        result = func(*pargs, **kwargs)
-
-        for i in range(num_locales):
-            _.pop()
-        return result
-    return wrapped
-
-
-@run_async
-def send_async(bot, *args, **kwargs):
-    """Send a message asynchronously"""
-    if 'timeout' not in kwargs:
-        kwargs['timeout'] = TIMEOUT
-
-    try:
-        bot.sendMessage(*args, **kwargs)
-    except Exception as e:
-        error(None, None, e)
-
-
-@run_async
-def answer_async(bot, *args, **kwargs):
-    """Answer an inline query asynchronously"""
-    if 'timeout' not in kwargs:
-        kwargs['timeout'] = TIMEOUT
-
-    try:
-        bot.answerInlineQuery(*args, **kwargs)
-    except Exception as e:
-        error(None, None, e)
-
-
-def error(bot, update, error):
-    """Simple error handler"""
-    logger.exception(error)
 
 
 @user_locale
@@ -487,29 +389,6 @@ def skip_player(bot, update):
 
             gm.end_game(chat.id, skipped_player.user)
 
-
-@user_locale
-def help(bot, update):
-    """Handler for the /help command"""
-    send_async(bot, update.message.chat_id, text=_(help_text),
-               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
-
-
-@user_locale
-def source(bot, update):
-    """Handler for the /help command"""
-    send_async(bot, update.message.chat_id, text=_(source_text),
-               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
-
-
-@user_locale
-def news(bot, update):
-    """Handler for the /news command"""
-    send_async(bot, update.message.chat_id, 
-               text=_("All news here: https://telegram.me/unobotupdates"),
-               disable_web_page_preview=True)
-
-
 @game_locales
 @user_locale
 def reply_to_query(bot, update):
@@ -712,21 +591,18 @@ def do_call_bluff(bot, player):
 
 
 # Add all handlers to the dispatcher and run the bot
-dp.add_handler(InlineQueryHandler(reply_to_query))
-dp.add_handler(ChosenInlineResultHandler(process_result))
-dp.add_handler(CallbackQueryHandler(select_game))
-dp.add_handler(CommandHandler('start', start_game, pass_args=True))
-dp.add_handler(CommandHandler('new', new_game))
-dp.add_handler(CommandHandler('join', join_game))
-dp.add_handler(CommandHandler('leave', leave_game))
-dp.add_handler(CommandHandler('open', open_game))
-dp.add_handler(CommandHandler('close', close_game))
-dp.add_handler(CommandHandler('skip', skip_player))
-dp.add_handler(CommandHandler('help', help))
-dp.add_handler(CommandHandler('source', source))
-dp.add_handler(CommandHandler('news', news))
-dp.add_handler(MessageHandler([Filters.status_update], status_update))
-dp.add_error_handler(error)
+dispatcher.add_handler(InlineQueryHandler(reply_to_query))
+dispatcher.add_handler(ChosenInlineResultHandler(process_result))
+dispatcher.add_handler(CallbackQueryHandler(select_game))
+dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True))
+dispatcher.add_handler(CommandHandler('new', new_game))
+dispatcher.add_handler(CommandHandler('join', join_game))
+dispatcher.add_handler(CommandHandler('leave', leave_game))
+dispatcher.add_handler(CommandHandler('open', open_game))
+dispatcher.add_handler(CommandHandler('close', close_game))
+dispatcher.add_handler(CommandHandler('skip', skip_player))
+dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
+dispatcher.add_error_handler(error)
 
-start_bot(u)
-u.idle()
+start_bot(updater)
+updater.idle()

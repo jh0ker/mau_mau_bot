@@ -294,3 +294,39 @@ msgstr ""
 msgid "I'm calling your bluff!"
 msgstr ""
 
+#: settings.py:39
+msgid "Please edit your settings in a private chat with the bot."
+msgstr ""
+
+#: settings.py:49
+msgid "Enable statistics"
+msgstr ""
+
+#: settings.py:51
+msgid "Delete all statistics"
+msgstr ""
+
+#: settings.py:53
+msgid "Language"
+msgstr ""
+
+#: settings.py:54
+msgid "Settings"
+msgstr ""
+
+#: settings.py:68
+msgid "Enabled statistics!"
+msgstr ""
+
+#: settings.py:70
+msgid "Select locale"
+msgstr ""
+
+#: settings.py:81
+msgid "Deleted and disabled statistics!"
+msgstr ""
+
+#: settings.py:94
+msgid "Set locale!"
+msgstr ""
+

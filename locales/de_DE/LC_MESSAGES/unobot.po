@@ -350,3 +350,39 @@ msgstr "Passe"
 #: results.py:148
 msgid "I'm calling your bluff!"
 msgstr "Ich glaube du bluffst!"
+
+#: settings.py:39
+msgid "Please edit your settings in a private chat with the bot."
+msgstr "Bitte ändere deine Einstellungen in einem privaten Chat mit dem Bot."
+
+#: settings.py:49
+msgid "Enable statistics"
+msgstr "Statistiken aktivieren"
+
+#: settings.py:51
+msgid "Delete all statistics"
+msgstr "Alle Statistiken löschen"
+
+#: settings.py:53
+msgid "Language"
+msgstr "Sprache"
+
+#: settings.py:54
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: settings.py:68
+msgid "Enabled statistics!"
+msgstr "Statistiken aktiviert!"
+
+#: settings.py:70
+msgid "Select locale"
+msgstr "Bitte Sprache auswählen"
+
+#: settings.py:81
+msgid "Deleted and disabled statistics!"
+msgstr "Alle Statistiken gelöscht und deaktiviert!"
+
+#: settings.py:94
+msgid "Set locale!"
+msgstr "Sprache gesetzt!"

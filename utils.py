@@ -19,17 +19,23 @@
 
 
 import logging
+from functools import wraps
 
 from flufl.i18n import registry
 from flufl.i18n import PackageStrategy
 
 from telegram import Emoji
+from telegram.ext.dispatcher import run_async
 import locales
+from database import db_session
+from user_setting import UserSetting
 
 strategy = PackageStrategy('unobot', locales)
 application = registry.register(strategy)
 _ = application._
 logger = logging.getLogger(__name__)
+
+TIMEOUT = 2.5
 
 
 def __(string):
@@ -85,3 +91,65 @@ def display_color(color):
         return Emoji.GREEN_HEART + " Green"
     if color == "y":
         return Emoji.YELLOW_HEART + " Yellow"
+
+
+def error(bot, update, error):
+    """Simple error handler"""
+    logger.exception(error)
+
+
+@run_async
+def send_async(bot, *args, **kwargs):
+    """Send a message asynchronously"""
+    if 'timeout' not in kwargs:
+        kwargs['timeout'] = TIMEOUT
+
+    try:
+        bot.sendMessage(*args, **kwargs)
+    except Exception as e:
+        error(None, None, e)
+
+
+@run_async
+def answer_async(bot, *args, **kwargs):
+    """Answer an inline query asynchronously"""
+    if 'timeout' not in kwargs:
+        kwargs['timeout'] = TIMEOUT
+
+    try:
+        bot.answerInlineQuery(*args, **kwargs)
+    except Exception as e:
+        error(None, None, e)
+
+
+def user_locale(func):
+    @wraps(func)
+    @db_session
+    def wrapped(bot, update, *pargs, **kwargs):
+        with db_session:
+            us = UserSetting.get(id=update.message.from_user.id)
+            if us:
+                _.push(us.lang)
+            else:
+                _.push('en_US')
+        result = func(bot, update, *pargs, **kwargs)
+        _.pop()
+        return result
+    return wrapped
+
+
+def game_locales(func):
+    @wraps(func)
+    @db_session
+    def wrapped(*pargs, **kwargs):
+        num_locales = 0
+        for loc in ('en_US', 'de_DE'):  # TODO: Get user locales from Database
+            _.push(loc)
+            num_locales += 1
+
+        result = func(*pargs, **kwargs)
+
+        for i in range(num_locales):
+            _.pop()
+        return result
+    return wrapped

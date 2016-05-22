@@ -18,15 +18,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from database import db, Optional, Required, PrimaryKey, db_session
+from telegram.ext import Updater
+from telegram.utils.botan import Botan
 
+from game_manager import GameManager
+from database import db
+from credentials import TOKEN, BOTAN_TOKEN
 
-class UserSetting(db.Entity):
+db.bind('sqlite', 'uno.sqlite3', create_db=True)
+db.generate_mapping(create_tables=True)
 
-    id = PrimaryKey(int, auto=False, size=64)  # Telegram User ID
-    lang = Optional(str, default='en')  # The language setting for this user
-    stats = Optional(bool, default=False)  # Opt-in to keep game statistics
-    first_places = Optional(int, default=0)  # Nr. of games won in first place
-    games_played = Optional(int, default=0)  # Nr. of games completed
-    cards_played = Optional(int, default=0)  # Nr. of cards played total
-    use_keyboards = Optional(bool, default=False)  # Use keyboards (unused)
+gm = GameManager()
+updater = Updater(token=TOKEN, workers=32)
+dispatcher = updater.dispatcher
+
+botan = False
+if BOTAN_TOKEN:
+    botan = Botan(BOTAN_TOKEN)
