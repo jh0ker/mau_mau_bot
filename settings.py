@@ -28,7 +28,8 @@ from user_setting import UserSetting
 from utils import _, user_locale
 from shared_vars import dispatcher
 
-available_locales = [['en_US', 'de_DE']]
+available_locales = [['en_US', 'de_DE'],
+                     ['it_IT']]
 
 
 @user_locale
