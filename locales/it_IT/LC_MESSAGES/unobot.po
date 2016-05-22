@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-22 20:02+0200\n"
-"PO-Revision-Date: 2016-05-22 23:47+0200\n"
+"PO-Revision-Date: 2016-05-23 01:39+0200\n"
 "Language-Team: en <uno@jhoeke.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,11 +83,9 @@ msgstr ""
 "/close - Chiude la stanza, nessun giocatore può unirsi alla partita dopo che "
 "questa è già avviata.\n"
 "/open - Apre la stanza, i giocatori possono unirsi alla partita in qualsiasi "
-"momento.\n"
-"/enable_translations - Traduce i messaggi importanti nelle lingue "
+"momento. \v/enable_translations - Traduce i messaggi importanti nelle lingue "
 "parlate durante la partita\n"
-"/disable_translations - Usa l'inglese (default) "
-"per questi messaggi\n"
+"/disable_translations - Usa l'inglese (default) per questi messaggi\n"
 "\n"
 "<b>Sperimentale:</b> Gioca in più gruppi allo stesso tempo. Premi il tasto "
 "<code>Partita in corso: ...</code> e scegli il gruppo dove vuoi giocare la "
@@ -148,11 +146,11 @@ msgstr "Partita non trovata."
 
 #: bot.py:223
 msgid "Back to last group"
-msgstr "Vai all'ultimo gruppo. "
+msgstr "Vai all'ultimo gruppo."
 
 #: bot.py:227
 msgid "Please switch to the group you selected!"
-msgstr "Per favore, spostati sul gruppo che hai selezionato!"
+msgstr "Per favore, vai sul gruppo che hai selezionato!"
 
 #: bot.py:233
 #, python-format
@@ -180,8 +178,8 @@ msgstr "La partita è già iniziata"
 #: bot.py:281
 msgid "At least two players must /join the game before you can start it"
 msgstr ""
-"Ci devono essere almeno due giocatori che hanno cliccato /join per iniziare "
-"la partita"
+"Devono partecipare almeno due giocatori per iniziare la partita. Partecipa "
+"con /join"
 
 #: bot.py:297
 #, python-format
@@ -243,7 +241,7 @@ msgid ""
 "Waiting time to skip this player has been reduced to {time} seconds.\n"
 "Next player: {name}"
 msgstr ""
-"Il tempo di attesa per saltare questo giocatore è stata ridotta a {time} "
+"Il tempo di attesa per saltare questo giocatore è stato ridotto a {time} "
 "secondi.\n"
 "Prossimo giocatore: {name}"
 
@@ -304,12 +302,12 @@ msgstr "Non ci sono più carte sul tavolo."
 #: bot.py:627
 #, python-format
 msgid "Bluff called! Giving 4 cards to {name}"
-msgstr "Il baro è stato scoperto! Sto dando 4 carte a {name}"
+msgstr "Il baro è stato scoperto! {name} deve pescare 4 carte!"
 
 #: bot.py:639
 #, python-format
 msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
-msgstr "{name1} non ha barato! Sto dando 6 carte a {name2}"
+msgstr "{name1} non ha barato! {name2} deve pescare 6 carte!"
 
 #: results.py:38
 msgid "Choose Color"
@@ -359,14 +357,14 @@ msgstr "Inizia la partita con /start"
 #: results.py:108
 #, python-format
 msgid "Drawing 1 card"
-msgstr "Pesca 1 carta"
+msgstr "Sto pescando 1 carta"
 
 msgid "Drawing {number} cards"
-msgstr "Pesca {number} carte"
+msgstr "Sto pescando {number} carte"
 
 #: results.py:136
 msgid "Pass"
-msgstr "Passa"
+msgstr "Passo"
 
 #: results.py:148
 msgid "I'm calling your bluff!"
@@ -423,7 +421,7 @@ msgstr "{number} partite giocate"
 
 #: simple_commands.py
 msgid "{number} first places"
-msgstr "{number} primi posti"
+msgstr "{number} vittorie"
 
 #: simple_commands.py
 msgid "{number} cards played"

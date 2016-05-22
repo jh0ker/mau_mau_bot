@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-22 18:56-0300\n"
-"PO-Revision-Date: 2016-05-22 19:37-0300\n"
+"PO-Revision-Date: 2016-05-22 20:48-0300\n"
 "Language-Team: en <uno@jhoeke.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,7 +75,6 @@ msgstr ""
 "leave. Se um jogador levar mais de 90 segundos para jogar, você pode usar /"
 "skip para pular a vez desse jogador.\n"
 "\n"
-"\n"
 "<b>Idioma</b> e outras configurações: /settings\n"
 "Outros comandos (somente para o criador do jogo):\n"
 "/close - Fechar o lobby\n"
@@ -104,7 +103,7 @@ msgstr ""
 #: bot.py:133
 msgid ""
 "Created a new game! Join the game with /join and start the game with /start"
-msgstr "Crie um novo jogo! Entre no jogo com /join e inicie o jogo com /start"
+msgstr "Novo jogo criado! Entre no jogo com /join e inicie o jogo com /start"
 
 #: bot.py:152
 msgid "The lobby is closed"
@@ -184,7 +183,7 @@ msgid ""
 msgstr ""
 "Primeiro jogador: {name}\n"
 "Use /close para impedir que mais pessoas entrem na partida.\n"
-"Ative as traduções com /enable_translations"
+"Ative as multi-traduções com /enable_translations"
 
 #: bot.py:321
 msgid "Please select the group you want to play in."
@@ -257,7 +256,8 @@ msgid ""
 "{name} was skipped four times in a row and has been removed from the game.\n"
 "The game ended."
 msgstr ""
-"teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do jogo.\n"
+"{name} teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do "
+"jogo.\n"
 "O jogo acabou."
 
 #: bot.py:455
@@ -312,7 +312,7 @@ msgstr "Escolher Cor"
 
 #: results.py:56
 msgid "Cards (tap for game state):"
-msgstr "Cartas (toque para ver as estatísticas do jogo)"
+msgstr "Cartas (toque para ver as estatísticas do jogo):"
 
 #: results.py:60 results.py:123 results.py:165
 msgid "Current player: {name}"
@@ -394,7 +394,7 @@ msgstr "Estatísticas habilitadas!"
 
 #: settings.py:70
 msgid "Select locale"
-msgstr "Definir local"
+msgstr "Definir linguagem"
 
 #: settings.py:81
 msgid "Deleted and disabled statistics!"
@@ -402,7 +402,7 @@ msgstr "Estatísticas deletadas e desabilitadas!"
 
 #: settings.py:94
 msgid "Set locale!"
-msgstr "Local selecionado!"
+msgstr "Linguagem selecionada!"
 
 #: simple_commands.py
 msgid ""

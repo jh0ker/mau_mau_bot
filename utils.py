@@ -185,8 +185,9 @@ def game_locales(func):
 
         result = func(bot, update, *pargs, **kwargs)
 
-        for i in locales:
+        while _.code:
             _.pop()
+
         return result
     return wrapped
 

@@ -130,8 +130,13 @@ class GameManager(object):
 
         # Clear game
         for player_in_game in game.players:
-            this_users_players = self.userid_players[player_in_game.user.id]
-            this_users_players.remove(player_in_game)
+            this_users_players = \
+                self.userid_players.get(player_in_game.user.id, list())
+
+            try:
+                this_users_players.remove(player_in_game)
+            except ValueError:
+                pass
 
             if this_users_players:
                 self.userid_current[player.user.id] = this_users_players[0]

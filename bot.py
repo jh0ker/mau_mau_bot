@@ -298,7 +298,7 @@ def close_game(bot, update):
 
     else:
         send_async(bot, chat.id,
-                   text=_("Only the game creator ({name}) can do that")
+                   text=_("Only the game creator ({name}) can do that.")
                    .format(name=game.owner.first_name),
                    reply_to_message_id=update.message.message_id)
         return
@@ -612,7 +612,7 @@ def do_play_card(bot, player, result_id):
         except NotEnoughPlayersError:
             send_async(bot, chat.id, text=__("Game ended!", game.translate))
 
-            us2 = UserSetting.get(id=game.current_player.next.user.id)
+            us2 = UserSetting.get(id=game.current_player.user.id)
             if us2 and us2.stats:
                 us2.games_played += 1
 
