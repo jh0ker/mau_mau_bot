@@ -63,3 +63,6 @@ target/
 
 # PyCharm
 .idea
+
+# Database file
+uno.sqlite3
