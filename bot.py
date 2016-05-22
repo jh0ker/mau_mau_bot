@@ -32,6 +32,7 @@ from start_bot import start_bot
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
                      add_card)
+from user_setting import UserSetting
 from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
@@ -474,7 +475,7 @@ def reply_to_query(bot, update):
 
         elif user_id == game.current_player.user.id:
             if game.choosing_color:
-                add_choose_color(results)
+                add_choose_color(results, game)
                 add_other_cards(playable, player, results, game)
             else:
                 if not player.drew:
@@ -583,6 +584,12 @@ def do_play_card(bot, player, result_id):
     chat = game.chat
     user = player.user
 
+    us = UserSetting.get(id=user.id)
+    if not us:
+        us = UserSetting(id=user.id)
+
+    us.cards_played += 1
+
     if game.choosing_color:
         send_async(bot, chat.id, text=_("Please choose a color"))
 
@@ -593,10 +600,22 @@ def do_play_card(bot, player, result_id):
         send_async(bot, chat.id,
                    text=__("{name} won!", game.translate)
                    .format(name=user.first_name))
+
+        if us.stats:
+            us.games_played += 1
+
+            if game.players_won is 0:
+                us.first_places += 1
+
         try:
             gm.leave_game(user, chat)
         except NotEnoughPlayersError:
             send_async(bot, chat.id, text=__("Game ended!", game.translate))
+
+            us2 = UserSetting.get(id=game.current_player.next.user.id)
+            if us2 and us2.stats:
+                us2.games_played += 1
+
             gm.end_game(chat, user)
 
     if botan:

@@ -26,10 +26,11 @@ from telegram import InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultCachedSticker as Sticker
 
 import card as c
-from utils import display_color, display_name, list_subtract, _, __
+from utils import display_color, display_color_group, display_name, \
+    list_subtract, _, __
 
 
-def add_choose_color(results):
+def add_choose_color(results, game):
     """Add choose color options"""
     for color in c.COLORS:
         results.append(
@@ -38,7 +39,7 @@ def add_choose_color(results):
                 title=_("Choose Color"),
                 description=display_color(color),
                 input_message_content=
-                InputTextMessageContent(display_color(color))
+                InputTextMessageContent(display_color_group(color, game))
             )
         )
 

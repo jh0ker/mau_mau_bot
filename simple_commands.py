@@ -20,6 +20,7 @@
 from telegram import ParseMode
 from telegram.ext import CommandHandler
 
+from user_setting import UserSetting
 from utils import _, send_async, user_locale
 from shared_vars import dispatcher
 
@@ -82,6 +83,28 @@ def news(bot, update):
                disable_web_page_preview=True)
 
 
+@user_locale
+def stats(bot, update):
+    user = update.message.from_user
+    us = UserSetting.get(id=user.id)
+    if not us or not us.stats:
+        send_async(bot, update.message.chat_id,
+                   text=_("You did not enable statistics. Use /settings in "
+                          "a private chat with the bot to enable them."))
+    else:
+        stats_text = list()
+        stats_text.append(
+            _("{number} games played").format(number=us.games_played))
+        stats_text.append(
+            _("{number} first places").format(number=us.first_places))
+        stats_text.append(
+            _("{number} cards played").format(number=us.cards_played))
+
+        send_async(bot, update.message.chat_id,
+                   text='\n'.join(stats_text))
+
+
 dispatcher.add_handler(CommandHandler('help', help))
 dispatcher.add_handler(CommandHandler('source', source))
 dispatcher.add_handler(CommandHandler('news', news))
+dispatcher.add_handler(CommandHandler('stats', stats))

@@ -345,3 +345,38 @@ msgstr ""
 msgid "Set locale!"
 msgstr ""
 
+
+#: simple_commands.py
+msgid "You did not enable statistics. Use /settings in "
+"a private chat with the bot to enable them."
+msgstr ""
+
+#: simple_commands.py
+msgid "{number} games played"
+msgstr ""
+
+#: simple_commands.py
+msgid "{number} first places"
+msgstr ""
+
+#: simple_commands.py
+msgid "{number} cards played"
+msgstr ""
+
+
+#: utils.py
+msgid "{emoji} Green"
+msgstr ""
+
+#: utils.py
+msgid "{emoji} Red"
+msgstr ""
+
+#: utils.py
+msgid "{emoji} Blue"
+msgstr ""
+
+#: utils.py
+msgid "{emoji} Yellow"
+msgstr ""
+

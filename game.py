@@ -35,6 +35,7 @@ class Game(object):
     owner = None
     open = True
     translate = False
+    players_won = 0
 
     def __init__(self, chat):
         self.chat = chat

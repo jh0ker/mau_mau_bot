@@ -62,7 +62,7 @@ def __(string, multi_translate):
         for l in reversed(locales):
             _.push(l)
 
-    return '\n'.join(translations)  # TODO
+    return '\n'.join(translations)
 
 
 def list_subtract(list1, list2):
@@ -86,13 +86,29 @@ def display_name(user):
 def display_color(color):
     """ Convert a color code to actual color name """
     if color == "r":
-        return Emoji.HEAVY_BLACK_HEART + " Red"
+        return _("{emoji} Red").format(emoji=Emoji.HEAVY_BLACK_HEART)
     if color == "b":
-        return Emoji.BLUE_HEART + " Blue"
+        return _("{emoji} Blue").format(emoji=Emoji.BLUE_HEART)
     if color == "g":
-        return Emoji.GREEN_HEART + " Green"
+        return _("{emoji} Green").format(emoji=Emoji.GREEN_HEART)
     if color == "y":
-        return Emoji.YELLOW_HEART + " Yellow"
+        return _("{emoji} Yellow").format(emoji=Emoji.YELLOW_HEART)
+
+
+def display_color_group(color, game):
+    """ Convert a color code to actual color name """
+    if color == "r":
+        return __("{emoji} Red", game.translate).format(
+            emoji=Emoji.HEAVY_BLACK_HEART)
+    if color == "b":
+        return __("{emoji} Blue", game.translate).format(
+            emoji=Emoji.BLUE_HEART)
+    if color == "g":
+        return __("{emoji} Green", game.translate).format(
+            emoji=Emoji.GREEN_HEART)
+    if color == "y":
+        return __("{emoji} Yellow", game.translate).format(
+            emoji=Emoji.YELLOW_HEART)
 
 
 def error(bot, update, error):

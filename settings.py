@@ -30,6 +30,7 @@ from shared_vars import dispatcher
 
 available_locales = [['en_US', 'de_DE']]
 
+
 @user_locale
 def show_settings(bot, update):
     chat = update.message.chat

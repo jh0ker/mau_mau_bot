@@ -403,3 +403,40 @@ msgstr "Alle Statistiken gelöscht und deaktiviert!"
 #: settings.py:94
 msgid "Set locale!"
 msgstr "Sprache gesetzt!"
+
+
+#: simple_commands.py
+msgid "You did not enable statistics. Use /settings in "
+"a private chat with the bot to enable them."
+msgstr "Du hast die Spiel-Statistiken nicht aktiviert. Aktiviere sie, mit dem "
+"/settings-Kommando in einem privaten Chat mit dem Bot."
+
+#: simple_commands.py
+msgid "{number} games played"
+msgstr "{number} gespielte Spiele"
+
+#: simple_commands.py
+msgid "{number} first places"
+msgstr "{number}x 1. Platz"
+
+#: simple_commands.py
+msgid "{number} cards played"
+msgstr "{number} gespielte Karten"
+
+
+#: utils.py
+msgid "{emoji} Green"
+msgstr "{emoji} Grün"
+
+#: utils.py
+msgid "{emoji} Red"
+msgstr "{emoji} Rot"
+
+#: utils.py
+msgid "{emoji} Blue"
+msgstr "{emoji} Blau"
+
+#: utils.py
+msgid "{emoji} Yellow"
+msgstr "{emoji} Gelb"
+
