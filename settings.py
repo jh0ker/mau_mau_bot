@@ -29,7 +29,7 @@ from utils import _, user_locale
 from shared_vars import dispatcher
 
 available_locales = [['en_US', 'de_DE'],
-                     ['it_IT']]
+                     ['it_IT', 'pt_BR']]
 
 
 @user_locale
