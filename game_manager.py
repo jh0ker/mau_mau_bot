@@ -80,6 +80,11 @@ class GameManager(object):
             except NotEnoughPlayersError:
                 self.end_game(chat, user)
 
+                if user.id not in self.userid_players:
+                    self.userid_players[user.id] = list()
+
+                players = self.userid_players[user.id]
+
         player = Player(game, user)
 
         players.append(player)
