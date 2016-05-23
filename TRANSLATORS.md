@@ -8,6 +8,7 @@ The following awesome people contributed to this project by translating it:
 | de_DE  | [Jannes Höke](https://github.com/jh0ker)                             |
 | it_IT  | Carola Mariano, nick                                                 |
 | pt_BR  | [João Rodrigo Couto de Oliveira](http://twitter.com/JoaoRodrigoJR)   |
+| zh_CN  | [imlonghao](https://github.com/imlonghao)                            |
 | zh_HK  | [Jed Cheng]()                                                        |
 | zh_TW  | [梁振英]()                                                            |
 
