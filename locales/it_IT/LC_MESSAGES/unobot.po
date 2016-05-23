@@ -275,7 +275,7 @@ msgstr "Partita in corso: {group}"
 #: bot.py:545
 #, python-format
 msgid "Cheat attempt by {name}"
-msgstr "{name} ha tentato di barare! "
+msgstr "{name} ha tentato di barare!"
 
 #: bot.py:562
 msgid "Next player: {name}"
@@ -336,7 +336,7 @@ msgstr "{name} ({number} carte)"
 
 #: results.py:81
 msgid "You are not playing"
-msgstr "Non stai giocando in questa partita. "
+msgstr "Non stai giocando in questa partita."
 
 #: results.py:83
 msgid ""

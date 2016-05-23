@@ -101,7 +101,7 @@ msgid ""
 msgstr ""
 "Este bot es Software Libre y esta licenciado bajo AGPL. El código esta "
 "disponible aquí:\n"
-" https://github.com/jh0ker/mau_mau_bot"
+"https://github.com/jh0ker/mau_mau_bot"
 
 #: bot.py:133
 msgid ""
@@ -342,7 +342,7 @@ msgid ""
 "Not playing right now. Use /new to start a game or /join to join the current "
 "game in this group"
 msgstr ""
-" No estas jugando en este momento. Usa /new para comenzar una partida o /"
+"No estas jugando en este momento. Usa /new para comenzar una partida o /"
 "join para unirte a la partida actual en este grupo"
 
 #: results.py:95

@@ -214,7 +214,7 @@ msgstr "Lobby ditutup. Tidak ada pemain yang bisa bergabung lagi."
 #: bot.py:348 bot.py:373
 #, python-format
 msgid "Only the game creator ({name}) can do that."
-msgstr "Hanya pembuat permainan :  ({name}) yang dapat melakukan itu."
+msgstr "Hanya pembuat permainan: ({name}) yang dapat melakukan itu."
 
 #: bot.py:349
 #, python-format
