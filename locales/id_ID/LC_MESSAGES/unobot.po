@@ -16,24 +16,24 @@
 # Jannes Höke <uno@jhoeke.de>, 2016.
 #
 #: bot.py:224
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-19 22:38+0200\n"
-"PO-Revision-Date: 2016-05-21 21:16+0200\n"
+"PO-Revision-Date: 2016-05-23 12:43+0200\n"
 "Last-Translator: Jannes Höke <uno@jhoeke.de>\n"
 "Language-Team: Deutsch <uno@jhoeke.de>\n"
-"Language: de_DE\n"
+"Language: in_ID\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
 #: bot.py:60
-msgid "Follow these steps:\n"
+msgid ""
+"Follow these steps:\n"
 "\n"
 "1. Add this bot to a group\n"
 "2. In the group, start a new game with /new or join an already running game "
@@ -53,8 +53,8 @@ msgid "Follow these steps:\n"
 "Other commands (only game creator):\n"
 "/close - Close lobby\n"
 "/open - Open lobby\n"
-"/enable_translations - Translate relevant texts into all "
-"languages spoken in a game\n"
+"/enable_translations - Translate relevant texts into all languages spoken in "
+"a game\n"
 "/disable_translations - Use English for those texts\n"
 "\n"
 "<b>Experimental:</b> Play in multiple groups at the same time. Press the "
@@ -64,38 +64,39 @@ msgid "Follow these steps:\n"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
 "unobotupdates\">update channel</a> and buy an UNO card game."
 msgstr ""
-"Folge den folgenden Schritten:\n"
+"Ikuti langkah-langkah berikut:\n"
 "\n"
-"1. Füge diesen Bot einer Gruppe hinzu\n"
-"2. In einer Gruppe kannst du mit /new ein neues Spiel erstellen und mit /"
-"join einem bestehenden Spiel beitreten\n"
-"3. Nachdem mindestens zwei Spieler beigetreten sind, starte das Spiel mit /"
-"start\n"
-"3. Gib <code>@mau_mau_bot</code> in deine Chatbox ein und drücke die "
-"<b>Leertaste</b>, oder tippe auf den <code>via @mau_mau_bot</code>-Text "
-"neben oder über den Nachrichten. Du siehst deine Karten (einige in grau), "
-"zusätzliche Optionen wie z. B. Ziehen, und ein <b>?</b> um den Infos über "
-"das laufende Spiel anzuzeigen. Die <b>grauen Karten</b> kannst du gerade "
-"<b>nicht spielen</b>. Tippe eine der Optionen oder Karten an, um diese "
-"Aktion auszuführen bzw. die Karte zu spielen. \n"
-"Spieler können dem Spiel jederzeit beitreten. Um das Spiel zu verlassen, "
-"benutze /leave. Wenn ein Spieler länger als 90 Sekunden braucht, kannst du "
-"ihn mit /skip überspringen.\n"
+"1. Tambahkan grup ini ke dalam grup\n"
+"2. Di dalam grup, Membuat permainan baru dengan /new atau bergabung dengan "
+"permainan yang sudah berjalan dengan perintah /join\n"
+"3.Setelah setidaknya dua pemain bergabung, mulailah permainan dengan "
+"perintah /start\n"
+"4. Ketik <code>@mau_mau_bot</code> kedalam chat box dan tekan<b>spasi</b>, "
+"atau pilih <code>via @mau_mau_bot</code> dari daftar pemain. Kamu akan "
+"melihat daftar kartumu (yang beberapa tidak dapat dipilih), pilihan lainnya "
+"seperti gambar kartu, dan tanda tanya (<b>?</b>) untuk melihat status "
+"permainan. Kartu yang <b>berwarna abu-abu</b> adalah kartu yang saat ini "
+"<b>tidak dapat dimainkan</b>. Pilih gambar untuk melakukan aksi seperti "
+"memilih  kartu atau melihat status permainan.\n"
+"Pemain dapat bergabung ke dalam permainan kapan saja. Untuk meinggalkan "
+"permainan, gunakan /leave.Apabila seorang pemain melebihi 90 detik dalam "
+"memilih kartu, kamu bisa menggunakna /skip to melompatipemain tersebut.\n"
 "\n"
-"<b>Sprache</b> und andere Einstellungen: /settings\n"
-"Weitere Kommandos (nur Spiel-Ersteller):\n"
-"/close - Lobby schließen\n"
-"/open - Lobby öffnen\n"
-"/enable_translations - Übersetze relevante Texte in alle im Spiel gesprochenen"
-" Sprachen\n"
-"/disable_translations - Verwende Englisch für diese Texte\n"
+"<b>Bahasa</b> dan pengaturan lainnya: /settings\n"
+"Perintah lainnya (hanya pembuat game):\n"
+"/close - Menutup lobby\n"
+"/open - Membuka lobby\n"
+"/enable_translations - Mengubah tulisan tertulis menjadi semua bahasa pada "
+"permainan \n"
+"/disable_translations - Menggunakan bahasa inggris sebagai bahasa utama\n"
 "\n"
-"<b>Experimentell</b>: Spiele in mehreren Gruppen gleichzeitig. Um die "
-"Gruppe, in der du deine Karte spielen willst, auszuwählen, tippe auf den "
-"<code>Aktuelles Spiel: ...</code>-Button.\n"
-"Wenn dir dieser Bot gefällt, <a href=\"https://telegram.me/storebot?"
-"start=mau_mau_bot\">bewerte ihn</a>, tritt dem <a href=\"https://telegram.me/"
-"unobotupdates\">News-Channel</a> bei und kaufe ein UNO Kartenspiel."
+"<b>Eksperimental:</b> Bermain dalam lebih dari satu grup pada waktu yang "
+"bersamaan. Tekan <code>Current game: ...</code> dan pilih grup yang ingin "
+"kamu mainkan \n"
+"Kalau kamu menyukai bot ini, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">beri kami rating</a>, bergabunglah the <a href=\"https://"
+"telegram.me/unobotupdates\">update channel</a> dan belilah kartu permainan "
+"UNO ."
 
 #: bot.py:88
 msgid ""
@@ -103,55 +104,59 @@ msgid ""
 "here: \n"
 "https://github.com/jh0ker/mau_mau_bot"
 msgstr ""
-"Dieser Bot ist Freie Software und lizenziert unter der AGPL. Der Quellcode "
-"ist hier verfügbar:\n"
+"Bot ini adalah software gratis dan berlisensi dibawah AGPL. Kode nya "
+"tersedia disini: \n"
 "https://github.com/jh0ker/mau_mau_bot"
 
 #: bot.py:133
 msgid ""
 "Created a new game! Join the game with /join and start the game with /start"
 msgstr ""
-"Neues Spiel erstellt! Tritt dem Spiel mit /join bei und starte es mit /start"
+"Membuat permmainan baru! Ayo bergabung dengan perintah /join dan mulailah "
+"permainan tersebut dengan perintah /start"
 
 #: bot.py:152
 msgid "The lobby is closed"
-msgstr "Die Lobby ist geschlossen"
+msgstr "Lobby ditutup"
 
 #: bot.py:156
 msgid "No game is running at the moment. Create a new game with /new"
-msgstr "Zur Zeit läuft kein Spiel. Erstelle ein neues mit /new"
+msgstr ""
+"Tidak ada permainan yang berlangsung. Buat permainan baru dengan perintah /"
+"new"
 
 #: bot.py:162
 msgid "You already joined the game. Start the game with /start"
-msgstr "Du bist dem Spiel bereits beigetreten. Starte es mit /start"
+msgstr ""
+"Kamu sudah bergabung dengan permainan. Mulai permainan dengan perintah /start"
 
 #: bot.py:167
 msgid "Joined the game"
-msgstr "Spiel beigetreten"
+msgstr "Tergabung dengan permainan"
 
 #: bot.py:179 bot.py:191
 msgid "You are not playing in a game in this group."
-msgstr "Du spielst in keinem Spiel in dieser Gruppe."
+msgstr "Kamu tidak bermain di grup ini."
 
 #: bot.py:197 bot.py:258 bot.py:595
 msgid "Game ended!"
-msgstr "Spiel beendet!"
+msgstr "Permainan berakhir!"
 
 #: bot.py:201
 msgid "Okay. Next Player: {name}"
-msgstr "Okay. Nächster Spieler: {name}"
+msgstr "Baiklah. Pemain berikutnya: {name}"
 
 #: bot.py:219
 msgid "Game not found."
-msgstr "Spiel nicht gefunden."
+msgstr "Permainan tidak ditemukan."
 
 #: bot.py:223
 msgid "Back to last group"
-msgstr "Zurück zur letzten Gruppe"
+msgstr "Kembali ke grup sebelumnya"
 
 #: bot.py:227
 msgid "Please switch to the group you selected!"
-msgstr "Bitte wechsele zu der Gruppe, die du gewählt hast!"
+msgstr "Silakan pilih grup!"
 
 #: bot.py:233
 #, python-format
@@ -159,78 +164,85 @@ msgid ""
 "Selected group: {group}\n"
 "<b>Make sure that you switch to the correct group!</b>"
 msgstr ""
-"Ausgewählte Gruppe: {group}\n"
-"<b>Stell sicher, dass du in die richtige Gruppe wechselst!</b>"
+"Grup terpilih: {group}\n"
+"<b>Pastikan kamu sudah memilih grup yang benar!</b>"
 
 #: bot.py:260
 #, python-format
 msgid "Removing {name} from the game"
-msgstr "Entferne {name} aus dem Spiel"
+msgstr "Mengeluarkan {name} dari permainan"
 
 #: bot.py:273
 msgid "There is no game running in this chat. Create a new one with /new"
 msgstr ""
-"In dieser Gruppe gibt es kein laufendes Spiel. Erstelle ein neues mit /new"
+"Tidak ada permainan yang berlangsung saat ini. Buat permainan baru dengan "
+"perintah /new"
 
 #: bot.py:278
 msgid "The game has already started"
-msgstr "Das Spiel hat bereits begonnen"
+msgstr "Permainan sudah dimulai."
 
 #: bot.py:281
 msgid "At least two players must /join the game before you can start it"
-msgstr "Es müssen mindestens zwei Spieler dem Spiel beitreten, bevor du es "
-"starten kannst"
+msgstr ""
+"Minimal dua pemain harus bergabung  sebelum kamu bisa memulai game ini. "
+"Gunakan perintah /join untuk bergabung"
 
 #: bot.py:297
-#, python-format, fuzzy
-msgid "First player: {name}\n"
+#, fuzzy, python-format
+msgid ""
+"First player: {name}\n"
 "Use /close to stop people from joining the game.\n"
 "Enable multi-translations with /enable_translations"
 msgstr ""
-"Erster Spieler: {name}\n"
-"Benutze /close, um zu verhindern, dass weitere Spieler beitreten."
+"Pemain pertama: {name}\n"
+"Gunakan /close untuk menghentikan pemain baru bergabung pada game ini.\n"
+"Aktifkan translasi multi bahasa dengan /enable_translations"
 
 #: bot.py:321
 msgid "Please select the group you want to play in."
-msgstr "Bitte wähle die Gruppe, in der du spielen willst."
+msgstr "Silakan pilih pada grup mana kamu akan bermain."
 
 #: bot.py:335 bot.py:361
 msgid "There is no running game in this chat."
-msgstr "In dieser Gruppe läuft gerade kein Spiel."
+msgstr "Tidak ada permainan yang berjalan pada grup chat ini."
 
 #: bot.py:342
 msgid "Closed the lobby. No more players can join this game."
-msgstr ""
-"Lobby geschlossen. Diesem Spiel können keine weiteren Spieler beitreten."
+msgstr "Lobby ditutup. Tidak ada pemain yang bisa bergabung lagi."
 
 #: bot.py:348 bot.py:373
 #, python-format
 msgid "Only the game creator ({name}) can do that."
-msgstr "Dies kann nur der Ersteller des Spiels ({name}) tun."
+msgstr "Hanya pembuat permainan :  ({name}) yang dapat melakukan itu."
 
 #: bot.py:349
 #, python-format
 msgid "Enabled multi-translations. Disable with /disable_translations"
-msgstr "Multi-Übersetzungen aktiviert. Deaktivieren mit /disable_translations"
+msgstr ""
+"Mengaktifkan translasi multi bahasa. Non-aktifkan dengan /"
+"disable_translations"
 
 #: bot.py:377
 #, python-format
-msgid "Disabled multi-translations. Enable them again with /enable_translations"
-msgstr "Multi-Übersetzungen deaktiviert. Aktiviere sie wieder mit "
-"/enable_translations"
+msgid ""
+"Disabled multi-translations. Enable them again with /enable_translations"
+msgstr ""
+"Menon-aktifkan translasi multi bahasa. Nyalakan kembali dengan perintah /"
+"enable_translations"
 
 #: bot.py:368
 msgid "Opened the lobby. New players may /join the game."
-msgstr "Lobby geöffnet. Neue Spieler können nun beitreten."
+msgstr "Membuka lobby. Pemain baru bisa bergabung dengan perintah /join."
 
 #: bot.py:386
 msgid "You are not playing in a game in this chat."
-msgstr "Du spielst kein Spiel in dieser Gruppe."
+msgstr "Kamu sedang tidak bermain."
 
 #: bot.py:400
 #, python-format
 msgid "Please wait {time} seconds"
-msgstr "Bitte warte {time} Sekunden"
+msgstr "Mohon menunggu {time} detik"
 
 #: bot.py:413
 #, python-format
@@ -238,9 +250,8 @@ msgid ""
 "Waiting time to skip this player has been reduced to {time} seconds.\n"
 "Next player: {name}"
 msgstr ""
-"Die Wartezeit um diesen Spieler zu überspringen wurde auf {time} Sekunden "
-"reduziert.\n"
-"Nächster Spieler: {name}"
+"Waktu tunggu terhadap {name} telah dikurangi menjadi {time} detik.\n"
+"Next player: {name}"
 
 #: bot.py:424
 #, python-format
@@ -248,9 +259,9 @@ msgid ""
 "{name1} was skipped four times in a row and has been removed from the game.\n"
 "Next player: {name2}"
 msgstr ""
-"{name1} wurde vier Mal hintereinander übersprungen und daher aus dem Spiel "
-"entfernt.\n"
-"Nächster Spieler: {name2}"
+"{name1} telah dilewati dan tidak bermain empat kali berturut-turutdan telah "
+"dikeluarkan dari permainan.\n"
+"Pemain berikutnya: {name2}"
 
 #: bot.py:432
 #, python-format
@@ -258,186 +269,186 @@ msgid ""
 "{name} was skipped four times in a row and has been removed from the game.\n"
 "The game ended."
 msgstr ""
-"{name1} wurde vier Mal hintereinander übersprungen und daher aus dem Spiel "
-"entfernt.\n"
-"Das Spiel wurde beendet."
+"{name} telah dilewati dan tidak bermain empat kali berturut-turutdan telah "
+"dikeluarkan dari permainan.\n"
+"Permainan berkahir."
 
 #: bot.py:455
 msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "Alle News hier: https://telegram.me/unobotupdates"
+msgstr "Semua berita ada di sini: https://telegram.me/unobotupdates"
 
 #: bot.py:513
 #, python-format
-msgid "Current game: %s"
-msgstr "Aktuelles Spiel: {game}"
+msgid "Current game: {group}"
+msgstr "Permainan saat ini: {group}"
 
 #: bot.py:545
 #, python-format
-msgid "Cheat attempt by %s"
-msgstr "{name} hat versucht zu schummeln!"
+msgid "Cheat attempt by {name}"
+msgstr "Percobaan curang dilakukan oleh {name}"
 
 #: bot.py:562
 msgid "Next player: {name}"
-msgstr "Nächster Spieler: {name}"
+msgstr "Pemain berikutnya: {name}"
 
 #: bot.py:572
 #, python-format
 msgid "Waiting time for {name} has been reset to 90 seconds"
-msgstr "Die Wartezeit für {name} wurde auf 90 Sekunden zurückgesetzt."
+msgstr "Waktu tunggu terhadap {name} telah dikembalikan menjadi 90 detik"
 
 #: bot.py:585
 msgid "Please choose a color"
-msgstr "Bitte wähle eine Farbe"
+msgstr "Silakan pilih warna"
 
 #: bot.py:591
 #, python-format
 msgid "{name} won!"
-msgstr "{name} hat gewonnen!"
+msgstr "{name} menang!"
 
 #: bot.py:613 bot.py:635 bot.py:647
 msgid "There are no more cards in the deck."
-msgstr "Es sind keine Karten mehr im Deck."
+msgstr "Tidak ada kartu lagi tersedia."
 
 #: bot.py:627
 #, python-format
 msgid "Bluff called! Giving 4 cards to {name}"
-msgstr "Bluff gecalled! {name} bekommt 4 Karten."
+msgstr "Ternyata hanya gertakan! Memberikan 4 kartu kepada {name}"
 
 #: bot.py:639
 #, python-format
 msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
-msgstr "{name1} hat nicht geblufft! {name2} bekommt 6 Karten."
+msgstr "{name1} tidak hanya menggertak! Memberikan 6 kartu kepada {name2}"
 
 #: results.py:38
 msgid "Choose Color"
-msgstr "Wähle Farbe"
+msgstr "Pilih warna"
 
 #: results.py:56
 msgid "Cards (tap for game state):"
-msgstr "Karten (tippe für Spielinfo):"
+msgstr "Kartu-kartu (tekan untuk statistik permainan):"
 
 #: results.py:60 results.py:123 results.py:165
 msgid "Current player: {name}"
-msgstr "Aktueller Spieler: {name}"
+msgstr "Pemain saat ini: {name}"
 
 #: results.py:61 results.py:124 results.py:167
 msgid "Last card: {card}"
-msgstr "Letzte Karte: {card}"
+msgstr "Kartu terakhir: {card}"
 
 #: results.py:62 results.py:125 results.py:168
 msgid "Players: {player_list}"
-msgstr "Spieler: {player_list}"
+msgstr "Pemain: {player_list}"
 
 #: results.py:72
 #, python-format
 msgid "{name} ({number} cards)"
-msgstr "{name} ({number} Karten)"
+msgstr "{name} ({number} kartu)"
 
 #: results.py:81
 msgid "You are not playing"
-msgstr "Du spielst gerade nicht"
+msgstr "Kamu sedang tidak bermain"
 
 #: results.py:83
 msgid ""
 "Not playing right now. Use /new to start a game or /join to join the current "
 "game in this group"
 msgstr ""
-"Du spielst gerade nicht. Benutze /new um ein neues Spiel zu starten oder /"
-"join, um einem bestehenden Spiel beizutreten."
+"Saat ini sedang tidak ada permainan. Gunakan perintah /new untuk memulai "
+"permainan atau /join  untuk bergabung dengan permainan yang sedang "
+"berlangsung di grup ini"
 
 #: results.py:95
 msgid "The game wasn't started yet"
-msgstr "Das Spiel wurde noch nicht gestartet."
+msgstr "Permainan belum dimulai"
 
 #: results.py:97
 msgid "Start the game with /start"
-msgstr "Starte das Spiel mit /start"
+msgstr "Mulailah permainan dengan perintah /start"
 
 #: results.py:108
 #, python-format
 msgid "Drawing 1 card"
-msgstr "Zieht 1 Karte"
+msgstr "Mengambil satu kartu"
 
 msgid "Drawing {number} cards"
-msgstr "Zieht {number} Karten"
+msgstr "Mengambil {number} kartu"
 
 #: results.py:136
 msgid "Pass"
-msgstr "Passe"
+msgstr "Lewati"
 
 #: results.py:148
 msgid "I'm calling your bluff!"
-msgstr "Ich glaube du bluffst!"
+msgstr "Saya bilang, kamu hanya menggertak!"
 
 #: settings.py:39
 msgid "Please edit your settings in a private chat with the bot."
-msgstr "Bitte ändere deine Einstellungen in einem privaten Chat mit dem Bot."
+msgstr "Silakan ubah pengaturan melalui chat pribadi dengan bot."
 
 #: settings.py:49
 msgid "Enable statistics"
-msgstr "Statistiken aktivieren"
+msgstr "Mengaktifkan statistik"
 
 #: settings.py:51
 msgid "Delete all statistics"
-msgstr "Alle Statistiken löschen"
+msgstr "Menghapus semua statistik"
 
 #: settings.py:53
 msgid "Language"
-msgstr "Sprache"
+msgstr "Bahasa"
 
 #: settings.py:54
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr "Pengaturan"
 
 #: settings.py:68
 msgid "Enabled statistics!"
-msgstr "Statistiken aktiviert!"
+msgstr "Mengaktifkan statistik"
 
 #: settings.py:70
 msgid "Select locale"
-msgstr "Bitte Sprache auswählen"
+msgstr "Memilih lokasi"
 
 #: settings.py:81
 msgid "Deleted and disabled statistics!"
-msgstr "Alle Statistiken gelöscht und deaktiviert!"
+msgstr "Menghapus dan menonaktifkan statisk"
 
 #: settings.py:94
 msgid "Set locale!"
-msgstr "Sprache gesetzt!"
-
+msgstr "Pilih lokasi!"
 
 #: simple_commands.py
-msgid "You did not enable statistics. Use /settings in "
-"a private chat with the bot to enable them."
-msgstr "Du hast die Spiel-Statistiken nicht aktiviert. Aktiviere sie, mit dem "
-"/settings-Kommando in einem privaten Chat mit dem Bot."
+msgid ""
+"You did not enable statistics. Use /settings in a private chat with the bot "
+"to enable them."
+msgstr ""
+"Kamu belum menyalakan statistik. Gunakan /settings melalui chat pribadi "
+"kepada bot untuk menyalakannya."
 
 #: simple_commands.py
 msgid "{number} games played"
-msgstr "{number} gespielte Spiele"
+msgstr "{number} permainan dimainkan"
 
 #: simple_commands.py
 msgid "{number} first places"
-msgstr "{number}x 1. Platz"
+msgstr "{number} diletakkan pertama"
 
 #: simple_commands.py
 msgid "{number} cards played"
-msgstr "{number} gespielte Karten"
-
+msgstr "{number} kartu dimainkan"
 
 #: utils.py
 msgid "{emoji} Green"
-msgstr "{emoji} Grün"
+msgstr "{emoji} Hijau"
 
 #: utils.py
 msgid "{emoji} Red"
-msgstr "{emoji} Rot"
+msgstr "{emoji} Merah"
 
 #: utils.py
 msgid "{emoji} Blue"
-msgstr "{emoji} Blau"
+msgstr "{emoji} Biru"
 
 #: utils.py
 msgid "{emoji} Yellow"
-msgstr "{emoji} Gelb"
-
+msgstr "{emoji} Kuning"
