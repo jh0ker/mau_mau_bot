@@ -28,8 +28,21 @@ from user_setting import UserSetting
 from utils import _, user_locale
 from shared_vars import dispatcher
 
-available_locales = [['en_US', 'de_DE'],
-                     ['it_IT', 'pt_BR']]
+OFFSET = 127462 - ord('A')
+
+
+def flag(code):
+    return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
+
+
+available_locales = [['en_US - ' + flag('US') + ' English (US)'],
+                     ['de_DE - ' + flag('DE') + ' Deutsch (DE)'],
+                     ['es_ES - ' + flag('ES') + ' Español (ES)'],
+#                     ['in_ID - ' + flag('ID') + ' Bahasa Indonesia'],
+                     ['it_IT - ' + flag('IT') + ' Italiano'],
+                     ['pt_BR - ' + flag('BR') + ' Português Brasileiro'],
+                     ['zh_HK - ' + flag('HK') + ' 廣東話'],
+                     ['zh_TW - ' + flag('TW') + ' 中文(香港)']]
 
 
 @user_locale
@@ -89,7 +102,7 @@ def locale_select(bot, update, groups):
     user = update.message.from_user
     option = groups[0]
 
-    if option in [locale for row in available_locales for locale in row]:
+    if option in [locale.split()[0] for row in available_locales for locale in row]:
         us = UserSetting.get(id=user.id)
         us.lang = option
         _.push(option)
@@ -102,5 +115,5 @@ dispatcher.add_handler(RegexHandler('^([' + Emoji.BAR_CHART +
                                     Emoji.EARTH_GLOBE_EUROPE_AFRICA +
                                     Emoji.CROSS_MARK + ']) .+$',
                                     kb_select, pass_groups=True))
-dispatcher.add_handler(RegexHandler(r'^(\w\w_\w\w)$',
+dispatcher.add_handler(RegexHandler(r'^(\w\w_\w\w) - .*',
                                     locale_select, pass_groups=True))
