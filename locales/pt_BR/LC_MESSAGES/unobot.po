@@ -87,7 +87,7 @@ msgstr ""
 "<code>Jogo atual: ...</code> e selecione o grupo no qual deseja jogar uma "
 "carta.\n"
 "Se gostou deste bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot"
-"\"> avalie-o</a>, entre no <a href=\"https://telegram.me/unobotupdates"
+"\">avalie-o</a>, entre no <a href=\"https://telegram.me/unobotupdates"
 "\">canal de atualizações</a> e compre um jogo de cartas UNO."
 
 #: bot.py:88
@@ -151,8 +151,8 @@ msgid ""
 "Selected group: {group}\n"
 "<b>Make sure that you switch to the correct group!</b>"
 msgstr ""
-"Grupo selecionado: {group} <b>Tenha certeza de que mudou para o grupo certo! "
-"</b>"
+"Grupo selecionado: {group}\n"
+"<b>Tenha certeza de que mudou para o grupo certo!</b>"
 
 #: bot.py:260
 #, python-format

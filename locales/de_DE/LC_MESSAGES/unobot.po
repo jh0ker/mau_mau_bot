@@ -268,12 +268,12 @@ msgstr "Alle News hier: https://telegram.me/unobotupdates"
 
 #: bot.py:513
 #, python-format
-msgid "Current game: %s"
+msgid "Current game: {game}"
 msgstr "Aktuelles Spiel: {game}"
 
 #: bot.py:545
 #, python-format
-msgid "Cheat attempt by %s"
+msgid "Cheat attempt by {name}"
 msgstr "{name} hat versucht zu schummeln!"
 
 #: bot.py:562
@@ -440,4 +440,3 @@ msgstr "{emoji} Blau"
 #: utils.py
 msgid "{emoji} Yellow"
 msgstr "{emoji} Gelb"
-
