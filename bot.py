@@ -607,6 +607,8 @@ def do_play_card(bot, player, result_id):
             if game.players_won is 0:
                 us.first_places += 1
 
+        game.players_won += 1
+
         try:
             gm.leave_game(user, chat)
         except NotEnoughPlayersError:
