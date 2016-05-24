@@ -37,11 +37,12 @@ from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from utils import _, __, send_async, answer_async, user_locale, game_locales, \
-    error, TIMEOUT
+from utils import send_async, answer_async, error, TIMEOUT
 from shared_vars import botan, gm, updater, dispatcher
+from internationalization import _, __, user_locale, game_locales
+import simple_commands
+import settings
 
-import simple_commands, settings
 from simple_commands import help
 
 
@@ -136,11 +137,12 @@ def leave_game(bot, update):
 
     except NotEnoughPlayersError:
         gm.end_game(chat, user)
-        send_async(bot, chat.id, text=__("Game ended!", game.translate))
+        send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
         send_async(bot, chat.id,
-                   text=__("Okay. Next Player: {name}", game.translate).format(
+                   text=__("Okay. Next Player: {name}",
+                           multi=game.translate).format(
                        name=display_name(game.current_player.user)),
                    reply_to_message_id=update.message.message_id)
 
@@ -197,10 +199,11 @@ def status_update(bot, update):
             pass
         except NotEnoughPlayersError:
             gm.end_game(chat, user)
-            send_async(bot, chat.id, text=__("Game ended!", game.translate))
+            send_async(bot, chat.id, text=__("Game ended!",
+                                             multi=game.translate))
         else:
             send_async(bot, chat.id, text=__("Removing {name} from the game",
-                                             game.translate)
+                                             multi=game.translate)
                        .format(name=display_name(user)))
 
 
@@ -236,7 +239,7 @@ def start_game(bot, update, args):
                 __("First player: {name}\n"
                    "Use /close to stop people from joining the game.\n"
                    "Enable multi-translations with /enable_translations",
-                   game.translate)
+                   multi=game.translate)
                 .format(name=display_name(game.current_player.user)))
 
             @run_async
@@ -410,9 +413,12 @@ def skip_player(bot, update):
     delta = (now - started).seconds
 
     if delta < skipped_player.waiting_time:
+        n = skipped_player.waiting_time - delta
         send_async(bot, chat.id,
-                   text=_("Please wait {time} seconds")
-                   .format(time=(skipped_player.waiting_time - delta)),
+                   text=_("Please wait {time} second",
+                          "Please wait {time} seconds",
+                          n)
+                   .format(time=n),
                    reply_to_message_id=update.message.message_id)
 
     elif skipped_player.waiting_time > 0:
@@ -423,11 +429,17 @@ def skip_player(bot, update):
         except DeckEmptyError:
             pass
 
+        n = skipped_player.waiting_time
         send_async(bot, chat.id,
                    text=__("Waiting time to skip this player has "
+                           "been reduced to {time} second.\n"
+                           "Next player: {name}",
+                           "Waiting time to skip this player has "
                            "been reduced to {time} seconds.\n"
-                           "Next player: {name}", game.translate)
-                   .format(time=skipped_player.waiting_time,
+                           "Next player: {name}",
+                           n,
+                           multi=game.translate)
+                   .format(time=n,
                            name=display_name(next_player.user)))
         game.turn()
 
@@ -437,7 +449,7 @@ def skip_player(bot, update):
             send_async(bot, chat.id,
                        text=__("{name1} was skipped four times in a row "
                                "and has been removed from the game.\n"
-                               "Next player: {name2}", game.translate)
+                               "Next player: {name2}", multi=game.translate)
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
 
@@ -445,7 +457,7 @@ def skip_player(bot, update):
             send_async(bot, chat.id,
                        text=__("{name} was skipped four times in a row "
                                "and has been removed from the game.\n"
-                               "The game ended.", game.translate)
+                               "The game ended.", multi=game.translate)
                        .format(name=display_name(skipped_player.user)))
 
             gm.end_game(chat.id, skipped_player.user)
@@ -459,7 +471,6 @@ def reply_to_query(bot, update):
     Builds the result list for inline queries and answers to the client.
     """
     results = list()
-    playable = list()
     switch = None
 
     try:
@@ -476,7 +487,7 @@ def reply_to_query(bot, update):
         elif user_id == game.current_player.user.id:
             if game.choosing_color:
                 add_choose_color(results, game)
-                add_other_cards(playable, player, results, game)
+                add_other_cards(player, results, game)
             else:
                 if not player.drew:
                     add_draw(player, results)
@@ -541,7 +552,7 @@ def process_result(bot, update):
         return
     elif int(anti_cheat) != last_anti_cheat:
         send_async(bot, chat.id,
-                   text=__("Cheat attempt by {name}", game.translate)
+                   text=__("Cheat attempt by {name}", multi=game.translate)
                    .format(name=display_name(player.user)))
         return
     elif result_id == 'call_bluff':
@@ -560,7 +571,7 @@ def process_result(bot, update):
 
     if game in gm.chatid_games.get(chat.id, list()):
         send_async(bot, chat.id,
-                   text=__("Next player: {name}", game.translate)
+                   text=__("Next player: {name}", multi=game.translate)
                    .format(name=display_name(game.current_player.user)))
 
 
@@ -572,7 +583,7 @@ def reset_waiting_time(bot, player):
         player.waiting_time = 90
         send_async(bot, chat.id,
                    text=__("Waiting time for {name} has been reset to 90 "
-                           "seconds", player.game.translate)
+                           "seconds", multi=player.game.translate)
                    .format(name=display_name(player.user)))
 
 
@@ -598,7 +609,7 @@ def do_play_card(bot, player, result_id):
 
     if len(player.cards) == 0:
         send_async(bot, chat.id,
-                   text=__("{name} won!", game.translate)
+                   text=__("{name} won!", multi=game.translate)
                    .format(name=user.first_name))
 
         if us.stats:
@@ -612,7 +623,8 @@ def do_play_card(bot, player, result_id):
         try:
             gm.leave_game(user, chat)
         except NotEnoughPlayersError:
-            send_async(bot, chat.id, text=__("Game ended!", game.translate))
+            send_async(bot, chat.id,
+                       text=__("Game ended!", multi=game.translate))
 
             us2 = UserSetting.get(id=game.current_player.user.id)
             if us2 and us2.stats:
@@ -636,7 +648,7 @@ def do_draw(bot, player):
     except DeckEmptyError:
         send_async(bot, player.game.chat.id,
                    text=__("There are no more cards in the deck.",
-                           game.translate))
+                           multi=game.translate))
 
     if (game.last_card.value == c.DRAW_TWO or
         game.last_card.special == c.DRAW_FOUR) and \
@@ -694,6 +706,8 @@ dispatcher.add_handler(CommandHandler('enable_translations',
 dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
+simple_commands.register()
+settings.register()
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
 dispatcher.add_error_handler(error)
 

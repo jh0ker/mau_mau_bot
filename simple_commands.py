@@ -21,8 +21,9 @@ from telegram import ParseMode
 from telegram.ext import CommandHandler
 
 from user_setting import UserSetting
-from utils import _, send_async, user_locale
+from utils import send_async
 from shared_vars import dispatcher
+from internationalization import _, user_locale
 
 help_text = ("Follow these steps:\n\n"
              "1. Add this bot to a group\n"
@@ -101,18 +102,34 @@ def stats(bot, update):
                           "a private chat with the bot to enable them."))
     else:
         stats_text = list()
+
+        n = us.games_played
         stats_text.append(
-            _("{number} games played").format(number=us.games_played))
+            _("{number} game played",
+              "{number} games played",
+              n).format(number=n)
+        )
+
+        n = us.first_places
         stats_text.append(
-            _("{number} first places").format(number=us.first_places))
+            _("{number} first places",
+              "{number} first places",
+              n).format(number=n)
+        )
+
+        n = us.cards_played
         stats_text.append(
-            _("{number} cards played").format(number=us.cards_played))
+            _("{number} card played",
+              "{number} cards played",
+              n).format(number=n)
+        )
 
         send_async(bot, update.message.chat_id,
                    text='\n'.join(stats_text))
 
 
-dispatcher.add_handler(CommandHandler('help', help))
-dispatcher.add_handler(CommandHandler('source', source))
-dispatcher.add_handler(CommandHandler('news', news))
-dispatcher.add_handler(CommandHandler('stats', stats))
+def register():
+    dispatcher.add_handler(CommandHandler('help', help))
+    dispatcher.add_handler(CommandHandler('source', source))
+    dispatcher.add_handler(CommandHandler('news', news))
+    dispatcher.add_handler(CommandHandler('stats', stats))

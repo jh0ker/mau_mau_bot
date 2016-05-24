@@ -18,4 +18,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from .available import available_locales
+"""Defines a dict of all available locales to the language name"""
+
+OFFSET = 127462 - ord('A')
+
+
+def flag(code):
+    return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
+
+
+available_locales = {'en_US': flag('US') + ' English (US)',
+                     'de_DE': flag('DE') + ' Deutsch (DE)',
+                     'es_ES': flag('ES') + ' Español (ES)',
+                     'id_ID': flag('ID') + ' Bahasa Indonesia',
+                     'it_IT': flag('IT') + ' Italiano',
+                     'pt_BR': flag('BR') + ' Português Brasileiro',
+                     'zh_HK': flag('HK') + ' 廣東話',
+                     'zh_TW': flag('TW') + ' 中文(香港)'}

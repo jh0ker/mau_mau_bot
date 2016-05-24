@@ -19,50 +19,15 @@
 
 
 import logging
-from functools import wraps
-
-from flufl.i18n import registry
-from flufl.i18n import PackageStrategy
 
 from telegram import Emoji
 from telegram.ext.dispatcher import run_async
-import locales
-from database import db_session
-from user_setting import UserSetting
-from shared_vars import gm
 
-strategy = PackageStrategy('unobot', locales)
-application = registry.register(strategy)
-_ = application._
+from internationalization import _, __
+
 logger = logging.getLogger(__name__)
 
 TIMEOUT = 2.5
-
-
-def __(string, multi_translate):
-    """Translates text into all locales on the stack"""
-    translations = list()
-    locales = list()
-
-    if not multi_translate:
-        _.push('en_US')
-        translations.append(_(string))
-        _.pop()
-
-    else:
-        while _.code:
-            translation = _(string)
-
-            if translation not in translations:
-                translations.append(translation)
-
-            locales.append(_.code)
-            _.pop()
-
-        for l in reversed(locales):
-            _.push(l)
-
-    return '\n'.join(translations)
 
 
 def list_subtract(list1, list2):
@@ -138,76 +103,3 @@ def answer_async(bot, *args, **kwargs):
         bot.answerInlineQuery(*args, **kwargs)
     except Exception as e:
         error(None, None, e)
-
-
-def user_locale(func):
-    @wraps(func)
-    @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
-        user, chat = _user_chat_from_update(update)
-
-        with db_session:
-            us = UserSetting.get(id=user.id)
-
-            if us:
-                _.push(us.lang)
-            else:
-                _.push('en_US')
-
-        result = func(bot, update, *pargs, **kwargs)
-        _.pop()
-        return result
-    return wrapped
-
-
-def game_locales(func):
-    @wraps(func)
-    @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
-        user, chat = _user_chat_from_update(update)
-        player = gm.player_for_user_in_chat(user, chat)
-        locales = list()
-
-        if player:
-            for player in player.game.players:
-                us = UserSetting.get(id=player.user.id)
-
-                if us:
-                    loc = us.lang
-                else:
-                    loc = 'en_US'
-
-                if loc in locales:
-                    continue
-
-                _.push(loc)
-                locales.append(loc)
-
-        result = func(bot, update, *pargs, **kwargs)
-
-        while _.code:
-            _.pop()
-
-        return result
-    return wrapped
-
-
-def _user_chat_from_update(update):
-
-    try:
-        user = update.message.from_user
-        chat = update.message.chat
-    except (NameError, AttributeError):
-        try:
-            user = update.inline_query.from_user
-            chat = gm.userid_current[user.id].game.chat
-        except KeyError:
-            chat = None
-        except (NameError, AttributeError):
-            try:
-                user = update.chosen_inline_result.from_user
-                chat = gm.userid_current[user.id].game.chat
-            except (NameError, AttributeError):
-                chat = None
-
-    return user, chat

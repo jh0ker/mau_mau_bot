@@ -18,31 +18,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-import logging
-
 from telegram import ReplyKeyboardMarkup, Emoji
 from telegram.ext import CommandHandler, RegexHandler
 
 from utils import send_async
 from user_setting import UserSetting
-from utils import _, user_locale
 from shared_vars import dispatcher
-
-OFFSET = 127462 - ord('A')
-
-
-def flag(code):
-    return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
-
-
-available_locales = [['en_US - ' + flag('US') + ' English (US)'],
-                     ['de_DE - ' + flag('DE') + ' Deutsch (DE)'],
-                     ['es_ES - ' + flag('ES') + ' Español (ES)'],
-                     ['id_ID - ' + flag('ID') + ' Bahasa Indonesia'],
-                     ['it_IT - ' + flag('IT') + ' Italiano'],
-                     ['pt_BR - ' + flag('BR') + ' Português Brasileiro'],
-                     ['zh_HK - ' + flag('HK') + ' 廣東話'],
-                     ['zh_TW - ' + flag('TW') + ' 中文(香港)']]
+from locales import available_locales
+from internationalization import _, user_locale
 
 
 @user_locale
@@ -83,8 +66,11 @@ def kb_select(bot, update, groups):
         send_async(bot, chat.id, text=_("Enabled statistics!"))
 
     elif option == Emoji.EARTH_GLOBE_EUROPE_AFRICA:
+        kb = [[locale + ' - ' + descr]
+              for locale, descr
+              in sorted(available_locales.items())]
         send_async(bot, chat.id, text=_("Select locale"),
-                   reply_markup=ReplyKeyboardMarkup(keyboard=available_locales,
+                   reply_markup=ReplyKeyboardMarkup(keyboard=kb,
                                                     one_time_keyboard=True))
 
     elif option == Emoji.CROSS_MARK:
@@ -102,9 +88,7 @@ def locale_select(bot, update, groups):
     user = update.message.from_user
     option = groups[0]
 
-    if option in [locale.split()[0]
-                  for row in available_locales
-                  for locale in row]:
+    if option in available_locales:
         us = UserSetting.get(id=user.id)
         us.lang = option
         _.push(option)
@@ -112,10 +96,11 @@ def locale_select(bot, update, groups):
         _.pop()
 
 
-dispatcher.add_handler(CommandHandler('settings', show_settings))
-dispatcher.add_handler(RegexHandler('^([' + Emoji.BAR_CHART +
-                                    Emoji.EARTH_GLOBE_EUROPE_AFRICA +
-                                    Emoji.CROSS_MARK + ']) .+$',
-                                    kb_select, pass_groups=True))
-dispatcher.add_handler(RegexHandler(r'^(\w\w_\w\w) - .*',
-                                    locale_select, pass_groups=True))
+def register():
+    dispatcher.add_handler(CommandHandler('settings', show_settings))
+    dispatcher.add_handler(RegexHandler('^([' + Emoji.BAR_CHART +
+                                        Emoji.EARTH_GLOBE_EUROPE_AFRICA +
+                                        Emoji.CROSS_MARK + ']) .+$',
+                                        kb_select, pass_groups=True))
+    dispatcher.add_handler(RegexHandler(r'^(\w\w_\w\w) - .*',
+                                        locale_select, pass_groups=True))

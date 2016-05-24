@@ -26,8 +26,8 @@ from telegram import InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultCachedSticker as Sticker
 
 import card as c
-from utils import display_color, display_color_group, display_name, \
-    list_subtract, _, __
+from utils import display_color, display_color_group, display_name
+from internationalization import _, __
 
 
 def add_choose_color(results, game):
@@ -44,17 +44,16 @@ def add_choose_color(results, game):
         )
 
 
-def add_other_cards(playable, player, results, game):
+def add_other_cards(player, results, game):
     """Add hand cards when choosing colors"""
-    if not playable:
-        playable = list()
 
     results.append(
         InlineQueryResultArticle(
             "hand",
-            title=_("Cards (tap for game state):"),
-            description=', '.join([repr(card) for card in
-                                   list_subtract(player.cards, playable)]),
+            title=_("Card (tap for game state):",
+                    "Cards (tap for game state):",
+                    len(player.cards)),
+            description=', '.join([repr(card) for card in player.cards]),
             input_message_content=game_info(game)
         )
     )
@@ -62,7 +61,9 @@ def add_other_cards(playable, player, results, game):
 
 def player_list(game):
     """Generate list of player strings"""
-    return [_("{name} ({number} cards)")
+    return [_("{name} ({number} card)",
+              "{name} ({number} cards)",
+              len(player.cards))
             .format(name=player.user.first_name, number=len(player.cards))
             for player in game.players]
 
@@ -101,10 +102,9 @@ def add_draw(player, results):
         Sticker(
             "draw", sticker_file_id=c.STICKERS['option_draw'],
             input_message_content=
-            InputTextMessageContent(__('Drawing 1 card', player.game.translate)
-                                    if n == 1 else
-                                    __('Drawing {number} cards',
-                                       player.game.translate)
+            InputTextMessageContent(__('Drawing {number} card',
+                                       'Drawing {number} cards', n,
+                                       multi=player.game.translate)
                                     .format(number=n))
         )
     )
@@ -127,8 +127,9 @@ def add_pass(results, game):
     results.append(
         Sticker(
             "pass", sticker_file_id=c.STICKERS['option_pass'],
-            input_message_content=InputTextMessageContent(__('Pass',
-                                                             game.translate))
+            input_message_content=InputTextMessageContent(
+                __('Pass', multi=game.translate)
+            )
         )
     )
 
@@ -141,7 +142,7 @@ def add_call_bluff(results, game):
             sticker_file_id=c.STICKERS['option_bluff'],
             input_message_content=
             InputTextMessageContent(__("I'm calling your bluff!",
-                                       game.translate))
+                                       multi=game.translate))
         )
     )
 
@@ -168,6 +169,8 @@ def game_info(game):
         "\n" +
         _("Last card: {card}").format(card=repr(game.last_card)) +
         "\n" +
-        _("Players: {player_list}")
+        _("Player: {player_list}",
+          "Players: {player_list}",
+          len(players))
         .format(player_list=" -> ".join(players))
     )
