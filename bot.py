@@ -599,7 +599,8 @@ def do_play_card(bot, player, result_id):
     if not us:
         us = UserSetting(id=user.id)
 
-    us.cards_played += 1
+    if us.stats:
+        us.cards_played += 1
 
     if game.choosing_color:
         send_async(bot, chat.id, text=_("Please choose a color"))
