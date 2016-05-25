@@ -24,7 +24,7 @@ from database import db, Optional, Required, PrimaryKey, db_session
 class UserSetting(db.Entity):
 
     id = PrimaryKey(int, auto=False, size=64)  # Telegram User ID
-    lang = Optional(str, default='en')  # The language setting for this user
+    lang = Optional(str, default='en_US')  # The language setting for this user
     stats = Optional(bool, default=False)  # Opt-in to keep game statistics
     first_places = Optional(int, default=0)  # Nr. of games won in first place
     games_played = Optional(int, default=0)  # Nr. of games completed
