@@ -216,15 +216,17 @@ msgstr "你冇喺呢個對話入面玩"
 
 #: bot.py:400
 #, python-format
-msgid "Please wait {time} seconds"
-msgstr "請等{time}秒"
+msgid "Please wait {time} second"
+msgid_plural "Please wait {time} seconds"
+msgstr[0] "請等{time}秒"
 
 #: bot.py:413
 #, python-format
-msgid ""
-"Waiting time to skip this player has been reduced to {time} seconds.\n"
+msgid "Waiting time to skip this player has been reduced to {time} second.\n"
 "Next player: {name}"
-msgstr ""
+msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
+msgstr[0] ""
 "呢個玩家嘅等待時間已經減少到 {time} 秒\n"
 "下個: {name}"
 
@@ -297,8 +299,9 @@ msgid "Choose Color"
 msgstr "揀顏色"
 
 #: results.py:56
-msgid "Cards (tap for game state):"
-msgstr "手牌 (遊戲status)"
+msgid "Last card (tap for game state):"
+msgid_plural "Cards (tap for game state):"
+msgstr[0] "手牌 (遊戲status)"
 
 #: results.py:60 results.py:123 results.py:165
 msgid "Current player: {name}"
@@ -309,13 +312,15 @@ msgid "Last card: {card}"
 msgstr "前一張牌: {card}"
 
 #: results.py:62 results.py:125 results.py:168
-msgid "Players: {player_list}"
-msgstr "玩家: {player_list}"
+msgid "Player: {player_list}"
+msgid_plural "Players: {player_list}"
+msgstr[0] "玩家: {player_list}"
 
 #: results.py:72
 #, python-format
-msgid "{name} ({number} cards)"
-msgstr "{name} ({number} 張牌)"
+msgid "{name} ({number} card)"
+msgid_plural "{name} ({number} cards)"
+msgstr[0] "{name} ({number} 張牌)"
 
 #: results.py:81
 msgid "You are not playing"
@@ -337,11 +342,9 @@ msgstr "用/start開始呢一盤"
 
 #: results.py:108
 #, python-format
-msgid "Drawing 1 card"
-msgstr "Draw緊1張牌"
-
-msgid "Drawing {number} cards"
-msgstr "Draw緊{number}張牌"
+msgid "Drawing {number} card"
+msgid_plural "Drawing {number} cards"
+msgstr[0] "Draw緊{number}張牌"
 
 #: results.py:136
 msgid "Pass"
@@ -394,16 +397,19 @@ msgid ""
 msgstr "你冇啓用數據記錄, pm個bot去啓用"
 
 #: simple_commands.py
-msgid "{number} games played"
-msgstr "玩咗{number}盤"
+msgid "{number} game played"
+msgid_plural "{number} games played"
+msgstr[0] "玩咗{number}盤"
 
 #: simple_commands.py
-msgid "{number} first places"
-msgstr "贏咗{number}次"
+msgid "{number} first place"
+msgid_plural "{number} first places"
+msgstr[0] "贏咗{number}次"
 
 #: simple_commands.py
-msgid "{number} cards played"
-msgstr "已經玩咗{number}張牌"
+msgid "{number} card played"
+msgid_plural "{number} cards played"
+msgstr[0] "已經玩咗{number}張牌"
 
 #: utils.py
 msgid "{emoji} Green"
