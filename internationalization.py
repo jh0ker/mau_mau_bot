@@ -20,7 +20,6 @@
 
 import gettext
 from functools import wraps
-import logging
 
 from locales import available_locales
 from database import db_session
@@ -94,7 +93,6 @@ def __(singular, plural=None, n=1, multi=False):
     else:
         for locale in _.locale_stack:
             translation = _(singular, plural, n, locale)
-            logging.info(translation)
 
             if translation not in translations:
                 translations.append(translation)
