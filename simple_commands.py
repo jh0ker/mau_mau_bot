@@ -112,7 +112,7 @@ def stats(bot, update):
 
         n = us.first_places
         stats_text.append(
-            _("{number} first places",
+            _("{number} first place",
               "{number} first places",
               n).format(number=n)
         )
