@@ -87,7 +87,7 @@ def __(singular, plural=None, n=1, multi=False):
 
     if not multi:
         _.push('en_US')
-        translations.append(_(singular))
+        translations.append(_(singular, plural, n))
         _.pop()
 
     else:
