@@ -323,7 +323,7 @@ msgstr "Selecciona un color"
 #: results.py:56
 msgid "Last card (tap for game state):"
 msgid_plural "Cards (tap for game state):"
-msgstr[0] "Cartas (presiona para el estado de la partida):"
+msgstr[0] "Última carta (presiona para el estado de la partida):"
 msgstr[1] "Cartas (presiona para el estado de la partida):"
 
 #: results.py:60 results.py:123 results.py:165
