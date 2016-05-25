@@ -232,15 +232,22 @@ msgstr "Non stai giocando alcuna partita in questa chat. "
 
 #: bot.py:400
 #, python-format
-msgid "Please wait {time} seconds"
-msgstr "Per favore, attendi {time} secondi"
+msgid "Please wait {time} second"
+msgid_plural "Please wait {time} seconds"
+msgstr[0] "Per favore, attendi {time} secondi"
+msgstr[1] "Per favore, attendi {time} secondi"
 
 #: bot.py:413
 #, python-format
-msgid ""
-"Waiting time to skip this player has been reduced to {time} seconds.\n"
+msgid "Waiting time to skip this player has been reduced to {time} second.\n"
 "Next player: {name}"
-msgstr ""
+msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
+msgstr[0] ""
+"Il tempo di attesa per saltare questo giocatore è stato ridotto a {time} "
+"secondi.\n"
+"Prossimo giocatore: {name}"
+msgstr[1] ""
 "Il tempo di attesa per saltare questo giocatore è stato ridotto a {time} "
 "secondi.\n"
 "Prossimo giocatore: {name}"
@@ -314,8 +321,10 @@ msgid "Choose Color"
 msgstr "Scegli il colore"
 
 #: results.py:56
-msgid "Cards (tap for game state):"
-msgstr "Carte (clicca per vedere lo stato della partita):"
+msgid "Last card (tap for game state):"
+msgid_plural "Cards (tap for game state):"
+msgstr[0] "Carte (clicca per vedere lo stato della partita):"
+msgstr[1] "Carte (clicca per vedere lo stato della partita):"
 
 #: results.py:60 results.py:123 results.py:165
 msgid "Current player: {name}"
@@ -326,13 +335,17 @@ msgid "Last card: {card}"
 msgstr "Ultima carta: {card}"
 
 #: results.py:62 results.py:125 results.py:168
-msgid "Players: {player_list}"
-msgstr "Giocatori: {player_list}"
+msgid "Player: {player_list}"
+msgid_plural "Players: {player_list}"
+msgstr[0] "Giocatori: {player_list}"
+msgstr[1] "Giocatori: {player_list}"
 
 #: results.py:72
 #, python-format
-msgid "{name} ({number} cards)"
-msgstr "{name} ({number} carte)"
+msgid "{name} ({number} card)"
+msgid_plural "{name} ({number} cards)"
+msgstr[0] "{name} ({number} carta)"
+msgstr[1] "{name} ({number} carte)"
 
 #: results.py:81
 msgid "You are not playing"
@@ -356,11 +369,10 @@ msgstr "Inizia la partita con /start"
 
 #: results.py:108
 #, python-format
-msgid "Drawing 1 card"
-msgstr "Sto pescando 1 carta"
-
-msgid "Drawing {number} cards"
-msgstr "Sto pescando {number} carte"
+msgid "Drawing {number} card"
+msgid_plural "Drawing {number} cards"
+msgstr[0] "Sto pescando {number} carta"
+msgstr[1] "Sto pescando {number} carte"
 
 #: results.py:136
 msgid "Pass"
@@ -416,16 +428,22 @@ msgstr ""
 "per abilitarle."
 
 #: simple_commands.py
-msgid "{number} games played"
-msgstr "{number} partite giocate"
+msgid "{number} game played"
+msgid_plural "{number} games played"
+msgstr[0] "{number} partite giocate"
+msgstr[1] "{number} partite giocate"
 
 #: simple_commands.py
-msgid "{number} first places"
-msgstr "{number} vittorie"
+msgid "{number} first place"
+msgid_plural "{number} first places"
+msgstr[0] "{number} vittorie"
+msgstr[1] "{number} vittorie"
 
 #: simple_commands.py
-msgid "{number} cards played"
-msgstr "{number} carte giocate"
+msgid "{number} card played"
+msgid_plural "{number} cards played"
+msgstr[0] "{number} carta giocate"
+msgstr[1] "{number} carte giocate"
 
 #: utils.py
 msgid "{emoji} Green"
