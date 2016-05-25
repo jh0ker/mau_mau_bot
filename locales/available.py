@@ -33,5 +33,6 @@ available_locales = {'en_US': flag('US') + ' English (US)',
                      'id_ID': flag('ID') + ' Bahasa Indonesia',
                      'it_IT': flag('IT') + ' Italiano',
                      'pt_BR': flag('BR') + ' Português Brasileiro',
+                     'zh_CN': flag('CN') + ' 中文(简体)',
                      'zh_HK': flag('HK') + ' 廣東話',
                      'zh_TW': flag('TW') + ' 中文(香港)'}
