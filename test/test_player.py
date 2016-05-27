@@ -138,6 +138,7 @@ class Test(unittest.TestCase):
 
     def test_bluffing(self):
         p = Player(self.game, "Player 0")
+        Player(self.game, "Player 01")
 
         self.game.last_card = c.Card(c.RED, '1')
 
@@ -156,4 +157,8 @@ class Test(unittest.TestCase):
                    c.Card(None, None, c.CHOOSE)]
 
         p.playable_cards()
-        self.assertFalse(p.bluffing)
+
+        p.play(c.Card(None, None, c.DRAW_FOUR))
+        self.game.choose_color(c.GREEN)
+
+        self.assertFalse(self.game.current_player.prev.bluffing)
