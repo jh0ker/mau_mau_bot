@@ -85,7 +85,7 @@ def __(singular, plural=None, n=1, multi=False):
     """Translates text into all locales on the stack"""
     translations = list()
 
-    if not multi:
+    if not multi and len(set(_.locale_stack)) >= 1:
         _.push('en_US')
         translations.append(_(singular, plural, n))
         _.pop()
@@ -109,7 +109,7 @@ def user_locale(func):
         with db_session:
             us = UserSetting.get(id=user.id)
 
-            if us:
+            if us and us.lang != 'en':
                 _.push(us.lang)
             else:
                 _.push('en_US')
@@ -132,7 +132,7 @@ def game_locales(func):
             for player in player.game.players:
                 us = UserSetting.get(id=player.user.id)
 
-                if us:
+                if us and us.lang != 'en':
                     loc = us.lang
                 else:
                     loc = 'en_US'

@@ -507,6 +507,8 @@ def reply_to_query(bot, update):
                                             str(card) not in added_ids))
                     added_ids.append(str(card))
 
+                add_gameinfo(game, results)
+
         elif user_id != game.current_player.user.id or not game.started:
             for card in sorted(player.cards):
                 add_card(game, card, results, can_play=False)
@@ -665,21 +667,21 @@ def do_call_bluff(bot, player):
     if player.prev.bluffing:
         send_async(bot, chat.id,
                    text=__("Bluff called! Giving 4 cards to {name}",
-                           game.translate)
-                        .format(name=player.prev.user.first_name))
+                           multi=game.translate)
+                   .format(name=player.prev.user.first_name))
 
         try:
             player.prev.draw()
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
                        text=__("There are no more cards in the deck.",
-                               game.translate))
+                               multi=game.translate))
 
     else:
         game.draw_counter += 2
         send_async(bot, chat.id,
                    text=__("{name1} didn't bluff! Giving 6 cards to {name2}",
-                           game.translate)
+                           multi=game.translate)
                    .format(name1=player.prev.user.first_name,
                            name2=player.user.first_name))
         try:
@@ -687,7 +689,7 @@ def do_call_bluff(bot, player):
         except DeckEmptyError:
             send_async(bot, player.game.chat.id,
                        text=__("There are no more cards in the deck.",
-                               game.translate))
+                               multi=game.translate))
 
     game.turn()
 
