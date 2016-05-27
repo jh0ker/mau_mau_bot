@@ -192,8 +192,8 @@ def status_update(bot, update):
         user = update.message.left_chat_member
 
         try:
-            gm.leave_game(user, chat)
             game = gm.player_for_user_in_chat(user, chat).game
+            gm.leave_game(user, chat)
 
         except NoGameInChatError:
             pass
