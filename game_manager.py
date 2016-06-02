@@ -144,10 +144,20 @@ class GameManager(object):
                 pass
 
             if this_users_players:
-                self.userid_current[player_in_game.user.id] = this_users_players[0]
+                try:
+                    self.userid_current[player_in_game.user.id] = this_users_players[0]
+                except KeyError:
+                    pass
             else:
-                del self.userid_players[player_in_game.user.id]
-                del self.userid_current[player_in_game.user.id]
+                try:
+                    del self.userid_players[player_in_game.user.id]
+                except KeyError:
+                    pass
+
+                try:
+                    del self.userid_current[player_in_game.user.id]
+                except KeyError:
+                    pass
 
         self.chatid_games[chat.id].remove(game)
         if not self.chatid_games[chat.id]:
