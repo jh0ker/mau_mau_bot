@@ -47,6 +47,11 @@ class GameManager(object):
         if chat_id not in self.chatid_games:
             self.chatid_games[chat_id] = list()
 
+        # remove old games
+        for game in list(self.chatid_games[chat_id]):
+            if not game.players:
+                self.chatid_games[chat_id].remove(game)
+
         self.chatid_games[chat_id].append(game)
         return game
 
