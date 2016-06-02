@@ -144,7 +144,7 @@ class GameManager(object):
                 pass
 
             if this_users_players:
-                self.userid_current[player.user.id] = this_users_players[0]
+                self.userid_current[player_in_game.user.id] = this_users_players[0]
             else:
                 del self.userid_players[player_in_game.user.id]
                 del self.userid_current[player_in_game.user.id]

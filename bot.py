@@ -147,7 +147,6 @@ def leave_game(bot, update):
                    reply_to_message_id=update.message.message_id)
 
 
-@run_async
 def select_game(bot, update):
     """Handler for callback queries to select the current game"""
 
@@ -159,28 +158,31 @@ def select_game(bot, update):
             gm.userid_current[user_id] = player
             break
     else:
-        bot.sendMessage(update.callback_query.message.chat_id,
-                        text=_("Game not found."),
-                        timeout=TIMEOUT)
+        send_async(bot,
+                   update.callback_query.message.chat_id,
+                   text=_("Game not found."))
         return
 
-    back = [[InlineKeyboardButton(text=_("Back to last group"),
-                                  switch_inline_query='')]]
+    @run_async
+    def selected(bot):
+        back = [[InlineKeyboardButton(text=_("Back to last group"),
+                                      switch_inline_query='')]]
+        bot.answerCallbackQuery(update.callback_query.id,
+                                text=_("Please switch to the group you selected!"),
+                                show_alert=False,
+                                timeout=TIMEOUT)
 
-    bot.answerCallbackQuery(update.callback_query.id,
-                            text=_("Please switch to the group you selected!"),
-                            show_alert=False,
+        bot.editMessageText(chat_id=update.callback_query.message.chat_id,
+                            message_id=update.callback_query.message.message_id,
+                            text=_("Selected group: {group}\n"
+                                   "<b>Make sure that you switch to the correct "
+                                   "group!</b>").format(
+                                group=gm.userid_current[user_id].game.chat.title),
+                            reply_markup=InlineKeyboardMarkup(back),
+                            parse_mode=ParseMode.HTML,
                             timeout=TIMEOUT)
 
-    bot.editMessageText(chat_id=update.callback_query.message.chat_id,
-                        message_id=update.callback_query.message.message_id,
-                        text=_("Selected group: {group}\n"
-                               "<b>Make sure that you switch to the correct "
-                               "group!</b>").format(
-                            group=gm.userid_current[user_id].game.chat.title),
-                        reply_markup=InlineKeyboardMarkup(back),
-                        parse_mode=ParseMode.HTML,
-                        timeout=TIMEOUT)
+    selected()
 
 
 @game_locales
@@ -192,8 +194,8 @@ def status_update(bot, update):
         user = update.message.left_chat_member
 
         try:
-            game = gm.player_for_user_in_chat(user, chat).game
             gm.leave_game(user, chat)
+            game = gm.player_for_user_in_chat(user, chat).game
 
         except NoGameInChatError:
             pass
@@ -539,7 +541,7 @@ def process_result(bot, update):
         game = player.game
         result_id = update.chosen_inline_result.result_id
         chat = game.chat
-    except KeyError:
+    except (KeyError, AttributeError):
         return
 
     logger.debug("Selected result: " + result_id)

@@ -86,9 +86,7 @@ def __(singular, plural=None, n=1, multi=False):
     translations = list()
 
     if not multi and len(set(_.locale_stack)) >= 1:
-        _.push('en_US')
-        translations.append(_(singular, plural, n))
-        _.pop()
+        translations.append(_(singular, plural, n, 'en_US'))
 
     else:
         for locale in _.locale_stack:
@@ -109,10 +107,10 @@ def user_locale(func):
         with db_session:
             us = UserSetting.get(id=user.id)
 
-            if us and us.lang != 'en':
-                _.push(us.lang)
-            else:
-                _.push('en_US')
+        if us and us.lang != 'en':
+            _.push(us.lang)
+        else:
+            _.push('en_US')
 
         result = func(bot, update, *pargs, **kwargs)
         _.pop()
@@ -167,7 +165,7 @@ def _user_chat_from_update(update):
             try:
                 user = update.chosen_inline_result.from_user
                 chat = gm.userid_current[user.id].game.chat
-            except (NameError, AttributeError):
+            except (NameError, AttributeError, KeyError):
                 chat = None
 
     return user, chat
