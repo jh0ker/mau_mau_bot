@@ -104,7 +104,7 @@ class GameManager(object):
         if not player:
             games = self.chatid_games[chat.id]
             for g in games:
-                for p in g:
+                for p in g.players:
                     if p.user.id == user.id:
                         if p is g.current_player:
                             g.turn()
