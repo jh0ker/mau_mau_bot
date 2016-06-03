@@ -102,7 +102,17 @@ class GameManager(object):
         players = self.userid_players.get(user.id, list())
 
         if not player:
-            raise NoGameInChatError
+            games = self.chatid_games[chat.id]
+            for g in games:
+                for p in g:
+                    if p.user.id == user.id:
+                        if p is g.current_player:
+                            g.turn()
+
+                        p.leave()
+                        return
+            else:
+                raise NoGameInChatError
 
         game = player.game
 
