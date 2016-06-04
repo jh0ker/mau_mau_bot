@@ -182,7 +182,7 @@ def select_game(bot, update):
                             parse_mode=ParseMode.HTML,
                             timeout=TIMEOUT)
 
-    selected()
+    selected(bot)
 
 
 @game_locales
