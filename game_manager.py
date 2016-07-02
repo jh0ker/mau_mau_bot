@@ -33,6 +33,8 @@ class GameManager(object):
         self.chatid_games = dict()
         self.userid_players = dict()
         self.userid_current = dict()
+        self.remind_dict = dict()
+
         self.logger = logging.getLogger(__name__)
 
     def new_game(self, chat):

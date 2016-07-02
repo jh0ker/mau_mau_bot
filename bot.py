@@ -53,6 +53,22 @@ logger = logging.getLogger(__name__)
 
 
 @user_locale
+def notify_me(bot, update):
+    """Handler for /notify_me command, pm people for next game"""
+    chat_id = update.message.chat_id
+    if update.message.chat.type == 'private':
+        send_async(bot,
+                   chat_id,
+                   text=_("Send this command in a group to be notified "
+                          "when a new game is started there."))
+    else:
+        try:
+            gm.remind_dict[chat_id].append(update.message.from_user.id)
+        except KeyError:
+            gm.remind_dict[chat_id] = [update.message.from_user.id]
+
+
+@user_locale
 def new_game(bot, update):
     """Handler for the /new command"""
     chat_id = update.message.chat_id
@@ -61,6 +77,16 @@ def new_game(bot, update):
         help(bot, update)
 
     else:
+
+        if update.message.chat_id in gm.remind_dict:
+            for user in gm.remind_dict[update.message.chat_id]:
+                send_async(bot,
+                           user,
+                           text="A new game has been started in " +
+                                update.message.chat.title)
+
+            del gm.remind_dict[update.message.chat_id]
+
         game = gm.new_game(update.message.chat)
         game.owner = update.message.from_user
         send_async(bot, chat_id,
@@ -711,6 +737,7 @@ dispatcher.add_handler(CommandHandler('enable_translations',
 dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
+dispatcher.add_handler(CommandHandler('next_game',next_game))
 simple_commands.register()
 settings.register()
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
