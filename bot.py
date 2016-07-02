@@ -51,6 +51,19 @@ logging.basicConfig(
     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+remind_dict = {} 
+@user_locale
+def next_game(bot, update):
+    """handler for /next_game command ,  pm people for next game"""
+    chat_id = update.message.chat_id
+    if update.message.chat.type == 'private':
+        send_async(bot, chat_id,text="call this in a group to be reminded  ")
+    else:
+        try:
+            remind_dict[chat_id].append(update.message.from_user.id)
+        except KeyError:
+            remind_dict[chat_id] = [update.message.from_user.id]
+
 
 @user_locale
 def new_game(bot, update):
@@ -61,6 +74,9 @@ def new_game(bot, update):
         help(bot, update)
 
     else:
+        for user in remind_dict[update.message.chat_id]:
+            send_async(bot , user , text = "A new game has been started in " + update.message.chat.title)
+        del remind_dict[update.message.chat_id]
         game = gm.new_game(update.message.chat)
         game.owner = update.message.from_user
         send_async(bot, chat_id,
@@ -711,6 +727,7 @@ dispatcher.add_handler(CommandHandler('enable_translations',
 dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
+dispatcher.add_handler(CommandHandler('next_game',next_game))
 simple_commands.register()
 settings.register()
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
