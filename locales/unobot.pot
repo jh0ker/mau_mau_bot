@@ -75,6 +75,10 @@ msgstr ""
 msgid "Created a new game! Join the game with /join and start the game with /start"
 msgstr ""
 
+#: bot.py
+msgid "Send this command in a group to be notified when a new game is started there."
+msgstr ""
+
 #: bot.py:152
 msgid "The lobby is closed"
 msgstr ""
