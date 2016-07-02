@@ -82,8 +82,8 @@ def new_game(bot, update):
             for user in gm.remind_dict[update.message.chat_id]:
                 send_async(bot,
                            user,
-                           text="A new game has been started in " +
-                                update.message.chat.title)
+                           text=_("A new game has been started in {title}").format(
+                                title=update.message.chat.title))
 
             del gm.remind_dict[update.message.chat_id]
 

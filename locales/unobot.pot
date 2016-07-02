@@ -48,7 +48,8 @@ msgid "Follow these steps:\n"
 "action.\n"
 "Players can join the game at any time. To leave a game, use /leave. If a "
 "player takes more than 90 seconds to play, you can use /skip to skip that "
-"player.\n"
+"player."
+"Use /notify_me to receive a private message when a new game is started.\n"
 "\n"
 "<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
@@ -78,6 +79,10 @@ msgstr ""
 #: bot.py
 msgid "Send this command in a group to be notified when a new game is started there."
 msgstr ""
+
+#: bot.py
+msgid "A new game has been started in {title}"
+msgstr
 
 #: bot.py:152
 msgid "The lobby is closed"
@@ -400,4 +405,3 @@ msgstr ""
 #: utils.py
 msgid "{emoji} Yellow"
 msgstr ""
-
