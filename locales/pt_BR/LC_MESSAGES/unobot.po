@@ -44,7 +44,8 @@ msgid ""
 "action.\n"
 "Players can join the game at any time. To leave a game, use /leave. If a "
 "player takes more than 90 seconds to play, you can use /skip to skip that "
-"player.\n"
+"player."
+"Use /notify_me to receive a private message when a new game is started.\n"
 "\n"
 "<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
@@ -73,7 +74,9 @@ msgstr ""
 "Toque em uma das opções para executar a ação desejada.\n"
 "Jogadores podem entrar no jogo a qualquer momento. Para sair do jogo, use /"
 "leave. Se um jogador levar mais de 90 segundos para jogar, você pode usar /"
-"skip para pular a vez desse jogador.\n"
+"skip para pular a vez desse jogador."
+"Use o /notify_me para receber uma mensagem no privada quando um novo jogo no "
+"grupo for iniciado.\n"
 "\n"
 "<b>Idioma</b> e outras configurações: /settings\n"
 "Outros comandos (somente para o criador do jogo):\n"
@@ -105,9 +108,17 @@ msgid ""
 "Created a new game! Join the game with /join and start the game with /start"
 msgstr "Novo jogo criado! Entre no jogo com /join e inicie o jogo com /start"
 
+#: bot.py
+msgid "Send this command in a group to be notified when a new game is started there."
+msgstr "Envie este comando em um grupo para ser notificado quando um novo jogo for iniciado."
+
 #: bot.py:152
 msgid "The lobby is closed"
 msgstr "O lobby está fechado"
+
+#: bot.py
+msgid "A new game has been started in {title}"
+msgstr "Um novo jogo foi iniciado no grupo: {title}"
 
 #: bot.py:156
 msgid "No game is running at the moment. Create a new game with /new"
