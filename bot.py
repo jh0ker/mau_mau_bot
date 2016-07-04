@@ -737,7 +737,7 @@ dispatcher.add_handler(CommandHandler('enable_translations',
 dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
-dispatcher.add_handler(CommandHandler('next_game',next_game))
+dispatcher.add_handler(CommandHandler('notify_me', notify_me))
 simple_commands.register()
 settings.register()
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
