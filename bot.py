@@ -63,9 +63,9 @@ def notify_me(bot, update):
                           "when a new game is started there."))
     else:
         try:
-            gm.remind_dict[chat_id].append(update.message.from_user.id)
+            gm.remind_dict[chat_id].add(update.message.from_user.id)
         except KeyError:
-            gm.remind_dict[chat_id] = [update.message.from_user.id]
+            gm.remind_dict[chat_id] = {update.message.from_user.id}
 
 
 @user_locale
