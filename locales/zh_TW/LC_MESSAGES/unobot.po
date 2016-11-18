@@ -13,24 +13,28 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+#: bot.py:224
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
-"POT-Creation-Date: 2016-05-23 00:03+0100\n"
-"PO-Revision-Date: 2016-05-23 10:04+0100\n"
+"POT-Creation-Date: 2016-05-19 22:38+0200\n"
+"PO-Revision-Date: 2016-05-19 22:38+0200\n"
+"Last-Translator: Jim Chen\n"
 "Language-Team: en <uno@jhoeke.de>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
-"Last-Translator: \n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"Language: zh_HK\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 
 #: bot.py:60
-msgid ""
-"Follow these steps:\n"
+#, fuzzy
+msgid "Follow these steps:\n"
 "\n"
 "1. Add this bot to a group\n"
 "2. In the group, start a new game with /new or join an already running game "
@@ -44,82 +48,86 @@ msgid ""
 "action.\n"
 "Players can join the game at any time. To leave a game, use /leave. If a "
 "player takes more than 90 seconds to play, you can use /skip to skip that "
-"player.\n"
+"player. "
+"Use /notify_me to receive a private message when a new game is started.\n"
 "\n"
 "<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
 "/close - Close lobby\n"
 "/open - Open lobby\n"
-"/enable_translations - Translate relevant texts into all languages spoken in "
-"a game\n"
-"/disable_translations - Use English for those texts\n"
-"\n"
+"/enable_translations - Translate relevant texts into all "
+"languages spoken in a game\n"
+"/disable_translations - Use English for those texts\n\n"
 "<b>Experimental:</b> Play in multiple groups at the same time. Press the "
 "<code>Current game: ...</code> button and select the group you want to play "
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
 "unobotupdates\">update channel</a> and buy an UNO card game."
-msgstr ""
-"請跟隨以下指示:\n"
+msgstr "請跟隨以下指示:\n"
 "\n"
-"1. 新增這個機械人到群組\n"
-"2. 輸入/new開展一個新遊戲或/join加入一個運行中的遊戲\n"
-"3. 當有兩個或以上的玩家加入, 就可以用/start開始遊戲\n"
-"4. 輸入 <code>@unobot</code>然後按<b>空白鍵</b> "
-"<code>via @unobot</code>。之後你會看見你手上的牌或者其他選項例如抽牌, 和"
-"<b>?</b>看其他玩家狀態。但<b>灰色的牌</b>就是<b>你現在不能使用的牌</b>,  請選擇其中一個"
-"選項。\n"
-"玩家可以在任何時間加入, 如果想離開, 請打/leave。如果玩家90秒內都沒有出牌"
-", 你可以用 /skip 跳過了他\n"
+"1. 將這個機器人新增到群組\n"
+"2. 輸入 /new 開始一個新遊戲或輸入 /join 加入一個運行中的遊戲\n"
+"3. 當有兩個或以上的玩家加入, 就可以用 /start 開始遊戲\n"
+"4. 輸入 <code>@unobot</code> 然後按<b>空白鍵</b> 或點一下"
+"<code>via @unobot</code>。之後你會看見你手上的牌或者其他選項例如DRAW(抽牌), 和"
+"<b>?</b>看其他玩家狀態。但<b>灰色的牌</b>就是<b>你現在不能使用的牌</b>,  選擇其中一個"
+"選項來執行對應的操作。\n"
+"玩家可以在任何時間加入, 如果想離開, 請打 /leave 。如果玩家90秒後都沒有出牌"
+", 你可以用 /skip 跳過他。輸入 /notify_me 以讓我在本群組遊戲開始時私訊你\n"
 "\n"
 "<b>語言</b>和其他設定: /settings\n"
 "遊戲創始人可以用以下的command:\n"
 "/close - 關閉 lobby, 其他人不可以中途加入\n"
 "/open - 開啓 lobby, 令其他人可以中途加入\n"
-"/enable_translations - 翻譯指示\n"
-"/disable_translations -  用英文的指示\n"
+"/enable_translations - 使用翻譯的提示\n"
+"/disable_translations -  使用英文的提示\n"
 "\n"
-"<b>試驗功能:</b> 想在多個群組同時玩多個遊戲的, 請選擇 <code>Current "
-"game:...</code>然後選擇你想在哪個群組玩\n"
-"如果你喜歡這個bot嘅話, 請在 <a href=\"https://telegram.me/storebot?"
-"start=mau_mau_bot\">評分</a>, 然後加入更新頻道 <a href=\"https://telegram."
-"me/unobotupdates\">update channel</a> 再買一副UNO。"
+"<b>試驗功能:</b> 同時在不同的群組中遊玩 請選擇 <code>目前遊戲:...</code>"
+"然後選擇你想在哪個群組玩。\n"
+"如果你喜歡這個bot, 請 <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">評分</a>, 然後加入 <a href=\"https://telegram."
+"me/unobotupdates\">即時更新頻道</a> 並買一副UNO牌。"
 
 #: bot.py:88
-msgid ""
-"This bot is Free Software and licensed under the AGPL. The code is available "
+msgid "This bot is Free Software and licensed under the AGPL. The code is available "
 "here: \n"
 "https://github.com/jh0ker/mau_mau_bot"
-msgstr ""
-"這個bot是一個免費的軟件, 根據AGPL授權 \n"
+msgstr "這個bot是一個免費的軟件, 根據AGPL授權 \n"
 "源代碼可以在這裡找到\n"
 "https://github.com/jh0ker/mau_mau_bot"
 
 #: bot.py:133
-msgid ""
-"Created a new game! Join the game with /join and start the game with /start"
-msgstr "已經開始了新的遊戲! 用/join加入和/start去開始"
+msgid "Created a new game! Join the game with /join and start the game with /start"
+msgstr "已開始新的遊戲! 用 /join 加入並用 /start 開始遊戲"
+
+#: bot.py
+msgid "Send this command in a group to be notified when a new game is started there."
+msgstr "在群組中傳送這個指令以讓我在這個群組開始遊戲時私訊你"
+
+#: bot.py
+msgid "A new game has been started in {title}"
+msgstr "新遊戲已經在 {title} 中開始!"
 
 #: bot.py:152
 msgid "The lobby is closed"
-msgstr "遊戲大廳已經關閉"
+msgstr "遊戲大廳已關閉"
 
 #: bot.py:156
 msgid "No game is running at the moment. Create a new game with /new"
-msgstr "現在沒有遊戲運行, 用 /new展開新的遊戲"
+msgstr "目前沒有進行中的遊戲,輸入 /new 開始新的遊戲"
 
 #: bot.py:162
 msgid "You already joined the game. Start the game with /start"
-msgstr "你已經加入, 請用 /start開始"
+msgstr "您已加入本局遊戲，輸入 /start 來開始遊戲"
 
 #: bot.py:167
 msgid "Joined the game"
-msgstr "加入了"
+msgstr "已加入遊戲"
 
 #: bot.py:179 bot.py:191
 msgid "You are not playing in a game in this group."
-msgstr "你並不是在這個群組玩"
+msgstr "你目前沒有在這個群組中遊玩"
 
 #: bot.py:197 bot.py:258 bot.py:595
 msgid "Game ended!"
@@ -127,98 +135,97 @@ msgstr "遊戲結束!"
 
 #: bot.py:201
 msgid "Okay. Next Player: {name}"
-msgstr "OK 下一個: {name}"
+msgstr "OK. 下一位: {name}"
 
 #: bot.py:219
 msgid "Game not found."
-msgstr "Game not found."
+msgstr "找不到遊戲"
 
 #: bot.py:223
 msgid "Back to last group"
-msgstr "返回前一個群組"
+msgstr "回到上一個群組"
 
 #: bot.py:227
 msgid "Please switch to the group you selected!"
-msgstr "請轉去你選擇了的群組"
+msgstr "請切換到你選擇的群組"
 
 #: bot.py:233
 #, python-format
-msgid ""
-"Selected group: {group}\n"
+msgid "Selected group: {group}\n"
 "<b>Make sure that you switch to the correct group!</b>"
-msgstr ""
-"揀咗呢個group: {group}\n"
-"<b>記住轉過去正確的群組</b>"
+msgstr "已選擇的群組: {group}\n"
+"<b>請確認你已經切換到目前遊玩中的群組!</b>"
 
 #: bot.py:260
 #, python-format
 msgid "Removing {name} from the game"
-msgstr "{name} 已經比人踢了"
+msgstr "將 {name} 從遊戲中踢除"
+
 
 #: bot.py:273
 msgid "There is no game running in this chat. Create a new one with /new"
-msgstr "這個對話入面沒有遊戲運行中, 用/new開始新遊戲"
+msgstr "此聊天室目前沒有遊戲進行中,使用 /new 開始新遊戲"
 
 #: bot.py:278
 msgid "The game has already started"
-msgstr "遊戲已經開始"
+msgstr "遊戲已經開始了!"
 
 #: bot.py:281
 msgid "At least two players must /join the game before you can start it"
-msgstr "要有兩個玩家 /join才先可以開始新一局"
+msgstr "至少要有兩個人 /join 才能開始遊戲"
+
 
 #: bot.py:297
-#, python-format
-msgid ""
-"First player: {name}\n"
+#, python-format, fuzzy
+msgid "First player: {name}\n"
 "Use /close to stop people from joining the game.\n"
 "Enable multi-translations with /enable_translations"
-msgstr ""
-"第一個玩家: {name}\n"
-"不想其他人加入遊戲的話可以選擇 /close\n"
-"用 /enable_translations 啓用翻譯功能"
+msgstr "由 {name} 開始出牌\n"
+"輸入 /close 以防止新玩家加入此局遊戲 \n"
+"如果你要啟用翻譯的提示請輸入 /enable_translations"
 
 #: bot.py:321
 msgid "Please select the group you want to play in."
-msgstr "你想在哪個個群組玩?"
+msgstr "請選擇你要玩的群組"
+
 
 #: bot.py:335 bot.py:361
 msgid "There is no running game in this chat."
-msgstr "這個對話入面沒有在玩"
+msgstr "此聊天室沒有正在進行的遊戲"
 
 #: bot.py:342
 msgid "Closed the lobby. No more players can join this game."
-msgstr "Lobby已經關閉了, 其他玩家已經無法加入"
+msgstr "已關閉大廳,其他人將無法加入遊戲"
 
 #: bot.py:348 bot.py:373
 #, python-format
 msgid "Only the game creator ({name}) can do that."
-msgstr "只有遊戲創始人才可以做這個設定"
+msgstr "只有創建遊戲的玩家 ({name}) 可以執行此指令"
 
 #: bot.py:349
 #, python-format
 msgid "Enabled multi-translations. Disable with /disable_translations"
-msgstr "啓用了其他語言, 可以用 /disable_translations 停用"
+msgstr "已啟用翻譯提示. 使用 /disable_translations 來停用"
 
 #: bot.py:377
 #, python-format
-msgid ""
-"Disabled multi-translations. Enable them again with /enable_translations"
-msgstr "已經停用其他語言, 想重新選擇可以揀 /enable_translations"
+msgid "Disabled multi-translations. Enable them again with /enable_translations"
+msgstr "已停用翻譯提示. 使用 /enable_translations 再次啟用"
 
 #: bot.py:368
 msgid "Opened the lobby. New players may /join the game."
-msgstr "開了個大廳, 現在可以 /join 這一局"
+msgstr "大廳已開啟, 現在可以 /join 本局遊戲"
 
 #: bot.py:386
 msgid "You are not playing in a game in this chat."
-msgstr "你沒有在這個對話玩"
+msgstr "你目前沒有在此聊天室中遊玩"
 
 #: bot.py:400
 #, python-format
 msgid "Please wait {time} second"
 msgid_plural "Please wait {time} seconds"
-msgstr[0] "請等{time}秒"
+msgstr[0] "請等待 {time} 秒"
+msgstr[1] "請等待 {time} 秒"
 
 #: bot.py:413
 #, python-format
@@ -226,145 +233,145 @@ msgid "Waiting time to skip this player has been reduced to {time} second.\n"
 "Next player: {name}"
 msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
 "Next player: {name}"
-msgstr[0] ""
-"這個玩家的等待時間已經減少到 {time} 秒\n"
-"下個: {name}"
+msgstr[0] "此玩家等待時間已經縮短為 {time} 秒\n"
+"輪到: {name}"
+msgstr[1] "此玩家等待時間已經縮短為 {time} 秒\n"
+"輪到: {name}"
 
 #: bot.py:424
 #, python-format
-msgid ""
-"{name1} was skipped four times in a row and has been removed from the game.\n"
+msgid "{name1} was skipped four times in a row and has been removed from the game.\n"
 "Next player: {name2}"
-msgstr ""
-"{name1}被人連續跳過了4次, 已經踢走\n"
-"下個: {name2}"
+msgstr "{name1} 已被跳過 4 次，並從此局遊戲中移除\n"
+"輪到: {name2}"
 
 #: bot.py:432
 #, python-format
-msgid ""
-"{name} was skipped four times in a row and has been removed from the game.\n"
+msgid "{name} was skipped four times in a row and has been removed from the game.\n"
 "The game ended."
-msgstr ""
-"{name1}被人連續跳過了4次, 已經踢走\n"
-"遊戲結束"
+msgstr "{name1} 已被跳過 4 次，並從此局遊戲中移除\n"
+"遊戲結束!"
 
 #: bot.py:455
 msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "所有更新都在這裡: https://telegram.me/unobotupdates"
+msgstr "即時更新頻道: https://telegram.me/unobotupdates"
 
 #: bot.py:513
 #, python-format
 msgid "Current game: {group}"
-msgstr "正在玩的遊戲: {group}"
+msgstr "目前遊戲: {group}"
 
 #: bot.py:545
 #, python-format
 msgid "Cheat attempt by {name}"
-msgstr "{name} chok cheat"
+msgstr "提出作弊嫌疑 by {name}"
 
 #: bot.py:562
 msgid "Next player: {name}"
-msgstr "下一個: {name}"
+msgstr "輪到: {name}"
 
 #: bot.py:572
 #, python-format
 msgid "Waiting time for {name} has been reset to 90 seconds"
-msgstr "跳過 {name}的時間已經重設了90秒"
+msgstr "{name} 的等待時間已重置到 90 秒"
 
 #: bot.py:585
 msgid "Please choose a color"
-msgstr "請選擇一隻顏色"
+msgstr "請選擇一個顏色"
 
 #: bot.py:591
 #, python-format
 msgid "{name} won!"
-msgstr "{name} 勝出了!"
+msgstr "{name} 贏了!"
 
 #: bot.py:613 bot.py:635 bot.py:647
 msgid "There are no more cards in the deck."
-msgstr "沒有牌"
+msgstr "已經沒牌了"
 
 #: bot.py:627
 #, python-format
 msgid "Bluff called! Giving 4 cards to {name}"
-msgstr "Call了bluff, {name} 抽 4張牌"
+msgstr "已確認為虛張聲勢! 給予 {name} 4 張牌"
 
 #: bot.py:639
 #, python-format
 msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
-msgstr "{name1}沒有bluff, {name2} 抽 6 張牌"
+msgstr "{name1} 沒有虛張聲勢! 給予 {name2} 六張牌"
 
 #: results.py:38
 msgid "Choose Color"
-msgstr "選顏色"
+msgstr "選擇顏色"
 
 #: results.py:56
 msgid "Last card (tap for game state):"
 msgid_plural "Cards (tap for game state):"
-msgstr[0] ""
+msgstr[0] "最後的牌(點一下以獲得遊戲狀態):"
+msgstr[1] "你的手牌(點一下以獲得遊戲狀態):"
 
 #: results.py:60 results.py:123 results.py:165
 msgid "Current player: {name}"
-msgstr "現在的玩家"
+msgstr "目前玩家: {name}"
 
 #: results.py:61 results.py:124 results.py:167
 msgid "Last card: {card}"
-msgstr "前一張牌: {card}"
+msgstr "上一張牌: {card"
 
 #: results.py:62 results.py:125 results.py:168
 msgid "Player: {player_list}"
 msgid_plural "Players: {player_list}"
-msgstr[0] "玩家: {player_list}"
+msgstr[0] "目前玩家: {player_list}"
+msgstr[1] "目前玩家: {player_list}"
 
 #: results.py:72
 #, python-format
 msgid "{name} ({number} card)"
 msgid_plural "{name} ({number} cards)"
-msgstr[0] "{name} ({number} 牌)"
+msgstr[0] "{name} (目前有 {number} 張牌)"
+msgstr[1] "{name} (目前有 {number} 張牌)"
 
 #: results.py:81
 msgid "You are not playing"
-msgstr "你不是在遊戲中"
+msgstr "你沒有在遊戲中"
 
 #: results.py:83
-msgid ""
-"Not playing right now. Use /new to start a game or /join to join the current "
+msgid "Not playing right now. Use /new to start a game or /join to join the current "
 "game in this group"
-msgstr "你不是在遊戲中, 用 /new 開始新一局或者 /join 加入進行中的遊戲"
+msgstr "你目前沒有在遊玩,使用 /new@unobot 開始新的遊戲或使用 /join@unobot 加入目前的遊戲"
 
 #: results.py:95
 msgid "The game wasn't started yet"
-msgstr "這一局還未開始"
+msgstr "遊戲尚未開始"
 
 #: results.py:97
 msgid "Start the game with /start"
-msgstr "用/start開始"
+msgstr "使用 /start 開始遊戲"
 
 #: results.py:108
 #, python-format
 msgid "Drawing {number} card"
 msgid_plural "Drawing {number} cards"
-msgstr[0] "抽{number}牌"
+msgstr[0] "抽 {number} 張牌"
+msgstr[1] "抽 {number} 張牌"
 
 #: results.py:136
 msgid "Pass"
-msgstr "Pass"
+msgstr "PASS! 下一位!"
 
 #: results.py:148
 msgid "I'm calling your bluff!"
-msgstr "我call你bluff"
+msgstr "別騙了,虛張聲勢 = ="
 
 #: settings.py:39
 msgid "Please edit your settings in a private chat with the bot."
-msgstr "請私信個bot修改你的設定"
+msgstr "請私訊我來修改你的設定"
 
 #: settings.py:49
 msgid "Enable statistics"
-msgstr "啓用數據記錄"
+msgstr "啟用統計資料"
 
 #: settings.py:51
 msgid "Delete all statistics"
-msgstr "刪除所有數據"
+msgstr "刪除所有統計資料"
 
 #: settings.py:53
 msgid "Language"
@@ -372,57 +379,62 @@ msgstr "語言"
 
 #: settings.py:54
 msgid "Settings"
-msgstr "設定"
+msgstr "設置"
 
 #: settings.py:68
 msgid "Enabled statistics!"
-msgstr "已經啓用了數據記錄!"
+msgstr "已啟用統計資料"
 
 #: settings.py:70
 msgid "Select locale"
-msgstr "請選擇地區"
+msgstr "設置語言"
 
 #: settings.py:81
 msgid "Deleted and disabled statistics!"
-msgstr "已經關了並且刪除了數據記錄"
+msgstr "已停用並刪除統計資料"
 
 #: settings.py:94
 msgid "Set locale!"
-msgstr "設定了區域"
+msgstr "語言已設置"
+
 
 #: simple_commands.py
-msgid ""
-"You did not enable statistics. Use /settings in a private chat with the bot "
-"to enable them."
-msgstr "你沒有啓用數據記錄, 私信個bot去啓用"
+msgid "You did not enable statistics. Use /settings in "
+"a private chat with the bot to enable them."
+msgstr "您尚未啟用統計資料,請私我"
+"<code>/settings</code> 來啟用他"
 
 #: simple_commands.py
 msgid "{number} game played"
 msgid_plural "{number} games played"
-msgstr[0] "玩了{number}局"
+msgstr[0] "已遊玩 {number} 個遊戲"
+msgstr[1] "已遊玩 {number} 個遊戲"
 
 #: simple_commands.py
 msgid "{number} first place"
 msgid_plural "{number} first places"
-msgstr[0] "贏了{number}次"
+msgstr[0] "拿了 {number} 次第一名"
+msgstr[1] "拿了 {number} 次第一名"
 
 #: simple_commands.py
 msgid "{number} card played"
 msgid_plural "{number} cards played"
-msgstr[0] "已經玩了{number}張牌"
+msgstr[0] "已遊玩 {number} 張牌"
+msgstr[1] "已遊玩 {number} 張牌"
+
 
 #: utils.py
 msgid "{emoji} Green"
-msgstr "{emoji} 綠色"
+msgstr "{emoji} 綠色 {emoji}"
 
 #: utils.py
 msgid "{emoji} Red"
-msgstr "{emoji} 紅色"
+msgstr "{emoji} 紅色 {emoji}"
 
 #: utils.py
 msgid "{emoji} Blue"
-msgstr "{emoji} 藍色"
+msgstr "{emoji} 藍色 {emoji}"
 
 #: utils.py
 msgid "{emoji} Yellow"
-msgstr "{emoji} 黃色"
+msgstr "{emoji} 黃色 {emoji}"
