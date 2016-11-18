@@ -1,0 +1,466 @@
+# Telegram bot to play UNO in group chats
+# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+# Jannes Höke <uno@jhoeke.de>, 2016.
+#
+#: bot.py:224
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: uno_bot 0.1\n"
+"Report-Msgid-Bugs-To: uno@jhoeke.de\n"
+"POT-Creation-Date: 2016-05-19 22:38+0200\n"
+"PO-Revision-Date: 2016-05-21 21:16+0200\n"
+"Last-Translator: Jannes Höke <uno@jhoeke.de>\n"
+"Language-Team: Deutsch <uno@jhoeke.de>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: bot.py:60
+msgid "Follow these steps:\n"
+"\n"
+"1. Add this bot to a group\n"
+"2. In the group, start a new game with /new or join an already running game "
+"with /join\n"
+"3. After at least two players have joined, start the game with /start\n"
+"4. Type <code>@unobot</code> into your chat box and hit <b>space</b>, "
+"or click the <code>via @unobot</code> text next to messages. You will "
+"see your cards (some greyed out), any extra options like drawing, and a <b>?"
+"</b> to see the current game state. The <b>greyed out cards</b> are those "
+"you <b>can not play</b> at the moment. Tap an option to execute the selected "
+"action.\n"
+"Players can join the game at any time. To leave a game, use /leave. If a "
+"player takes more than 90 seconds to play, you can use /skip to skip that "
+"player. "
+"Use /notify_me to receive a private message when a new game is started.\n"
+"\n"
+"<b>Language</b> and other settings: /settings\n"
+"Other commands (only game creator):\n"
+"/close - Close lobby\n"
+"/open - Open lobby\n"
+"/enable_translations - Translate relevant texts into all "
+"languages spoken in a game\n"
+"/disable_translations - Use English for those texts\n"
+"\n"
+"<b>Experimental:</b> Play in multiple groups at the same time. Press the "
+"<code>Current game: ...</code> button and select the group you want to play "
+"a card in.\n"
+"If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
+"unobotupdates\">update channel</a> and buy an UNO card game."
+msgstr ""
+"Выполните следующие действия:\n"
+"\n"
+"1. Добавьте этого бота в свою группу\n"
+"2. Создайте новую игру в своей группе с помощью команды /new
+либо присоединитесь к уже существующей, написав /"
+"join\n"
+"3. Как только к игре присоединятся по меньшей мере двое игроков, Вы можете начать "
+"с помощью команды /start\n"
+"4. Напишите <code>@unobot</code> в окне чата и поставьте "
+"<b>пробел</b> либо нажмите на текст <code>via @unobot</code> "
+"рядом с сообщениями. Вы увидите свои карточки (некоторые из них будут серыми), "
+"а также некоторые дополнительные опции и кнопку <b>?</b> для просмотра текущего "
+"состояния игры. Вы не можете выбрать <b>серые карточки</b>. "
+"Нажмите на доступную кнопку для осуществления выбранного действия. \n "
+"Присоединиться к игре можно в любой момент. Выйти из партии можно с помощью "
+"команды /leave. Если игрок затратил больше 90 секунд на ход, его ход можно пропустить "
+"командой /skip. "
+"Используйте /notify_me для получения приватного сообщения о начале новой партии.\n"
+"\n"
+"<b>Язык</b> и другие настройки: /settings\n"
+"Другие команды (только для организаторов партии):\n"
+"/close - Закрыть лобби\n"
+"/open - Открыть лобби\n"
+"/enable_translations - Разрешить вывод текста на языках игроков/n"
+"/disable_translations - Выводить текст только на Английском языке\n"
+"\n"
+"<b>Экспериментальные опции</b>: Одновременная игра в нескольких группах. "
+"Нажмите на кнопку"
+"<code>Текущая игры: ...</code> и выберите, в какой группе сделать ход.\n"
+"Если Вам понравился этот бот, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">оцените его</a> и следите за <a href=\"https://telegram.me/"
+"unobotupdates\">новостным каналом</a>, а такщже купите себе карточки UNO."
+
+#: bot.py:88
+msgid ""
+"This bot is Free Software and licensed under the AGPL. The code is available "
+"here: \n"
+"https://github.com/jh0ker/mau_mau_bot"
+msgstr ""
+"Этот бот является программой с открытым исходным кодом и выпущен под лицензией AGPL. "
+"Весь код доступен по адресу:\n"
+"https://github.com/jh0ker/mau_mau_bot"
+
+#: bot.py:133
+msgid ""
+"Created a new game! Join the game with /join and start the game with /start"
+msgstr ""
+"Создана новая игра! Присоединитесь к ней командой /join и начните, написав /start"
+
+#: bot.py
+msgid "Send this command in a group to be notified when a new game is started there."
+msgstr "Отправьте эту команду в группе, чтобы получать уведомления о новых партиях. "
+
+#: bot.py
+msgid "A new game has been started in {title}"
+msgstr "В {title} началась новая игра"
+
+#: bot.py:152
+msgid "The lobby is closed"
+msgstr "Лобби закрыто"
+
+#: bot.py:156
+msgid "No game is running at the moment. Create a new game with /new"
+msgstr "Нет активных партий в данный момент. Создайте новую, написав /new"
+
+#: bot.py:162
+msgid "You already joined the game. Start the game with /start"
+msgstr "Вы уже присоединились к этой игре. Начните ее с помощью /start"
+
+#: bot.py:167
+msgid "Joined the game"
+msgstr "Присоединился к игре"
+
+#: bot.py:179 bot.py:191
+msgid "You are not playing in a game in this group."
+msgstr "Вы не играете в данной группе."
+
+#: bot.py:197 bot.py:258 bot.py:595
+msgid "Game ended!"
+msgstr "Игра окончена!"
+
+#: bot.py:201
+msgid "Okay. Next Player: {name}"
+msgstr "Ок. Следующий игрок: {name}"
+
+#: bot.py:219
+msgid "Game not found."
+msgstr "Игры не найдены."
+
+#: bot.py:223
+msgid "Back to last group"
+msgstr "Вернуться к последней группе"
+
+#: bot.py:227
+msgid "Please switch to the group you selected!"
+msgstr "Пожалуйста, переключитесь на выбранную группу!"
+
+#: bot.py:233
+#, python-format
+msgid ""
+"Selected group: {group}\n"
+"<b>Make sure that you switch to the correct group!</b>"
+msgstr ""
+"Выбранная группа: {group}\n"
+"<b>Убедитесь, что Вы переключились на нее!</b>"
+
+#: bot.py:260
+#, python-format
+msgid "Removing {name} from the game"
+msgstr "Удаляю {name} из игры"
+
+#: bot.py:273
+msgid "There is no game running in this chat. Create a new one with /new"
+msgstr ""
+"Нет ни одной игры в данном чате. Создайте новую командой /new"
+
+#: bot.py:278
+msgid "The game has already started"
+msgstr "Игра уже началась"
+
+#: bot.py:281
+msgid "At least two players must /join the game before you can start it"
+msgstr "Как минимум два человека должны присоединиться, прежде чем Вы сможете "
+"начать игру"
+
+#: bot.py:297
+#, python-format, fuzzy
+msgid "First player: {name}\n"
+"Use /close to stop people from joining the game.\n"
+"Enable multi-translations with /enable_translations"
+msgstr ""
+"Первый игрок: {name}\n"
+"Напишите /close, чтобы запретить присоединяться к этой игре."
+"Включите перевод текстов командой /enable-translations"
+
+#: bot.py:321
+msgid "Please select the group you want to play in."
+msgstr "Пожалуйста, выберите группу, в которой хотите играть."
+
+#: bot.py:335 bot.py:361
+msgid "There is no running game in this chat."
+msgstr "Нет ни одной игры в данном чате."
+
+#: bot.py:342
+msgid "Closed the lobby. No more players can join this game."
+msgstr ""
+"Лобби закрыто. К данной игре нельзя присоединиться."
+
+#: bot.py:348 bot.py:373
+#, python-format
+msgid "Only the game creator ({name}) can do that."
+msgstr "Только создатель партии ({name}) может это сделать."
+
+#: bot.py:349
+#, python-format
+msgid "Enabled multi-translations. Disable with /disable_translations"
+msgstr "Перевод активирован. Выключите с помощью /disable_translations"
+
+#: bot.py:377
+#, python-format
+msgid "Disabled multi-translations. Enable them again with /enable_translations"
+msgstr "Перевод отключен. Вы можете включить его с помощью "
+"/enable_translations"
+
+#: bot.py:368
+msgid "Opened the lobby. New players may /join the game."
+msgstr "Лобби открыто. Теперь к игре можно присоединиться."
+
+#: bot.py:386
+msgid "You are not playing in a game in this chat."
+msgstr "Вы не играете ни в одну из партий в данном чате."
+
+#: bot.py:400
+#, python-format
+msgid "Please wait {time} second"
+msgid_plural "Please wait {time} seconds"
+msgstr[0] "Пожалуйста, подождите {time} секунды"
+msgstr[1] "Пожалуйста, подождите {time} секунд"
+
+#: bot.py:413
+#, python-format
+msgid "Waiting time to skip this player has been reduced to {time} second.\n"
+"Next player: {name}"
+msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
+msgstr[0] "Время на ход для данного игрока было сокращено на {time} "
+"секунды.\n"
+"Следюущий игрок: {name}"
+msgstr[1] "Время на ход для данного игрока было сокращено на {time} "
+"секунд.\n"
+"Следующий игрок: {name}"
+
+#: bot.py:424
+#, python-format
+msgid ""
+"{name1} was skipped four times in a row and has been removed from the game.\n"
+"Next player: {name2}"
+msgstr ""
+"{name1} был пропущен 4 раза подряд и вышел из игры.\n"
+"Следующий игрок: {name2}"
+
+#: bot.py:432
+#, python-format
+msgid ""
+"{name} was skipped four times in a row and has been removed from the game.\n"
+"The game ended."
+msgstr ""
+"{name1} был пропущен 4 раза поряд и вышел из игры.\n"
+"Игра окончена."
+
+#: bot.py:455
+msgid "All news here: https://telegram.me/unobotupdates"
+msgstr "Все новости здесь: https://telegram.me/unobotupdates"
+
+#: bot.py:513
+#, python-format
+msgid "Current game: {game}"
+msgstr "Текущая игра: {game}"
+
+#: bot.py:545
+#, python-format
+msgid "Cheat attempt by {name}"
+msgstr "{name} попытался сжульничать!"
+
+#: bot.py:562
+msgid "Next player: {name}"
+msgstr "Следующий игрок: {name}"
+
+#: bot.py:572
+#, python-format
+msgid "Waiting time for {name} has been reset to 90 seconds"
+msgstr "Время на ход для {name} было сброшено до 90 секунд."
+
+#: bot.py:585
+msgid "Please choose a color"
+msgstr "Пожалуйста, выберите цвет"
+
+#: bot.py:591
+#, python-format
+msgid "{name} won!"
+msgstr "{name} победил!"
+
+#: bot.py:613 bot.py:635 bot.py:647
+msgid "There are no more cards in the deck."
+msgstr "В колоде больше нет карт."
+
+#: bot.py:627
+#, python-format
+msgid "Bluff called! Giving 4 cards to {name}"
+msgstr "Это блеф! {name} получает 4 карты."
+
+#: bot.py:639
+#, python-format
+msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
+msgstr "{name1} не блефовал! {name2} получает 6 карт."
+
+#: results.py:38
+msgid "Choose Color"
+msgstr "Выберите цвет"
+
+#: results.py:56
+msgid "Last card (tap for game state):"
+msgid_plural "Cards (tap for game state):"
+msgstr[0] "Последняя карта (нажмите для просмотра статуса игры):"
+msgstr[1] "Карты (нажмите для просмотра статуса игры):"
+
+#: results.py:60 results.py:123 results.py:165
+msgid "Current player: {name}"
+msgstr "Текущий игрок: {name}"
+
+#: results.py:61 results.py:124 results.py:167
+msgid "Last card: {card}"
+msgstr "Последняя карта: {card}"
+
+#: results.py:62 results.py:125 results.py:168
+msgid "Player: {player_list}"
+msgid_plural "Players: {player_list}"
+msgstr[0] "Игрок: {player_list}"
+msgstr[1] "Игроки: {player_list}"
+
+#: results.py:72
+#, python-format
+msgid "{name} ({number} card)"
+msgid_plural "{name} ({number} cards)"
+msgstr[0] "{name} ({number} карты)"
+msgstr[1] "{name} ({number} карт)"
+
+#: results.py:81
+msgid "You are not playing"
+msgstr "Вы не играете"
+
+#: results.py:83
+msgid ""
+"Not playing right now. Use /new to start a game or /join to join the current "
+"game in this group"
+msgstr ""
+"В данный момент Вы не играете. Используйте /new, чтобы начать новую, или /"
+"join, чтобы присоединиться к текущей."
+
+#: results.py:95
+msgid "The game wasn't started yet"
+msgstr "Игра еще не началась."
+
+#: results.py:97
+msgid "Start the game with /start"
+msgstr "Начните новую игру с помощью /start"
+
+#: results.py:108
+#, python-format
+msgid "Drawing {number} card"
+msgid_plural "Drawing {number} cards"
+msgstr[0] "Забирает {number} карты"
+msgstr[1] "Забирает {number} карты"
+
+#: results.py:136
+msgid "Pass"
+msgstr "Пас"
+
+#: results.py:148
+msgid "I'm calling your bluff!"
+msgstr "Я бросаю тебе вызов!"
+
+#: settings.py:39
+msgid "Please edit your settings in a private chat with the bot."
+msgstr "Пожалуйста, напишите боту для изменения своих настроек."
+
+#: settings.py:49
+msgid "Enable statistics"
+msgstr "Включить статистику"
+
+#: settings.py:51
+msgid "Delete all statistics"
+msgstr "Удалить всю статистику"
+
+#: settings.py:53
+msgid "Language"
+msgstr "Язык"
+
+#: settings.py:54
+msgid "Settings"
+msgstr "Настройки"
+
+#: settings.py:68
+msgid "Enabled statistics!"
+msgstr "Статистика включена!"
+
+#: settings.py:70
+msgid "Select locale"
+msgstr "Выберите язык"
+
+#: settings.py:81
+msgid "Deleted and disabled statistics!"
+msgstr "Статистика удалена и отключена!"
+
+#: settings.py:94
+msgid "Set locale!"
+msgstr "Язык установлен!"
+
+
+#: simple_commands.py
+msgid "You did not enable statistics. Use /settings in "
+"a private chat with the bot to enable them."
+msgstr "Вы не включали статистику. Чтобы ее активировать, напишите "
+"/settings в приватном чате с ботом."
+
+#: simple_commands.py
+msgid "{number} game played"
+msgid_plural "{number} games played"
+msgstr[0] "{number} игры сыграно"
+msgstr[1] "{number} игр сыграно"
+
+#: simple_commands.py
+msgid "{number} first place"
+msgid_plural "{number} first places"
+msgstr[0] "{number} первое место"
+msgstr[1] "{number} первых мест"
+
+#: simple_commands.py
+msgid "{number} card played"
+msgid_plural "{number} cards played"
+msgstr[0] "{number} карты сыграно"
+msgstr[1] "{number} карты сыграно"
+
+
+#: utils.py
+msgid "{emoji} Green"
+msgstr "{emoji} Зеленый"
+
+#: utils.py
+msgid "{emoji} Red"
+msgstr "{emoji} Красный"
+
+#: utils.py
+msgid "{emoji} Blue"
+msgstr "{emoji} Синий"
+
+#: utils.py
+msgid "{emoji} Yellow"
+msgstr "{emoji} Желтый"
