@@ -19,7 +19,7 @@
 
 
 from telegram.ext import Updater
-from telegram.utils.botan import Botan
+from telegram.contrib.botan import Botan
 
 from game_manager import GameManager
 from database import db
