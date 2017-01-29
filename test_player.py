@@ -178,3 +178,6 @@ class Test(unittest.TestCase):
         self.game.choose_color(c.GREEN)
 
         self.assertFalse(self.game.current_player.prev.bluffing)
+
+if __name__ == '__main__':
+    unittest.main()
