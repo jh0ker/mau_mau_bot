@@ -167,7 +167,7 @@ class Player(object):
             self.logger.debug("Card's color or value doesn't match")
             is_playable = False
         elif last.value == c.DRAW_TWO and not \
-                (card.value == c.DRAW_TWO or card.value == c.DRAW_FOUR) and self.game.draw_counter:
+                (card.value == c.DRAW_TWO or card.special == c.DRAW_FOUR) and self.game.draw_counter:
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False
         elif last.special == c.DRAW_FOUR and self.game.draw_counter:
