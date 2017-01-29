@@ -25,6 +25,13 @@ from game import Game
 from player import Player
 import card as c
 
+import logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG,
+    filename='example.log')
+logger = logging.getLogger(__name__)
+
 
 class Test(unittest.TestCase):
 
