@@ -41,7 +41,7 @@ class _Underscore(object):
             )
             for locale
             in available_locales.keys()
-            if locale != 'en_US'  # No translation file for en_US
+            if locale != 'zh_CN'  # No translation file for en_US
         }
         self.locale_stack = list()
 
@@ -86,7 +86,7 @@ def __(singular, plural=None, n=1, multi=False):
     translations = list()
 
     if not multi and len(set(_.locale_stack)) >= 1:
-        translations.append(_(singular, plural, n, 'en_US'))
+        translations.append(_(singular, plural, n, 'zh_CN'))
 
     else:
         for locale in _.locale_stack:
@@ -107,10 +107,10 @@ def user_locale(func):
         with db_session:
             us = UserSetting.get(id=user.id)
 
-        if us and us.lang != 'en':
+        if us and us.lang != 'zh':
             _.push(us.lang)
         else:
-            _.push('en_US')
+            _.push('zh_CN')
 
         result = func(bot, update, *pargs, **kwargs)
         _.pop()
@@ -130,10 +130,10 @@ def game_locales(func):
             for player in player.game.players:
                 us = UserSetting.get(id=player.user.id)
 
-                if us and us.lang != 'en':
+                if us and us.lang != 'zh':
                     loc = us.lang
                 else:
-                    loc = 'en_US'
+                    loc = 'zh_CN'
 
                 if loc in locales:
                     continue
