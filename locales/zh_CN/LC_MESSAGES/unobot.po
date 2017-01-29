@@ -345,7 +345,7 @@ msgstr "请先通过 /start 开始游戏"
 #, python-format
 msgid "Drawing {number} card"
 msgid_plural "Drawing {number} cards"
-msgstr[0] "抽取 1 张牌"
+msgstr[0] "抽取 {number} 张牌"
 
 msgid "Drawing {number} cards"
 msgstr "抽取 {number} 张牌"
