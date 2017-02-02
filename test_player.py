@@ -167,7 +167,6 @@ class Test(unittest.TestCase):
         p.cards = [c.Card(c.RED, c.DRAW_TWO), c.Card(c.RED, '5'),
                    c.Card(c.BLUE, '0'), c.Card(c.GREEN, '5'),
                    c.Card(c.GREEN, c.DRAW_TWO),
-                   c.Card(None, None, c.DRAW_FOUR),
                    c.Card(None, None, c.DRAW_FOUR)]
 
         expected = [c.Card(None, None, c.DRAW_FOUR)]
