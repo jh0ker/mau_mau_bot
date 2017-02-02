@@ -156,6 +156,7 @@ class Test(unittest.TestCase):
 
 #         expected = list()
 
+<<<<<<< HEAD
 #         self.assertListEqual(p.playable_cards(), expected)
         
     def test_playable_cards_on_draw_four_then_four(self):
@@ -171,6 +172,8 @@ class Test(unittest.TestCase):
 
         expected = [c.Card(None, None, c.DRAW_FOUR)]
 
+=======
+>>>>>>> revert play 4 then 4 rule
         self.assertListEqual(p.playable_cards(), expected)
 
     def test_bluffing(self):
