@@ -177,7 +177,7 @@ class Player(object):
                 (card.special == c.CHOOSE or card.special == c.DRAW_FOUR):
             self.logger.debug("Can't play colorchooser on another one")
             is_playable = False
-        elif not last.color:
+        elif not last.color and not last.special == c.CHOOSE:
             self.logger.debug("Last card has no color")
             is_playable = False
 
