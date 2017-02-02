@@ -95,7 +95,7 @@ class GameManager(object):
 
         player = Player(game, user)
         game.joined_before.append(user.id)
-        players.insert(random.randrange(len(players), player)
+        players.insert(random.randrange(len(players)), player)
                        
         self.userid_current[user.id] = player
 
