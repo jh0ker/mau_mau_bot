@@ -161,8 +161,8 @@ class Test(unittest.TestCase):
     def test_playable_cards_on_draw_four_then_four(self):
         p = Player(self.game, "Player 0")
 
-        self.game.last_card = c.Card(c.RED, c.DRAW_TWO)
-        self.game.draw_counter = 2
+        self.game.last_card = c.Card(c.RED, None, c.DRAW_FOUR)
+        self.game.draw_counter = 4
 
         p.cards = [c.Card(c.RED, c.DRAW_TWO), c.Card(c.RED, '5'),
                    c.Card(c.BLUE, '0'), c.Card(c.GREEN, '5'),
