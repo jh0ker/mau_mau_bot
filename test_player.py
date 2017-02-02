@@ -142,21 +142,21 @@ class Test(unittest.TestCase):
 
         self.assertListEqual(p.playable_cards(), expected)
 
-    def test_playable_cards_on_draw_four(self):
-        p = Player(self.game, "Player 0")
+#     def test_playable_cards_on_draw_four(self):
+#         p = Player(self.game, "Player 0")
 
-        self.game.last_card = c.Card(c.RED, None, c.DRAW_FOUR)
-        self.game.draw_counter = 4
+#         self.game.last_card = c.Card(c.RED, None, c.DRAW_FOUR)
+#         self.game.draw_counter = 4
 
-        p.cards = [c.Card(c.RED, c.DRAW_TWO), c.Card(c.RED, '5'),
-                   c.Card(c.BLUE, '0'), c.Card(c.GREEN, '5'),
-                   c.Card(c.GREEN, c.DRAW_TWO),
-                   c.Card(None, None, c.DRAW_FOUR),
-                   c.Card(None, None, c.CHOOSE)]
+#         p.cards = [c.Card(c.RED, c.DRAW_TWO), c.Card(c.RED, '5'),
+#                    c.Card(c.BLUE, '0'), c.Card(c.GREEN, '5'),
+#                    c.Card(c.GREEN, c.DRAW_TWO),
+#                    c.Card(None, None, c.DRAW_FOUR),
+#                    c.Card(None, None, c.CHOOSE)]
 
-        expected = list()
+#         expected = list()
 
-        self.assertListEqual(p.playable_cards(), expected)
+#         self.assertListEqual(p.playable_cards(), expected)
         
     def test_playable_cards_on_draw_four_then_four(self):
         p = Player(self.game, "Player 0")
