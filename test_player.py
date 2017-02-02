@@ -157,6 +157,22 @@ class Test(unittest.TestCase):
         expected = list()
 
         self.assertListEqual(p.playable_cards(), expected)
+        
+    def test_playable_cards_on_draw_four_then_four(self):
+        p = Player(self.game, "Player 0")
+
+        self.game.last_card = c.Card(c.RED, c.DRAW_TWO)
+        self.game.draw_counter = 2
+
+        p.cards = [c.Card(c.RED, c.DRAW_TWO), c.Card(c.RED, '5'),
+                   c.Card(c.BLUE, '0'), c.Card(c.GREEN, '5'),
+                   c.Card(c.GREEN, c.DRAW_TWO),
+                   c.Card(None, None, c.DRAW_FOUR)]
+                   c.Card(None, None, c.DRAW_FOUR)]
+
+        expected = [c.Card(None, None, c.DRAW_FOUR)]
+
+        self.assertListEqual(p.playable_cards(), expected)
 
     def test_bluffing(self):
         p = Player(self.game, "Player 0")
