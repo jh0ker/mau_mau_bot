@@ -19,6 +19,7 @@
 
 
 import logging
+import random
 
 from game import Game
 from player import Player
@@ -77,7 +78,7 @@ class GameManager(object):
         # Don not re-add a player and remove the player from previous games in
         # this chat, if he is in one of them
         for player in players:
-            if player in game.players:
+            if player in game.players or user.id in game.joined_before:
                 raise AlreadyJoinedError()
         else:
             try:
@@ -93,8 +94,9 @@ class GameManager(object):
                 players = self.userid_players[user.id]
 
         player = Player(game, user)
-
-        players.append(player)
+        game.joined_before.append(user.id)
+        players.insert(random.randrange(len(players), player)
+                       
         self.userid_current[user.id] = player
 
     def leave_game(self, user, chat):
