@@ -154,7 +154,7 @@ class Test(unittest.TestCase):
                    c.Card(None, None, c.DRAW_FOUR),
                    c.Card(None, None, c.CHOOSE)]
 
-        expected = list()
+        expected = [c.Card(None, None, c.DRAW_FOUR)]
         self.assertListEqual(p.playable_cards(), expected)
         
 #     def test_playable_cards_on_draw_four_then_four(self):
