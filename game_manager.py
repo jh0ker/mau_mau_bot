@@ -78,7 +78,8 @@ class GameManager(object):
         # Don not re-add a player and remove the player from previous games in
         # this chat, if he is in one of them
         for player in players:
-            if player in game.players or user.id in game.joined_before:
+            # Try to pervent someone win or leave then join again.
+            if player in game.players or user.id in game.joined_before: 
                 raise AlreadyJoinedError()
         else:
             try:
