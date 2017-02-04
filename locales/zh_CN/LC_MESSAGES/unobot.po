@@ -247,7 +247,7 @@ msgid ""
 "The game ended."
 msgstr ""
 "{name1} 已经被连续跳过了 4 次。\n"
-"游戏结束"
+"游戏结束。"
 
 #: bot.py:455
 msgid "All news here: https://telegram.me/unobotupdates"
@@ -288,12 +288,12 @@ msgstr "已经没有更多的底牌了。"
 #: bot.py:627
 #, python-format
 msgid "Bluff called! Giving 4 cards to {name}"
-msgstr "质疑成功！给 4 张牌 {name}"
+msgstr "质疑成功！给 {name} 4 张牌"
 
 #: bot.py:639
 #, python-format
 msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
-msgstr "质疑 {name1} 失败！给 6 张牌 {name2}"
+msgstr "质疑 {name1} 失败！给 {name2} 6 张牌"
 
 #: results.py:38
 msgid "Choose Color"
@@ -345,7 +345,7 @@ msgstr "请先通过 /start 开始游戏"
 #, python-format
 msgid "Drawing {number} card"
 msgid_plural "Drawing {number} cards"
-msgstr[0] "抽取 1 张牌"
+msgstr[0] "抽取 {number} 张牌"
 
 msgid "Drawing {number} cards"
 msgstr "抽取 {number} 张牌"
