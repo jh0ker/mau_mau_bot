@@ -95,6 +95,8 @@ class GameManager(object):
                 players = self.userid_players[user.id]
 
         player = Player(game, user)
+        
+        # Randomize player position.
         game.joined_before.append(user.id)
         if len(players) > 2:
           players.insert(random.randrange(len(players)), player)
