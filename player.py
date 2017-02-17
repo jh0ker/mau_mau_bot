@@ -166,11 +166,11 @@ class Player(object):
                 not card.special):
             self.logger.debug("Card's color or value doesn't match")
             is_playable = False
-        elif last.value == c.DRAW_TWO and not \
-                (card.value == c.DRAW_TWO or card.special == c.DRAW_FOUR) and self.game.draw_counter:
+        elif last.value == c.DRAW_TWO and self.game.draw_counter: """and not \
+                (card.value == c.DRAW_TWO or card.special == c.DRAW_FOUR):"""
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False
-        elif last.special == c.DRAW_FOUR and self.game.draw_counter and not card.special == c.DRAW_FOUR:
+        elif last.special == c.DRAW_FOUR and self.game.draw_counter: """and not card.special == c.DRAW_FOUR:"""
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False
         elif (last.special == c.CHOOSE) and \
@@ -178,8 +178,8 @@ class Player(object):
             (last.special == c.DRAW_FOUR and card.special == c.CHOOSE):
             self.logger.debug("Can't play colorchooser on another one")
             is_playable = False
-        # Pervent game locks by choose colors.
-        # When player is going leave and he didn't selected a color, it cause game locks.
+        # Prevent game being locked by choosing colors.
+        # When player is going to leave and he didn't selected a color, it cause game locks.
         elif not last.color and not (last.special == c.CHOOSE or last.special == c.DRAW_FOUR):
             self.logger.debug("Last card has no color")
             is_playable = False
