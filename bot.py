@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Telegram bot to play UNO in group chats
-# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+# Copyright (c) 2016-2017 Jannes Höke <uno@jhoeke.de> and Karho Yau
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -36,7 +36,7 @@ from user_setting import UserSetting
 from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
-                    NotEnoughPlayersError, DeckEmptyError)
+                    NotEnoughPlayersError, DeckEmptyError, PlayerLeftError)
 from utils import send_async, answer_async, error, TIMEOUT
 from shared_vars import botan, gm, updater, dispatcher
 from internationalization import _, __, user_locale, game_locales
@@ -605,7 +605,13 @@ def process_result(bot, update):
     elif result_id == 'pass':
         game.turn()
     elif result_id in c.COLORS:
-        game.choose_color(result_id)
+        try:
+            game.choose_color(result_id)
+        except PlayerLeftError:
+            send_async(bot, chat.id,
+                       text=__("There are errors in choosing color. "
+                               "Color is now unchanged.", multi=game.translate))
+            game.turn()
     else:
         reset_waiting_time(bot, player)
         do_play_card(bot, player, result_id)
