@@ -63,7 +63,7 @@ class Player(object):
         self.drew = False
         self.anti_cheat = 0
         self.turn_started = datetime.now()
-        self.waiting_time = 90
+        self.waiting_time = 60
 
     def leave(self):
         """Removes player from the game and closes the gap in the list"""
@@ -173,14 +173,15 @@ class Player(object):
         elif last.special == c.DRAW_FOUR and self.game.draw_counter: """and not card.special == c.DRAW_FOUR:"""
             self.logger.debug("Player has to draw and can't counter")
             is_playable = False
-        elif (last.special == c.CHOOSE) and \
-                (card.special == c.CHOOSE or card.special == c.DRAW_FOUR) or \
-            (last.special == c.DRAW_FOUR and card.special == c.CHOOSE):
+        elif  (last.special == c.CHOOSE or last.special == c.DRAW_FOUR) and \
+                (card.special == c.CHOOSE or card.special == c.DRAW_FOUR):
+                """(last.special == c.CHOOSE and (card.special == c.CHOOSE or card.special == c.DRAW_FOUR)) or \
+            (last.special == c.DRAW_FOUR and card.special == c.CHOOSE):"""
             self.logger.debug("Can't play colorchooser on another one")
             is_playable = False
         # Prevent game being locked by choosing colors.
-        # When player is going to leave and he didn't selected a color, it cause game locks.
-        elif not last.color and not (last.special == c.CHOOSE or last.special == c.DRAW_FOUR):
+        # When player is going to leave and he didn't select a color, it cause game locks.
+        elif not last.color and (last.special != c.CHOOSE and last.special != c.DRAW_FOUR):
             self.logger.debug("Last card has no color")
             is_playable = False
 
