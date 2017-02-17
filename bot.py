@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 @user_locale
 def notify_me(bot, update):
     """Handler for /notify_me command, pm people for next game"""
-    chat_id = update.message.chat_id
+    chat_id = update.message.chat.id
     if update.message.chat.type == 'private':
         send_async(bot,
                    chat_id,
@@ -64,6 +64,11 @@ def notify_me(bot, update):
     else:
         try:
             gm.remind_dict[chat_id].add(update.message.from_user.id)
+            send_async(bot,
+                       chat_id,
+                       text=_("You will be notified "
+                          "when a new game is started in {title}.").format(
+                                title=update.message.chat.title))
         except KeyError:
             gm.remind_dict[chat_id] = {update.message.from_user.id}
 
@@ -71,7 +76,7 @@ def notify_me(bot, update):
 @user_locale
 def new_game(bot, update):
     """Handler for the /new command"""
-    chat_id = update.message.chat_id
+    chat_id = update.message.chat.id
 
     if update.message.chat.type == 'private':
         help(bot, update)
@@ -79,19 +84,20 @@ def new_game(bot, update):
     else:
 
         if update.message.chat_id in gm.remind_dict:
-            for user in gm.remind_dict[update.message.chat_id]:
+            for user in gm.remind_dict[chat_id]:
                 send_async(bot,
                            user,
-                           text=_("A new game has been started in {title}").format(
+                           text=_("A new game has been started in {title}.").format(
                                 title=update.message.chat.title))
 
-            del gm.remind_dict[update.message.chat_id]
+            del gm.remind_dict[chat_id]
 
         game = gm.new_game(update.message.chat)
         game.owner = update.message.from_user
         send_async(bot, chat_id,
-                   text=_("Created a new game! Join the game with /join "
+                   text=_("Created a new game! Wait for your friends "
                           "and start the game with /start"))
+        gm.join_game(update.message.from_user, update.message.chat)
 
         if botan:
             botan.track(update.message, 'New games')
@@ -475,7 +481,7 @@ def skip_player(bot, update):
         try:
             gm.leave_game(skipped_player.user, chat)
             send_async(bot, chat.id,
-                       text=__("{name1} was skipped four times in a row "
+                       text=__("{name1} was skipped three times in a row "
                                "and has been removed from the game.\n"
                                "Next player: {name2}", multi=game.translate)
                        .format(name1=display_name(skipped_player.user),
@@ -483,12 +489,17 @@ def skip_player(bot, update):
 
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
-                       text=__("{name} was skipped four times in a row "
+                       text=__("{name} was skipped three times in a row "
                                "and has been removed from the game.\n"
                                "The game ended.", multi=game.translate)
                        .format(name=display_name(skipped_player.user)))
 
-            gm.end_game(chat.id, skipped_player.user)
+            us2 = UserSetting.get(id=skipped_player.user.id)
+            if us2 and us2.stats:
+                us2.games_played += 1
+                
+            gm.end_game(chat, skipped_player.user)
+           
 
 
 @game_locales
@@ -609,10 +620,10 @@ def reset_waiting_time(bot, player):
     """Resets waiting time for a player and sends a notice to the group"""
     chat = player.game.chat
 
-    if player.waiting_time < 90:
-        player.waiting_time = 90
+    if player.waiting_time < 60:
+        player.waiting_time = 60
         send_async(bot, chat.id,
-                   text=__("Waiting time for {name} has been reset to 90 "
+                   text=__("Waiting time for {name} has been reset to 60 "
                            "seconds", multi=player.game.translate)
                    .format(name=display_name(player.user)))
 
