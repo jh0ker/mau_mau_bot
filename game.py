@@ -40,7 +40,7 @@ class Game(object):
     def __init__(self, chat):
         self.chat = chat
         self.last_card = None
-        self.joined_before = [] #FIXME: Change it as set()
+        self.joined_before = set() #FIXME: Change it as set()
 
         while not self.last_card or self.last_card.special:
             self.deck = Deck()
