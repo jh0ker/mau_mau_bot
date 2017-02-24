@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Telegram bot to play UNO in group chats
-# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+# Copyright (c) 2016 - 2017 Jannes Höke <uno@jhoeke.de> and Karho Yau
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -36,11 +36,12 @@ class Game(object):
     open = True
     translate = False
     players_won = 0
+    mode = 0
 
     def __init__(self, chat):
         self.chat = chat
         self.last_card = None
-        self.joined_before = set() #FIXME: Change it as set()
+        self.joined_before = set()
 
         while not self.last_card or self.last_card.special:
             self.deck = Deck()
