@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Telegram bot to play UNO in group chats
-# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+# Copyright (c) 2016 - 2017 Jannes Höke <uno@jhoeke.de> and Karho Yau
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -160,29 +160,54 @@ class Player(object):
 
         is_playable = True
         last = self.game.last_card
+        mode = self.game.mode
         self.logger.debug("Checking card " + str(card))
 
-        if (card.color != last.color and card.value != last.value and
+        if mode == 0: # This mode is to apply the original rule
+            if (card.color != last.color and card.value != last.value and
                 not card.special):
-            self.logger.debug("Card's color or value doesn't match")
-            is_playable = False
-        elif last.value == c.DRAW_TWO and self.game.draw_counter: """and not \
+                self.logger.debug("Card's color or value doesn't match")
+                is_playable = False
+            elif last.value == c.DRAW_TWO and self.game.draw_counter: """and not \
                 (card.value == c.DRAW_TWO or card.special == c.DRAW_FOUR):"""
-            self.logger.debug("Player has to draw and can't counter")
-            is_playable = False
-        elif last.special == c.DRAW_FOUR and self.game.draw_counter: """and not card.special == c.DRAW_FOUR:"""
-            self.logger.debug("Player has to draw and can't counter")
-            is_playable = False
-        elif  (last.special == c.CHOOSE or last.special == c.DRAW_FOUR) and \
+                self.logger.debug("Player has to draw and can't counter")
+                is_playable = False
+            elif last.special == c.DRAW_FOUR and self.game.draw_counter: """and not card.special == c.DRAW_FOUR:"""
+                self.logger.debug("Player has to draw and can't counter")
+                is_playable = False
+            elif  (last.special == c.CHOOSE or last.special == c.DRAW_FOUR) and \
                 (card.special == c.CHOOSE or card.special == c.DRAW_FOUR):
                 """(last.special == c.CHOOSE and (card.special == c.CHOOSE or card.special == c.DRAW_FOUR)) or \
             (last.special == c.DRAW_FOUR and card.special == c.CHOOSE):"""
-            self.logger.debug("Can't play colorchooser on another one")
-            is_playable = False
-        # Prevent game being locked by choosing colors.
-        # When player is going to leave and he didn't select a color, it cause game locks.
-        elif not last.color and (last.special != c.CHOOSE and last.special != c.DRAW_FOUR):
-            self.logger.debug("Last card has no color")
-            is_playable = False
+                self.logger.debug("Can't play colorchooser on another one")
+                is_playable = False
+            # Prevent game being locked by choosing colors.
+            # When player is going to leave and he doesn't select a color, it causes game lock.
+            elif not last.color and (last.special != c.CHOOSE and last.special != c.DRAW_FOUR):
+                self.logger.debug("Last card has no color")
+                is_playable = False
+
+        elif mode == 1: # This mode is to apply the Progressive UNO rule.
+            if (card.color != last.color and card.value != last.value and
+                not card.special):
+                self.logger.debug("Card's color or value doesn't match")
+                is_playable = False
+            elif last.value == c.DRAW_TWO and self.game.draw_counter and not \
+                card.value == c.DRAW_TWO:
+                self.logger.debug("Player has to draw and can't counter")
+                is_playable = False
+            elif last.special == c.DRAW_FOUR and self.game.draw_counter and not \
+                card.special == c.DRAW_FOUR:
+                self.logger.debug("Player has to draw and can't counter")
+                is_playable = False
+            elif  (last.special == c.CHOOSE and (card.special == c.CHOOSE or card.special == c.DRAW_FOUR)) or \
+                (last.special == c.DRAW_FOUR and card.special == c.CHOOSE):
+                self.logger.debug("Can't play colorchooser on another one")
+                is_playable = False
+            # Prevent game being locked by choosing colors.
+            # When player is going to leave and he doesn't select a color, it causes game lock.
+            elif not last.color and (last.special != c.CHOOSE and last.special != c.DRAW_FOUR):
+                self.logger.debug("Last card has no color")
+                is_playable = False
 
         return is_playable
