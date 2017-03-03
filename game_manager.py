@@ -143,7 +143,7 @@ class GameManager(object):
                 del self.userid_current[user.id]
                 del self.userid_players[user.id]
 
-    def end_game(self, chat, user):
+    def end_game(self, user, chat):
         """
         End a game
         """
