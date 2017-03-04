@@ -447,15 +447,15 @@ def mode(bot, update):
         return
 
     if game.owner.id == user.id and not games.started:
-        kb = [["🎻 " + __("Original"), "🚴 " + __("Progressive UNO")]]
+        kb = [["🎻 " + _("Original"), "🚴 " + _("Progressive UNO")]]
         markup = ReplyKeyboardMarkup(kb, resize_keyboard=True, one_time_keyboard=True)
-        choice = send_async(bot, chat.id, text=__("Choose the game mode:"), reply_markup = markup)
+        choice = send_async(bot, chat.id, text=_("Choose the game mode:"), reply_markup = markup)
         if choice[0] == "🎻":
             game.mode = 0
-            send_async(bot, chat.id, text=__("Original rules will be used."))
+            send_async(bot, chat.id, text=_("Original rules will be used."))
         else if choice[0] == "🚴":
             game.mode = 1
-            send_async(bot, chat.id, text=__("Progressive UNO rules will be used."))
+            send_async(bot, chat.id, text=_("Progressive UNO rules will be used."))
         return
 
     else:
