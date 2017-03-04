@@ -23,9 +23,9 @@ from datetime import datetime
 from random import randint
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
-    InlineKeyboardButton
+    InlineKeyboardButton, ReplyKeyboardMarkup, Emoji
 from telegram.ext import InlineQueryHandler, ChosenInlineResultHandler, \
-    CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+    CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler
 from telegram.ext.dispatcher import run_async
 
 from start_bot import start_bot
@@ -168,7 +168,7 @@ def leave_game(bot, update):
                    reply_to_message_id=update.message.message_id)
 
     except NotEnoughPlayersError:
-        gm.end_game(chat, user)
+        gm.end_game(user, chat)
         send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
@@ -232,7 +232,7 @@ def status_update(bot, update):
         except NoGameInChatError:
             pass
         except NotEnoughPlayersError:
-            gm.end_game(chat, user)
+            gm.end_game(user, chat)
             send_async(bot, chat.id, text=__("Game ended!",
                                              multi=game.translate))
         else:
@@ -424,7 +424,48 @@ def disable_translations(bot, update):
                    reply_to_message_id=update.message.message_id)
         return
 
+    
+@game_locales
+@user_locale
+def mode(bot, update):
+    """Handler for the /mode command"""
+    chat = update.message.chat
+    user = update.message.from_user
+    games = gm.chatid_games.get(chat.id)
 
+    if not games:
+        send_async(bot, chat.id,
+                   text=__("There is no running game in this chat."))
+        return
+
+    game = games[-1]
+    
+    if chat.type == 'private':
+        send_async(bot, chat.id,
+                   text=_("Please change the group mode in the public game group with "
+                          "the bot."))
+        return
+
+    if game.owner.id == user.id and not games.started:
+        kb = [["🎻 " + __("Original"), "🚴 " + __("Progressive UNO")]]
+        markup = ReplyKeyboardMarkup(kb, resize_keyboard=True, one_time_keyboard=True)
+        choice = send_async(bot, chat.id, text=__("Choose the game mode:"), reply_markup = markup)
+        if choice[0] == "🎻":
+            game.mode = 0
+            send_async(bot, chat.id, text=__("Original rules will be used."))
+        else if choice[0] == "🚴":
+            game.mode = 1
+            send_async(bot, chat.id, text=__("Progressive UNO rules will be used."))
+        return
+
+    else:
+        send_async(bot, chat.id,
+                   text=_("Only the game creator ({name}) can do that when the game does not start")
+                   .format(name=game.owner.first_name),
+                   reply_to_message_id=update.message.message_id)
+        return
+
+    
 @game_locales
 @user_locale
 def skip_player(bot, update):
@@ -498,7 +539,7 @@ def skip_player(bot, update):
             if us2 and us2.stats:
                 us2.games_played += 1
                 
-            gm.end_game(chat, skipped_player.user)
+            gm.end_game(skipped_player.user, chat)
            
 
 
@@ -678,7 +719,7 @@ def do_play_card(bot, player, result_id):
             if us2 and us2.stats:
                 us2.games_played += 1
 
-            gm.end_game(chat, user)
+            gm.end_game(user, chat)
 
     if botan:
         botan.track(Message(randint(1, 1000000000), user, datetime.now(),
@@ -757,6 +798,8 @@ dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
 dispatcher.add_handler(CommandHandler('skip', skip_player))
 dispatcher.add_handler(CommandHandler('notify_me', notify_me))
+dispatcher.add_handler(CommandHandler('mode', mode))
+dispatcher.add_handler(RegexHandler('^(Original|Progressive UNO)$', mode, pass_groups=True))
 simple_commands.register()
 settings.register()
 dispatcher.add_handler(MessageHandler([Filters.status_update], status_update))
