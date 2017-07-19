@@ -314,7 +314,7 @@ msgstr "目前玩家: {name}"
 
 #: results.py:61 results.py:124 results.py:167
 msgid "Last card: {card}"
-msgstr "上一張牌: {card"
+msgstr "上一張牌: {card}"
 
 #: results.py:62 results.py:125 results.py:168
 msgid "Player: {player_list}"
