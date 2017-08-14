@@ -18,8 +18,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from telegram.emoji import Emoji
-
 # Colors
 RED = 'r'
 BLUE = 'b'
@@ -30,10 +28,10 @@ BLACK = 'x'
 COLORS = (RED, BLUE, GREEN, YELLOW)
 
 COLOR_ICONS = {
-    RED: Emoji.HEAVY_BLACK_HEART,
-    BLUE: Emoji.BLUE_HEART,
-    GREEN: Emoji.GREEN_HEART,
-    YELLOW: Emoji.YELLOW_HEART,
+    RED: '❤️',
+    BLUE: '💙',
+    GREEN: '💚',
+    YELLOW: '💛',
     BLACK: '⬛️'
 }
 

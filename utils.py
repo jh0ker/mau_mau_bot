@@ -20,7 +20,6 @@
 
 import logging
 
-from telegram import Emoji
 from telegram.ext.dispatcher import run_async
 
 from internationalization import _, __
@@ -51,29 +50,29 @@ def display_name(user):
 def display_color(color):
     """ Convert a color code to actual color name """
     if color == "r":
-        return _("{emoji} Red").format(emoji=Emoji.HEAVY_BLACK_HEART)
+        return _("{emoji} Red").format(emoji='❤️')
     if color == "b":
-        return _("{emoji} Blue").format(emoji=Emoji.BLUE_HEART)
+        return _("{emoji} Blue").format(emoji='💙')
     if color == "g":
-        return _("{emoji} Green").format(emoji=Emoji.GREEN_HEART)
+        return _("{emoji} Green").format(emoji='💚')
     if color == "y":
-        return _("{emoji} Yellow").format(emoji=Emoji.YELLOW_HEART)
+        return _("{emoji} Yellow").format(emoji='💛')
 
 
 def display_color_group(color, game):
     """ Convert a color code to actual color name """
     if color == "r":
         return __("{emoji} Red", game.translate).format(
-            emoji=Emoji.HEAVY_BLACK_HEART)
+            emoji='❤️')
     if color == "b":
         return __("{emoji} Blue", game.translate).format(
-            emoji=Emoji.BLUE_HEART)
+            emoji='💙')
     if color == "g":
         return __("{emoji} Green", game.translate).format(
-            emoji=Emoji.GREEN_HEART)
+            emoji='💚')
     if color == "y":
         return __("{emoji} Yellow", game.translate).format(
-            emoji=Emoji.YELLOW_HEART)
+            emoji='💛')
 
 
 def error(bot, update, error):
