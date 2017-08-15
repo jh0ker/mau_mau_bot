@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 import logging
 from datetime import datetime
 from random import randint
@@ -44,13 +43,13 @@ import simple_commands
 import settings
 
 from simple_commands import help
-
+from config import config
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+forbidden = config.get("black_list", None)
 
 @user_locale
 def notify_me(bot, update):

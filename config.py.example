@@ -1,0 +1,6 @@
+config = {
+    "admin_list": [0],
+    "black_list": [0],
+    "open_lobby": True,
+    "enable_translations": False
+}
