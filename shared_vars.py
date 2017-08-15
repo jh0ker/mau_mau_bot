@@ -33,4 +33,4 @@ with open("config.json","r") as f:
 updater = Updater(token=config.get("token"), workers=config.get("workers", 32))
 dispatcher = updater.dispatcher
 
-botan = Botan(config.get("botan_token"), None)
+botan = Botan(config.get("botan_token", None))
