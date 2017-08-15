@@ -19,11 +19,10 @@
 
 
 import logging
+import json
 from datetime import datetime
-
 from deck import Deck
 import card as c
-from config import config
 
 class Game(object):
     """ This class represents a game of UNO """
@@ -33,6 +32,9 @@ class Game(object):
     started = False
     draw_counter = 0
     players_won = 0
+
+    with open("config.json","r") as f:
+        config = json.loads(f.read())
     owner = config.get("admin_list", None)
     open = config.get("open_lobby", True)
     translate = config.get("enable_translations", False)

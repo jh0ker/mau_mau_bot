@@ -43,13 +43,12 @@ import simple_commands
 import settings
 
 from simple_commands import help
-from config import config
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
-forbidden = config.get("black_list", None)
+#forbidden = config.get("black_list", None)
 
 @user_locale
 def notify_me(bot, update):
