@@ -96,6 +96,33 @@ def new_game(bot, update):
         if botan:
             botan.track(update.message, 'New games')
 
+@user_locale
+def kill_game(bot, update):
+    """Handler for the /kill command"""
+    chat_id = update.message.chat_id
+
+    if update.message.chat.type == 'private':
+        help(bot, update)
+        return
+
+    if game.owner.id == user.id:
+        try:
+            gm.end_game(chat, user)
+
+        except NoGameInChatError:
+            send_async(bot, chat_id,
+                       text=_("No game is running at the moment. "
+                              "Create a new game with /new"),
+                       reply_to_message_id=update.message.message_id)
+
+        else:
+            send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+
+    else:
+        send_async(bot, chat.id,
+                  text=_("Only the game creator ({name}) can do that")
+                  .format(name=game.owner.first_name),
+                  reply_to_message_id=update.message.message_id)
 
 @user_locale
 def join_game(bot, update):
@@ -728,6 +755,7 @@ dispatcher.add_handler(ChosenInlineResultHandler(process_result))
 dispatcher.add_handler(CallbackQueryHandler(select_game))
 dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True))
 dispatcher.add_handler(CommandHandler('new', new_game))
+dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
 dispatcher.add_handler(CommandHandler('open', open_game))
