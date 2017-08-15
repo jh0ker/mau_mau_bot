@@ -99,24 +99,24 @@ def new_game(bot, update):
 @user_locale
 def kill_game(bot, update):
     """Handler for the /kill command"""
-    chat_id = update.message.chat_id
+    chat = update.message.chat
+    user = update.message.from_user
+    games = gm.chatid_games.get(chat.id)
 
     if update.message.chat.type == 'private':
         help(bot, update)
         return
 
+    if not games:
+            send_async(bot, chat.id,
+                       text=_("There is no running game in this chat."))
+            return
+
+    game = games[-1]
+
     if game.owner.id == user.id:
-        try:
-            gm.end_game(chat, user)
-
-        except NoGameInChatError:
-            send_async(bot, chat_id,
-                       text=_("No game is running at the moment. "
-                              "Create a new game with /new"),
-                       reply_to_message_id=update.message.message_id)
-
-        else:
-            send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+        gm.end_game(chat, user)
+        send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
         send_async(bot, chat.id,
