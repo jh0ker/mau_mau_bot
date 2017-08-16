@@ -86,7 +86,7 @@ def new_game(bot, update):
             del gm.remind_dict[update.message.chat_id]
 
         game = gm.new_game(update.message.chat)
-        game.owner = update.message.from_user
+        game.owner.append(update.message.from_user)
         send_async(bot, chat_id,
                    text=_("Created a new game! Join the game with /join "
                           "and start the game with /start"))
@@ -112,14 +112,14 @@ def kill_game(bot, update):
 
     game = games[-1]
 
-    if game.owner.id == user.id:
+    if user.id in game.owner:
         gm.end_game(chat, user)
         send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
         send_async(bot, chat.id,
-                  text=_("Only the game creator ({name}) can do that")
-                  .format(name=game.owner.first_name),
+                  text=_("Only the game creator ({name}) and admin can do that.")
+                  .format(name=game.owner[-1].first_name),
                   reply_to_message_id=update.message.message_id)
 
 @user_locale
@@ -346,7 +346,7 @@ def close_game(bot, update):
 
     game = games[-1]
 
-    if game.owner.id == user.id:
+    if user.id in game.owner:
         game.open = False
         send_async(bot, chat.id, text=_("Closed the lobby. "
                                         "No more players can join this game."))
@@ -354,8 +354,8 @@ def close_game(bot, update):
 
     else:
         send_async(bot, chat.id,
-                   text=_("Only the game creator ({name}) can do that.")
-                   .format(name=game.owner.first_name),
+                   text=_("Only the game creator ({name}) and admin can do that.")
+                   .format(name=game.owner[-1].first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -374,15 +374,15 @@ def open_game(bot, update):
 
     game = games[-1]
 
-    if game.owner.id == user.id:
+    if user.id in game.owner:
         game.open = True
         send_async(bot, chat.id, text=_("Opened the lobby. "
                                         "New players may /join the game."))
         return
     else:
         send_async(bot, chat.id,
-                   text=_("Only the game creator ({name}) can do that")
-                   .format(name=game.owner.first_name),
+                   text=_("Only the game creator ({name}) and admin can do that.")
+                   .format(name=game.owner[-1].first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -401,7 +401,7 @@ def enable_translations(bot, update):
 
     game = games[-1]
 
-    if game.owner.id == user.id:
+    if user.id in game.owner:
         game.translate = True
         send_async(bot, chat.id, text=_("Enabled multi-translations. "
                                         "Disable with /disable_translations"))
@@ -409,8 +409,8 @@ def enable_translations(bot, update):
 
     else:
         send_async(bot, chat.id,
-                   text=_("Only the game creator ({name}) can do that")
-                   .format(name=game.owner.first_name),
+                   text=_("Only the game creator ({name}) and admin can do that.")
+                   .format(name=game.owner[-1].first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -429,7 +429,7 @@ def disable_translations(bot, update):
 
     game = games[-1]
 
-    if game.owner.id == user.id:
+    if user.id in game.owner:
         game.translate = False
         send_async(bot, chat.id, text=_("Disabled multi-translations. "
                                         "Enable them again with "
@@ -438,8 +438,8 @@ def disable_translations(bot, update):
 
     else:
         send_async(bot, chat.id,
-                   text=_("Only the game creator ({name}) can do that")
-                   .format(name=game.owner.first_name),
+                   text=_("Only the game creator ({name}) and admin can do that.")
+                   .format(name=game.owner[-1].first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
