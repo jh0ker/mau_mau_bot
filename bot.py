@@ -44,11 +44,15 @@ import settings
 
 from simple_commands import help
 
+#import json
+#with open("config.json","r") as f:
+#    config = json.loads(f.read())
+#forbidden = config.get("black_list", None)
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
-#forbidden = config.get("black_list", None)
 
 @user_locale
 def notify_me(bot, update):
@@ -114,8 +118,16 @@ def kill_game(bot, update):
     game = games[-1]
 
     if user.id in game.owner:
-        gm.end_game(chat, user)
-        send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+
+        try:
+            gm.end_game(chat, user)
+            send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+
+        except NoGameInChatError:
+            send_async(bot, chat.id,
+                       text=_("No game is running at the moment. "
+                               "Create a new game with /new"),
+                       reply_to_message_id=update.message.message_id)
 
     else:
         send_async(bot, chat.id,
