@@ -86,7 +86,8 @@ def new_game(bot, update):
             del gm.remind_dict[update.message.chat_id]
 
         game = gm.new_game(update.message.chat)
-        game.owner.append(update.message.from_user)
+        game.starter = update.message.from_user
+        game.owner.append(update.message.from_user.id)
         send_async(bot, chat_id,
                    text=_("Created a new game! Join the game with /join "
                           "and start the game with /start"))
@@ -119,7 +120,7 @@ def kill_game(bot, update):
     else:
         send_async(bot, chat.id,
                   text=_("Only the game creator ({name}) and admin can do that.")
-                  .format(name=game.owner[-1].first_name),
+                  .format(name=game.starter.first_name),
                   reply_to_message_id=update.message.message_id)
 
 @user_locale
@@ -355,7 +356,7 @@ def close_game(bot, update):
     else:
         send_async(bot, chat.id,
                    text=_("Only the game creator ({name}) and admin can do that.")
-                   .format(name=game.owner[-1].first_name),
+                   .format(name=game.starter.first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -382,7 +383,7 @@ def open_game(bot, update):
     else:
         send_async(bot, chat.id,
                    text=_("Only the game creator ({name}) and admin can do that.")
-                   .format(name=game.owner[-1].first_name),
+                   .format(name=game.starter.first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -410,7 +411,7 @@ def enable_translations(bot, update):
     else:
         send_async(bot, chat.id,
                    text=_("Only the game creator ({name}) and admin can do that.")
-                   .format(name=game.owner[-1].first_name),
+                   .format(name=game.starter.first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
@@ -439,7 +440,7 @@ def disable_translations(bot, update):
     else:
         send_async(bot, chat.id,
                    text=_("Only the game creator ({name}) and admin can do that.")
-                   .format(name=game.owner[-1].first_name),
+                   .format(name=game.starter.first_name),
                    reply_to_message_id=update.message.message_id)
         return
 
