@@ -32,7 +32,7 @@ from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
                      add_card)
 from user_setting import UserSetting
-from utils import display_name
+from utils import display_name, get_admin_ids
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
@@ -117,7 +117,7 @@ def kill_game(bot, update):
 
     game = games[-1]
 
-    if user.id in game.owner:
+    if user.id in game.owner or user.id in get_admin_ids(bot, chat.id):
 
         try:
             gm.end_game(chat, user)
