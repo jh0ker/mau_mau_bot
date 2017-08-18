@@ -23,6 +23,7 @@ from telegram.contrib.botan import Botan
 
 from game_manager import GameManager
 from database import db
+import user_setting  # required to generate db mapping
 
 db.bind('sqlite', 'uno.sqlite3', create_db=True)
 db.generate_mapping(create_tables=True)
@@ -33,4 +34,7 @@ with open("config.json","r") as f:
 updater = Updater(token=config.get("token"), workers=config.get("workers", 32))
 dispatcher = updater.dispatcher
 
-botan = Botan(config.get("botan_token", None))
+if config.get("botan_token"):
+    botan = Botan(config.get("botan_token"))
+else:
+    botan = None
