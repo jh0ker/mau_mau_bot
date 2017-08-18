@@ -19,23 +19,25 @@
 
 
 import logging
+import json
 from datetime import datetime
-
 from deck import Deck
 import card as c
-
 
 class Game(object):
     """ This class represents a game of UNO """
     current_player = None
     reversed = False
-    draw_counter = 0
     choosing_color = False
     started = False
-    owner = None
-    open = True
-    translate = False
+    draw_counter = 0
     players_won = 0
+    starter = None
+    with open("config.json","r") as f:
+        config = json.loads(f.read())
+    owner = config.get("admin_list", None)
+    open = config.get("open_lobby", True)
+    translate = config.get("enable_translations", False)
 
     def __init__(self, chat):
         self.chat = chat

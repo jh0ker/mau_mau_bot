@@ -1,2 +1,2 @@
-python-telegram-bot==5
+python-telegram-bot
 pony

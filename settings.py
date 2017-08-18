@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from telegram import ReplyKeyboardMarkup, Emoji
+from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler, RegexHandler
 
 from utils import send_async
@@ -44,12 +44,12 @@ def show_settings(bot, update):
         us = UserSetting(id=update.message.from_user.id)
 
     if not us.stats:
-        stats = Emoji.BAR_CHART + ' ' + _("Enable statistics")
+        stats = '📊' + ' ' + _("Enable statistics")
     else:
-        stats = Emoji.CROSS_MARK + ' ' + _("Delete all statistics")
+        stats = '❌' + ' ' + _("Delete all statistics")
 
-    kb = [[stats], [Emoji.EARTH_GLOBE_EUROPE_AFRICA + ' ' + _("Language")]]
-    send_async(bot, chat.id, text=Emoji.WRENCH + ' ' + _("Settings"),
+    kb = [[stats], ['🌍' + ' ' + _("Language")]]
+    send_async(bot, chat.id, text='🔧' + ' ' + _("Settings"),
                reply_markup=ReplyKeyboardMarkup(keyboard=kb,
                                                 one_time_keyboard=True))
 
@@ -60,12 +60,12 @@ def kb_select(bot, update, groups):
     user = update.message.from_user
     option = groups[0]
 
-    if option == Emoji.BAR_CHART:
+    if option == '📊':
         us = UserSetting.get(id=user.id)
         us.stats = True
         send_async(bot, chat.id, text=_("Enabled statistics!"))
 
-    elif option == Emoji.EARTH_GLOBE_EUROPE_AFRICA:
+    elif option == '🌍':
         kb = [[locale + ' - ' + descr]
               for locale, descr
               in sorted(available_locales.items())]
@@ -73,7 +73,7 @@ def kb_select(bot, update, groups):
                    reply_markup=ReplyKeyboardMarkup(keyboard=kb,
                                                     one_time_keyboard=True))
 
-    elif option == Emoji.CROSS_MARK:
+    elif option == '❌':
         us = UserSetting.get(id=user.id)
         us.stats = False
         us.first_places = 0
@@ -98,9 +98,9 @@ def locale_select(bot, update, groups):
 
 def register():
     dispatcher.add_handler(CommandHandler('settings', show_settings))
-    dispatcher.add_handler(RegexHandler('^([' + Emoji.BAR_CHART +
-                                        Emoji.EARTH_GLOBE_EUROPE_AFRICA +
-                                        Emoji.CROSS_MARK + ']) .+$',
+    dispatcher.add_handler(RegexHandler('^([' + '📊' +
+                                        '🌍' +
+                                        '❌' + ']) .+$',
                                         kb_select, pass_groups=True))
     dispatcher.add_handler(RegexHandler(r'^(\w\w_\w\w) - .*',
                                         locale_select, pass_groups=True))

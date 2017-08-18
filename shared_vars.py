@@ -17,21 +17,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
+import json
 from telegram.ext import Updater
 from telegram.contrib.botan import Botan
 
 from game_manager import GameManager
 from database import db
-from credentials import TOKEN, BOTAN_TOKEN
 
 db.bind('sqlite', 'uno.sqlite3', create_db=True)
 db.generate_mapping(create_tables=True)
 
 gm = GameManager()
-updater = Updater(token=TOKEN, workers=32)
+with open("config.json","r") as f:
+    config = json.loads(f.read())
+updater = Updater(token=config.get("token"), workers=config.get("workers", 32))
 dispatcher = updater.dispatcher
 
-botan = False
-if BOTAN_TOKEN:
-    botan = Botan(BOTAN_TOKEN)
+botan = Botan(config.get("botan_token", None))
