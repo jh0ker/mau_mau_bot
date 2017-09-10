@@ -246,7 +246,7 @@ def kick_player(bot, update, args):
         return
 
     if len(args) == 0:
-        pass
+        help(bot, update)
     else:
         for arg in args:
 
