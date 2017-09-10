@@ -238,6 +238,13 @@ def kick_player(bot, update, args):
                    reply_to_message_id=update.message.message_id)
         return
 
+    if user.id not in game.owner and user.id not in get_admin_ids(bot, chat.id):
+        send_async(bot, chat.id,
+                  text=_("Only the game creator ({name}) and admin can do that.")
+                  .format(name=game.starter.first_name),
+                  reply_to_message_id=update.message.message_id)
+        return
+
     if len(args) == 0:
         pass
     else:
@@ -245,8 +252,8 @@ def kick_player(bot, update, args):
 
             if arg[0] == "@":
                 for player in game.players:
-                    if player.username == arg[1:]:
-                        kicked = player
+                    if player.user.username == arg[1:]:
+                        kicked = player.user
                         break
                 else:
                     kicked = None
@@ -255,8 +262,8 @@ def kick_player(bot, update, args):
                     return
             else:
                 for player in game.players:
-                    if player.id == arg:
-                        kicked = player
+                    if str(player.user.id) == arg:
+                        kicked = player.user
                         break
                 else:
                     kicked = None
@@ -265,9 +272,9 @@ def kick_player(bot, update, args):
                     return
 
             try:
-                gm.leave_game(kicked, chat)
                 send_async(bot, chat.id,
-                               text=_("{0} is kicked by {1}".format(display_name(kicked), display_name(user))))
+                               text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+                gm.leave_game(kicked, chat)
 
             except NotEnoughPlayersError:
                 gm.end_game(chat, user)
