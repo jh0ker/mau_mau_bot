@@ -211,6 +211,76 @@ def leave_game(bot, update):
                    reply_to_message_id=update.message.message_id)
 
 
+@user_locale
+def kick_player(bot, update, args):
+    """Handler for the /kick command"""
+
+    if update.message.chat.type == 'private':
+        help(bot, update)
+        return
+
+    chat = update.message.chat
+    user = update.message.from_user
+
+    try:
+        game = gm.chatid_games[chat.id][-1]
+    except (KeyError, IndexError):
+            send_async(bot, chat.id,
+                   text=_("No game is running at the moment. "
+                          "Create a new game with /new"),
+                   reply_to_message_id=update.message.message_id)
+            return
+
+    if not game.started:
+        send_async(bot, chat.id,
+                   text=_("The game is not started yet. "
+                          "Join the game with /join and start the game with /start"),
+                   reply_to_message_id=update.message.message_id)
+        return
+
+    if len(args) == 0:
+        pass
+    else:
+        for arg in args:
+
+            if arg[0] == "@":
+                for player in game.players:
+                    if player.username == arg[1:]:
+                        kicked = player
+                        break
+                else:
+                    kicked = None
+                    send_async(bot, chat.id,
+                       text=_("Player {name} is not found in the current game.".format(name=arg)))
+                    return
+            else:
+                for player in game.players:
+                    if player.id == arg:
+                        kicked = player
+                        break
+                else:
+                    kicked = None
+                    send_async(bot, chat.id,
+                       text=_("Player with id:{id} is not found in the current game.".format(id=arg)))
+                    return
+
+            try:
+                gm.leave_game(kicked, chat)
+                send_async(bot, chat.id,
+                               text=_("{0} is kicked by {1}".format(display_name(kicked), display_name(user))))
+
+            except NotEnoughPlayersError:
+                gm.end_game(chat, user)
+                send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+                return
+
+        send_async(bot, chat.id,
+                   text=__("Okay. Next Player: {name}",
+                           multi=game.translate).format(
+                       name=display_name(game.current_player.user)),
+                   reply_to_message_id=update.message.message_id)
+
+
 def select_game(bot, update):
     """Handler for callback queries to select the current game"""
 
@@ -769,6 +839,7 @@ dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
+dispatcher.add_handler(CommandHandler('kick', kick_player, pass_args=True))
 dispatcher.add_handler(CommandHandler('open', open_game))
 dispatcher.add_handler(CommandHandler('close', close_game))
 dispatcher.add_handler(CommandHandler('enable_translations',
