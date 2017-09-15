@@ -44,10 +44,6 @@ import settings
 
 from simple_commands import help
 
-#import json
-#with open("config.json","r") as f:
-#    config = json.loads(f.read())
-#forbidden = config.get("black_list", None)
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
