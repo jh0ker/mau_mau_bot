@@ -336,7 +336,7 @@ msgstr "你沒有在遊戲中"
 #: results.py:83
 msgid "Not playing right now. Use /new to start a game or /join to join the current "
 "game in this group"
-msgstr "你目前沒有在遊玩,使用 /new@unobot 開始新的遊戲或使用 /join@unobot 加入目前的遊戲"
+msgstr "你目前沒有在遊玩,使用 /new 開始新的遊戲或使用 /join 加入目前的遊戲"
 
 #: results.py:95
 msgid "The game wasn't started yet"
