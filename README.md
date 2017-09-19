@@ -11,7 +11,7 @@ To run the bot yourself, you will need:
 
 ## Setup
 - Get a bot token from [@BotFather](http://telegram.me/BotFather) and place it in `credentials.py`
-- Convert all language files from .po to .mo using `msgfmt unobot.po -o unobot.mo`
+- Convert all language files from .po to .mo by executing the bash script 'compile.sh' located in the locales folder
 - Use `/setinline` and `/setinlinefeedback` with BotFather for your bot
 
 Then run the bot with `python3 bot.py`
