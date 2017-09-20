@@ -94,6 +94,30 @@ def add_not_started(results):
     )
 
 
+def add_mode_classic(results):
+    """Change mode to classic"""
+    results.append(
+        InlineQueryResultArticle(
+            "mode_classic",
+            title=_("🎻 Classic mode"),
+            input_message_content=
+            InputTextMessageContent(_('Gamemode changed to Classic'))
+        )
+    )
+
+
+def add_mode_fast(results):
+    """Change mode to classic"""
+    results.append(
+        InlineQueryResultArticle(
+            "mode_fast",
+            title=_("🚀 Sanic mode"),
+            input_message_content=
+            InputTextMessageContent(_('Gamemode changed to Sanic'))
+        )
+    )
+
+
 def add_draw(player, results):
     """Add option to draw"""
     n = player.game.draw_counter or 1

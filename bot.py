@@ -30,13 +30,13 @@ from telegram.ext.dispatcher import run_async
 from start_bot import start_bot
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
-                     add_card)
+                     add_card, add_mode_classic, add_mode_fast)
 from user_setting import UserSetting
 from utils import display_name, get_admin_ids
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from utils import send_async, answer_async, error, TIMEOUT
+from utils import send_async, answer_async, error, TIMEOUT, user_is_creator_or_admin, user_is_creator
 from shared_vars import botan, gm, updater, dispatcher
 from internationalization import _, __, user_locale, game_locales
 import simple_commands
@@ -118,7 +118,7 @@ def kill_game(bot, update):
 
     game = games[-1]
 
-    if user.id in game.owner or user.id in get_admin_ids(bot, chat.id):
+    if user_is_creator_or_admin(user, game, bot, chat):
 
         try:
             gm.end_game(chat, user)
@@ -541,15 +541,24 @@ def reply_to_query(bot, update):
     switch = None
 
     try:
-        user_id = update.inline_query.from_user.id
+        user = update.inline_query.from_user
+        user_id = user.id
         players = gm.userid_players[user_id]
         player = gm.userid_current[user_id]
         game = player.game
     except KeyError:
         add_no_game(results)
     else:
+
+        # The game has not started.
+        # The creator may change the game mode, other users just get a "game has not started" message.
         if not game.started:
-            add_not_started(results)
+            if user_is_creator(user, game):
+                add_mode_classic(results)
+                add_mode_fast(results)
+            else:
+                add_not_started(results)
+
 
         elif user_id == game.current_player.user.id:
             if game.choosing_color:
