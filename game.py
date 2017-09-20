@@ -106,6 +106,7 @@ class Game(object):
             self.turn()
         else:
             self.logger.debug("Choosing Color...")
+            self.logger.info("Played special card with hand: {hand}".format(hand=self.current_player.cards))
             self.choosing_color = True
 
     def choose_color(self, color):
