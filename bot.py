@@ -220,6 +220,7 @@ def kick_player(bot, update, args):
 
     try:
         game = gm.chatid_games[chat.id][-1]
+
     except (KeyError, IndexError):
             send_async(bot, chat.id,
                    text=_("No game is running at the moment. "
@@ -234,54 +235,82 @@ def kick_player(bot, update, args):
                    reply_to_message_id=update.message.message_id)
         return
 
-    if user.id not in game.owner and user.id not in get_admin_ids(bot, chat.id):
-        send_async(bot, chat.id,
-                  text=_("Only the game creator ({name}) and admin can do that.")
-                  .format(name=game.starter.first_name),
-                  reply_to_message_id=update.message.message_id)
-        return
+    if user.id in game.owner or user.id in get_admin_ids(bot, chat.id):
 
-    if len(args) == 0:
-        help(bot, update)
-    else:
-        for arg in args:
+        if update.message.reply_to_message:
+            kicked = update.message.reply_to_message.from_user
 
-            if arg[0] == "@":
-                for player in game.players:
-                    if player.user.username == arg[1:]:
-                        kicked = player.user
-                        break
-                else:
-                    kicked = None
-                    send_async(bot, chat.id,
-                       text=_("Player {name} is not found in the current game.".format(name=arg)))
-                    return
-            else:
-                for player in game.players:
-                    if str(player.user.id) == arg:
-                        kicked = player.user
-                        break
-                else:
-                    kicked = None
-                    send_async(bot, chat.id,
-                       text=_("Player with id:{id} is not found in the current game.".format(id=arg)))
+            if kicked:
+
+                try:
+                    gm.leave_game(kicked, chat)
+
+                except NoGameInChatError:
+                    send_async(bot, chat.id, text=_("Player {name} is not found in the current game.".format(name=display_name(kicked))),
+                                   reply_to_message_id=update.message.message_id)
                     return
 
-            try:
+                except NotEnoughPlayersError:
+                    gm.end_game(chat, user)
+                    send_async(bot, chat.id,
+                                   text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+                    send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+                    return
+
                 send_async(bot, chat.id,
                                text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
-                gm.leave_game(kicked, chat)
 
-            except NotEnoughPlayersError:
-                gm.end_game(chat, user)
-                send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+        else:
+
+            if len(args) == 0:
+                help(bot, update)
                 return
+            else:
+                for arg in args:
+
+                    if arg[0] == "@":
+                        for player in game.players:
+                            if player.user.username == arg[1:]:
+                                kicked = player.user
+                                break
+                        else:
+                            kicked = None
+                            send_async(bot, chat.id,
+                               text=_("Player {name} is not found in the current game.".format(name=arg)))
+                            return
+                    else:
+                        for player in game.players:
+                            if str(player.user.id) == arg:
+                                kicked = player.user
+                                break
+                        else:
+                            kicked = None
+                            send_async(bot, chat.id,
+                               text=_("Player with id:{id} is not found in the current game.".format(id=arg)))
+                            return
+
+                    try:
+                        send_async(bot, chat.id,
+                                       text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+                        gm.leave_game(kicked, chat)
+
+                    except NotEnoughPlayersError:
+                        gm.end_game(chat, user)
+                        send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+                        return
 
         send_async(bot, chat.id,
                    text=__("Okay. Next Player: {name}",
                            multi=game.translate).format(
                        name=display_name(game.current_player.user)),
                    reply_to_message_id=update.message.message_id)
+
+    else:
+
+        send_async(bot, chat.id,
+                  text=_("Only the game creator ({name}) and admin can do that.")
+                  .format(name=game.starter.first_name),
+                  reply_to_message_id=update.message.message_id)
 
 
 def select_game(bot, update):
