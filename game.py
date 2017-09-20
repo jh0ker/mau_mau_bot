@@ -33,6 +33,7 @@ class Game(object):
     draw_counter = 0
     players_won = 0
     starter = None
+    mode = 'classic'
     with open("config.json","r") as f:
         config = json.loads(f.read())
     owner = config.get("admin_list", None)
