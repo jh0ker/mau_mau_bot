@@ -101,7 +101,7 @@ def add_mode_classic(results):
             "mode_classic",
             title=_("🎻 Classic mode"),
             input_message_content=
-            InputTextMessageContent(_('Gamemode changed to Classic 🎻'))
+            InputTextMessageContent(_('Classic 🎻'))
         )
     )
 
@@ -113,7 +113,7 @@ def add_mode_fast(results):
             "mode_fast",
             title=_("🚀 Sanic mode"),
             input_message_content=
-            InputTextMessageContent(_('Gamemode changed to Sanic 🚀'))
+            InputTextMessageContent(_('Gotta go fast! 🚀'))
         )
     )
 

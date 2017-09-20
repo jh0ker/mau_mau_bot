@@ -34,6 +34,7 @@ class Game(object):
     players_won = 0
     starter = None
     mode = 'classic'
+    job = None
     with open("config.json","r") as f:
         config = json.loads(f.read())
     owner = config.get("admin_list", None)

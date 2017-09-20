@@ -56,6 +56,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+class Countdown(object):
+    player = None
+    job_queue = None
+
+    def __init__(self, player, job_queue):
+        self.player = player
+        self.job_queue = job_queue
+
+
 @user_locale
 def notify_me(bot, update):
     """Handler for /notify_me command, pm people for next game"""
@@ -277,7 +287,7 @@ def status_update(bot, update):
 
 @game_locales
 @user_locale
-def start_game(bot, update, args):
+def start_game(bot, update, args, job_queue):
     """Handler for the /start command"""
 
     if update.message.chat.type != 'private':
@@ -323,6 +333,7 @@ def start_game(bot, update, args):
                                 timeout=TIMEOUT)
 
             send_first()
+            start_player_countdown(bot, game, job_queue)
 
     elif len(args) and args[0] == 'select':
         players = gm.userid_players[update.message.from_user.id]
@@ -591,6 +602,7 @@ def process_result(bot, update, job_queue):
         # First 5 characters are 'mode_', the rest is the gamemode.
         game.mode = result_id[5:]
         logger.info("Gamemode changed to {mode}".format(mode = game.mode))
+        send_async(bot, chat.id, text=__("Gamemode changed to {mode}".format(mode = game.mode)))
         return
     elif len(result_id) == 36:  # UUID result
         return
@@ -617,43 +629,55 @@ def process_result(bot, update, job_queue):
         send_async(bot, chat.id,
                    text=__("Next player: {name}", multi=game.translate)
                    .format(name=display_name(game.current_player.user)))
-        if game.mode == 'fast':
-            start_player_countdown(bot, player, job_queue)
+        start_player_countdown(bot, game, job_queue)
 
 
-def start_player_countdown(bot, player, job_queue):
-    if 'job' in player.game:
-        job = player.game['job']
-        job.schedule_removal()
+def start_player_countdown(bot, game, job_queue):
+    player = game.current_player
+    time = player.waiting_time
+    if time == 0:
+        time = 15
 
-    job = job_queue.run_once(
-        do_skip(bot, player),
-        player.waiting_time + 10,
-        context=player.game.chat.id
-    )
+    if game.mode == 'fast':
+        if game.job:
+            game.job.schedule_removal()
 
-    logger.debug("Started countdown for player: " + display_name(player.user))
-    player.game['job'] = job
+        job = job_queue.run_once(
+            #lambda x,y: do_skip(bot, player),
+            do_skip,
+            time,
+            context=Countdown(player, job_queue)
+        )
+
+        logger.info("Started countdown for player: {player}. {time} seconds."
+                    .format(player=display_name(player.user), time=time))
+        player.game.job = job
 
 
 def reset_waiting_time(bot, player):
     """Resets waiting time for a player and sends a notice to the group"""
     chat = player.game.chat
 
-    if player.waiting_time < 90:
-        player.waiting_time = 90
+    if player.waiting_time < 60:
+        player.waiting_time = 60
         send_async(bot, chat.id,
-                   text=__("Waiting time for {name} has been reset to 90 "
+                   text=__("Waiting time for {name} has been reset to 60 "
                            "seconds", multi=player.game.translate)
                    .format(name=display_name(player.user)))
 
 
-def do_skip(bot, player):
+# FIXME do_skip() could get executed in another thread (it can be a job), so it looks like it can't use game.translate?
+def do_skip(bot, job):
+    if job.context:
+        player = job.context.player
+        job_queue = job.context.job_queue
+    else:
+        # FIXME TOO UGLY
+        player = job
     game = player.game
     chat = game.chat
     skipped_player = game.current_player
     next_player = game.current_player.next
-
     if skipped_player.waiting_time > 0:
         skipped_player.anti_cheat += 1
         skipped_player.waiting_time -= 30
@@ -664,36 +688,40 @@ def do_skip(bot, player):
 
         n = skipped_player.waiting_time
         send_async(bot, chat.id,
-                   text=__("Waiting time to skip this player has "
-                           "been reduced to {time} second.\n"
-                           "Next player: {name}",
-                           "Waiting time to skip this player has "
-                           "been reduced to {time} seconds.\n"
-                           "Next player: {name}",
-                           n,
-                           multi=game.translate)
+                   text="Waiting time to skip this player has "
+                        "been reduced to {time} seconds.\n"
+                        "Next player: {name}"
                    .format(time=n,
-                           name=display_name(next_player.user)))
+                           name=display_name(next_player.user))
+            )
+        logger.info("{player} was skipped!. "
+                    .format(player=display_name(player.user)))
         game.turn()
+        if job:
+            start_player_countdown(bot, game, job_queue)
 
     else:
         try:
             gm.leave_game(skipped_player.user, chat)
             send_async(bot, chat.id,
-                       text=__("{name1} was skipped four times in a row "
-                               "and has been removed from the game.\n"
-                               "Next player: {name2}", multi=game.translate)
+                       text="{name1} was skipped four times in a row "
+                            "and has been removed from the game.\n"
+                            "Next player: {name2}"
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
+            logger.info("{player} was skipped!. "
+                    .format(player=display_name(player.user)))
+            if job:
+                start_player_countdown(bot, game, job_queue)
 
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
-                       text=__("{name} was skipped four times in a row "
+                       text="{name} was skipped four times in a row "
                                "and has been removed from the game.\n"
-                               "The game ended.", multi=game.translate)
+                               "The game ended."
                        .format(name=display_name(skipped_player.user)))
 
-            gm.end_game(chat.id, skipped_player.user)
+            gm.end_game(chat, skipped_player.user)
 
 
 
@@ -806,7 +834,7 @@ def do_call_bluff(bot, player):
 dispatcher.add_handler(InlineQueryHandler(reply_to_query))
 dispatcher.add_handler(ChosenInlineResultHandler(process_result, pass_job_queue=True))
 dispatcher.add_handler(CallbackQueryHandler(select_game))
-dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True))
+dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True, pass_job_queue=True))
 dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))

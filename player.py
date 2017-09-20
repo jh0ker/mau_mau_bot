@@ -63,7 +63,7 @@ class Player(object):
         self.drew = False
         self.anti_cheat = 0
         self.turn_started = datetime.now()
-        self.waiting_time = 90
+        self.waiting_time = 60
 
     def leave(self):
         """Removes player from the game and closes the gap in the list"""
