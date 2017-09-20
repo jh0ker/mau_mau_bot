@@ -263,7 +263,9 @@ def kick_player(bot, update, args):
         else:
 
             if len(args) == 0:
-                help(bot, update)
+                send_async(bot, chat.id,
+                    text=_("Reply to the person you want to kick. Try again."),
+                    reply_to_message_id=update.message.message_id)
                 return
             else:
                 for arg in args:
