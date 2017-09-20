@@ -260,31 +260,40 @@ def kick_player(bot, update, args):
                 send_async(bot, chat.id,
                                text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
 
+            else:
+                send_async(bot, chat.id,
+                    text=_("Please reply to the person you want to kick and type /kick again."),
+                    reply_to_message_id=update.message.message_id)
+                return
+
         else:
 
             if len(args) == 0:
                 send_async(bot, chat.id,
-                    text=_("Reply to the person you want to kick. Try again."),
+                    text=_("Please reply to the person you want to kick and type /kick again."),
                     reply_to_message_id=update.message.message_id)
                 return
+
             else:
                 for arg in args:
-
                     if arg[0] == "@":
                         for player in game.players:
                             if player.user.username == arg[1:]:
                                 kicked = player.user
                                 break
+
                         else:
                             kicked = None
                             send_async(bot, chat.id,
                                text=_("Player {name} is not found in the current game.".format(name=arg)))
                             return
+
                     else:
                         for player in game.players:
                             if str(player.user.id) == arg:
                                 kicked = player.user
                                 break
+
                         else:
                             kicked = None
                             send_async(bot, chat.id,
