@@ -19,7 +19,7 @@
 
 import logging
 from datetime import datetime
-from random import randint
+from secrets import randbelow
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
     InlineKeyboardButton
@@ -785,7 +785,8 @@ def do_play_card(bot, player, result_id):
             gm.end_game(chat, user)
 
     if botan:
-        botan.track(Message(randint(1, 1000000000), user, datetime.now(),
+        random_int = randbelow(0, 999999999) + 1
+        botan.track(Message(random_int, user, datetime.now(),
                             Chat(chat.id, 'group')),
                     'Played cards')
 

@@ -113,8 +113,8 @@ class GameManager(object):
 
                         p.leave()
                         return
-            else:
-                raise NoGameInChatError
+
+            raise NoGameInChatError
 
         game = player.game
 

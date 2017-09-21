@@ -102,7 +102,7 @@ def user_locale(func):
     @wraps(func)
     @db_session
     def wrapped(bot, update, *pargs, **kwargs):
-        user, chat = _user_chat_from_update(update)
+        user = _user_chat_from_update(update)[0]
 
         with db_session:
             us = UserSetting.get(id=user.id)
