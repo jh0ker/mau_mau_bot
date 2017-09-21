@@ -304,7 +304,7 @@ def start_game(bot, update, args, job_queue):
         if game.started:
             send_async(bot, chat.id, text=_("The game has already started"))
 
-        elif len(game.players) < 2:
+        elif len(game.players) < 1:
             send_async(bot, chat.id,
                        text=_("At least two players must /join the game "
                               "before you can start it"))
@@ -490,7 +490,9 @@ def skip_player(bot, update):
     now = datetime.now()
     delta = (now - started).seconds
 
-    if delta < skipped_player.waiting_time:
+    # You can't skip if the current player still has time left
+    # You can skip yourself even if you have time left (you'll still draw)
+    if delta < skipped_player.waiting_time and player != skipped_player:
         n = skipped_player.waiting_time - delta
         send_async(bot, chat.id,
                    text=_("Please wait {time} second",
@@ -637,6 +639,7 @@ def start_player_countdown(bot, game, job_queue):
     time = player.waiting_time
     if time == 0:
         time = 15
+    time = 5 #For debug
 
     if game.mode == 'fast':
         if game.job:
@@ -681,9 +684,9 @@ def do_skip(bot, player, job_queue=None):
     skipped_player = game.current_player
     next_player = game.current_player.next
 
-    if skipped_player.waiting_time > 0 and player != skipped_player:
+    if skipped_player.waiting_time > 0:
         skipped_player.anti_cheat += 1
-        skipped_player.waiting_time -= 30
+        skipped_player.waiting_time -= 20
         try:
             skipped_player.draw()
         except DeckEmptyError:
