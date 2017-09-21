@@ -216,11 +216,18 @@ def leave_game(bot, update):
         send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
-        send_async(bot, chat.id,
-                   text=__("Okay. Next Player: {name}",
-                           multi=game.translate).format(
-                       name=display_name(game.current_player.user)),
-                   reply_to_message_id=update.message.message_id)
+        if game.started:
+            send_async(bot, chat.id,
+                       text=__("Okay. Next Player: {name}",
+                               multi=game.translate).format(
+                           name=display_name(game.current_player.user)),
+                       reply_to_message_id=update.message.message_id)
+        else:
+            send_async(bot, chat.id,
+                       text=__("{name} left the game before it started.",
+                               multi=game.translate).format(
+                           name=display_name(user)),
+                       reply_to_message_id=update.message.message_id)
 
 
 def select_game(bot, update):
@@ -304,7 +311,7 @@ def start_game(bot, update, args, job_queue):
         if game.started:
             send_async(bot, chat.id, text=_("The game has already started"))
 
-        elif len(game.players) < 1:
+        elif len(game.players) < 2:
             send_async(bot, chat.id,
                        text=_("At least two players must /join the game "
                               "before you can start it"))
