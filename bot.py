@@ -36,7 +36,7 @@ from utils import display_name, get_admin_ids
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from utils import send_async, answer_async, error, TIMEOUT, user_is_creator_or_admin, user_is_creator
+from utils import send_async, answer_async, error, TIMEOUT, user_is_creator_or_admin, user_is_creator, game_is_running
 from shared_vars import botan, gm, updater, dispatcher
 from internationalization import _, __, user_locale, game_locales
 import simple_commands
@@ -625,7 +625,7 @@ def process_result(bot, update, job_queue):
         reset_waiting_time(bot, player)
         do_play_card(bot, player, result_id)
 
-    if game in gm.chatid_games.get(chat.id, list()):
+    if game_is_running(game):
         send_async(bot, chat.id,
                    text=__("Next player: {name}", multi=game.translate)
                    .format(name=display_name(game.current_player.user)))
@@ -668,8 +668,10 @@ def reset_waiting_time(bot, player):
 
 def skip_job(bot, job):
     player = job.context.player
-    job_queue = job.context.job_queue
-    do_skip(bot, player, job_queue)
+    game = player.game
+    if game_is_running(game):
+        job_queue = job.context.job_queue
+        do_skip(bot, player, job_queue)
 
 
 # FIXME do_skip() could get executed in another thread (it can be a job), so it looks like it can't use game.translate?
