@@ -785,7 +785,7 @@ def do_play_card(bot, player, result_id):
             gm.end_game(chat, user)
 
     if botan:
-        random_int = randbelow(0, 999999999) + 1
+        random_int = randbelow(999999999) + 1
         botan.track(Message(random_int, user, datetime.now(),
                             Chat(chat.id, 'group')),
                     'Played cards')

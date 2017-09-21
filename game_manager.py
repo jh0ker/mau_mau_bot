@@ -185,5 +185,4 @@ class GameManager(object):
         for player in players:
             if player.game.chat.id == chat.id:
                 return player
-        else:
-            return None
+        return None
