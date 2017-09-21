@@ -415,7 +415,7 @@ msgstr "¡Estadísticas borradas y deshabilitadas! "
 
 #: settings.py:94
 msgid "Set locale!"
-msgstr "¡Idioma seleccionada!"
+msgstr "¡Idioma seleccionado!"
 
 #: simple_commands.py
 msgid ""
