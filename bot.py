@@ -644,7 +644,7 @@ def start_player_countdown(bot, game, job_queue):
 
         job = job_queue.run_once(
             #lambda x,y: do_skip(bot, player),
-            do_skip,
+            skip_job,
             time,
             context=Countdown(player, job_queue)
         )
@@ -666,19 +666,20 @@ def reset_waiting_time(bot, player):
                    .format(name=display_name(player.user)))
 
 
+def skip_job(bot, job):
+    player = job.context.player
+    job_queue = job.context.job_queue
+    do_skip(bot, player, job_queue)
+
+
 # FIXME do_skip() could get executed in another thread (it can be a job), so it looks like it can't use game.translate?
-def do_skip(bot, job):
-    if job.context:
-        player = job.context.player
-        job_queue = job.context.job_queue
-    else:
-        # FIXME TOO UGLY
-        player = job
+def do_skip(bot, player, job_queue=None):
     game = player.game
     chat = game.chat
     skipped_player = game.current_player
     next_player = game.current_player.next
-    if skipped_player.waiting_time > 0:
+
+    if skipped_player.waiting_time > 0 and player != skipped_player:
         skipped_player.anti_cheat += 1
         skipped_player.waiting_time -= 30
         try:
@@ -697,7 +698,7 @@ def do_skip(bot, job):
         logger.info("{player} was skipped!. "
                     .format(player=display_name(player.user)))
         game.turn()
-        if job:
+        if job_queue:
             start_player_countdown(bot, game, job_queue)
 
     else:
@@ -711,7 +712,7 @@ def do_skip(bot, job):
                                name2=display_name(next_player.user)))
             logger.info("{player} was skipped!. "
                     .format(player=display_name(player.user)))
-            if job:
+            if job_queue:
                 start_player_countdown(bot, game, job_queue)
 
         except NotEnoughPlayersError:
