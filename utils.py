@@ -119,7 +119,7 @@ def user_is_admin(user, bot, chat):
 
 
 def user_is_creator_or_admin(user, game, bot, chat):
-    return user_is_creator_or_admin(user, game) or user_is_admin(user, bot, chat)
+    return user_is_creator(user, game) or user_is_admin(user, bot, chat)
 
 
 @MWT(timeout=60*60)

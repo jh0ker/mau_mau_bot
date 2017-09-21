@@ -22,7 +22,7 @@ import gettext
 from functools import wraps
 
 from locales import available_locales
-from database import db_session
+from pony.orm import db_session
 from user_setting import UserSetting
 from shared_vars import gm
 

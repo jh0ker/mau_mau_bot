@@ -40,7 +40,7 @@ class Player(object):
         self.logger = logging.getLogger(__name__)
 
         try:
-            for i in range(7):
+            for _ in range(7):
                 self.cards.append(self.game.deck.draw())
         except DeckEmptyError:
             for card in self.cards:
@@ -113,7 +113,7 @@ class Player(object):
         _amount = self.game.draw_counter or 1
 
         try:
-            for i in range(_amount):
+            for _ in range(_amount):
                 self.cards.append(self.game.deck.draw())
 
         except DeckEmptyError:

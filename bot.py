@@ -32,7 +32,7 @@ from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
                      add_card, add_mode_classic, add_mode_fast)
 from user_setting import UserSetting
-from utils import display_name, get_admin_ids
+from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
