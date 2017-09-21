@@ -24,6 +24,7 @@ from telegram.ext.dispatcher import run_async
 
 from internationalization import _, __
 from mwt import MWT
+from shared_vars import gm
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +104,22 @@ def answer_async(bot, *args, **kwargs):
         bot.answerInlineQuery(*args, **kwargs)
     except Exception as e:
         error(None, None, e)
+
+
+def game_is_running(game):
+    return game in gm.chatid_games.get(game.chat.id, list())
+
+
+def user_is_creator(user, game):
+    return user.id in game.owner
+
+
+def user_is_admin(user, bot, chat):
+    return user.id in get_admin_ids(bot, chat.id)
+
+
+def user_is_creator_or_admin(user, game, bot, chat):
+    return user_is_creator(user, game) or user_is_admin(user, bot, chat)
 
 
 @MWT(timeout=60*60)

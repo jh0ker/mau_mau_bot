@@ -79,18 +79,18 @@ class GameManager(object):
         for player in players:
             if player in game.players:
                 raise AlreadyJoinedError()
-        else:
-            try:
-                self.leave_game(user, chat)
-            except NoGameInChatError:
-                pass
-            except NotEnoughPlayersError:
-                self.end_game(chat, user)
 
-                if user.id not in self.userid_players:
-                    self.userid_players[user.id] = list()
+        try:
+            self.leave_game(user, chat)
+        except NoGameInChatError:
+            pass
+        except NotEnoughPlayersError:
+            self.end_game(chat, user)
 
-                players = self.userid_players[user.id]
+            if user.id not in self.userid_players:
+                self.userid_players[user.id] = list()
+
+            players = self.userid_players[user.id]
 
         player = Player(game, user)
 
@@ -113,8 +113,8 @@ class GameManager(object):
 
                         p.leave()
                         return
-            else:
-                raise NoGameInChatError
+
+            raise NoGameInChatError
 
         game = player.game
 
@@ -185,5 +185,4 @@ class GameManager(object):
         for player in players:
             if player.game.chat.id == chat.id:
                 return player
-        else:
-            return None
+        return None

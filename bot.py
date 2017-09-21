@@ -19,7 +19,7 @@
 
 import logging
 from datetime import datetime
-from random import randint
+from secrets import randbelow
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
     InlineKeyboardButton
@@ -30,13 +30,13 @@ from telegram.ext.dispatcher import run_async
 from start_bot import start_bot
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
-                     add_card)
+                     add_card, add_mode_classic, add_mode_fast)
 from user_setting import UserSetting
-from utils import display_name, get_admin_ids
+from utils import display_name
 import card as c
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
-from utils import send_async, answer_async, error, TIMEOUT
+from utils import send_async, answer_async, error, TIMEOUT, user_is_creator_or_admin, user_is_creator, game_is_running
 from shared_vars import botan, gm, updater, dispatcher
 from internationalization import _, __, user_locale, game_locales
 import simple_commands
@@ -51,8 +51,20 @@ from simple_commands import help
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
+    level=logging.INFO
+    #,filename='log.log'
+)
 logger = logging.getLogger(__name__)
+
+
+class Countdown(object):
+    player = None
+    job_queue = None
+
+    def __init__(self, player, job_queue):
+        self.player = player
+        self.job_queue = job_queue
+
 
 @user_locale
 def notify_me(bot, update):
@@ -117,7 +129,7 @@ def kill_game(bot, update):
 
     game = games[-1]
 
-    if user.id in game.owner or user.id in get_admin_ids(bot, chat.id):
+    if user_is_creator_or_admin(user, game, bot, chat):
 
         try:
             gm.end_game(chat, user)
@@ -204,11 +216,18 @@ def leave_game(bot, update):
         send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
 
     else:
-        send_async(bot, chat.id,
-                   text=__("Okay. Next Player: {name}",
-                           multi=game.translate).format(
-                       name=display_name(game.current_player.user)),
-                   reply_to_message_id=update.message.message_id)
+        if game.started:
+            send_async(bot, chat.id,
+                       text=__("Okay. Next Player: {name}",
+                               multi=game.translate).format(
+                           name=display_name(game.current_player.user)),
+                       reply_to_message_id=update.message.message_id)
+        else:
+            send_async(bot, chat.id,
+                       text=__("{name} left the game before it started.",
+                               multi=game.translate).format(
+                           name=display_name(user)),
+                       reply_to_message_id=update.message.message_id)
 
 
 def select_game(bot, update):
@@ -275,7 +294,7 @@ def status_update(bot, update):
 
 @game_locales
 @user_locale
-def start_game(bot, update, args):
+def start_game(bot, update, args, job_queue):
     """Handler for the /start command"""
 
     if update.message.chat.type != 'private':
@@ -321,6 +340,7 @@ def start_game(bot, update, args):
                                 timeout=TIMEOUT)
 
             send_first()
+            start_player_countdown(bot, game, job_queue)
 
     elif len(args) and args[0] == 'select':
         players = gm.userid_players[update.message.from_user.id]
@@ -472,13 +492,14 @@ def skip_player(bot, update):
 
     game = player.game
     skipped_player = game.current_player
-    next_player = game.current_player.next
 
     started = skipped_player.turn_started
     now = datetime.now()
     delta = (now - started).seconds
 
-    if delta < skipped_player.waiting_time:
+    # You can't skip if the current player still has time left
+    # You can skip yourself even if you have time left (you'll still draw)
+    if delta < skipped_player.waiting_time and player != skipped_player:
         n = skipped_player.waiting_time - delta
         send_async(bot, chat.id,
                    text=_("Please wait {time} second",
@@ -486,47 +507,8 @@ def skip_player(bot, update):
                           n)
                    .format(time=n),
                    reply_to_message_id=update.message.message_id)
-
-    elif skipped_player.waiting_time > 0:
-        skipped_player.anti_cheat += 1
-        skipped_player.waiting_time -= 30
-        try:
-            skipped_player.draw()
-        except DeckEmptyError:
-            pass
-
-        n = skipped_player.waiting_time
-        send_async(bot, chat.id,
-                   text=__("Waiting time to skip this player has "
-                           "been reduced to {time} second.\n"
-                           "Next player: {name}",
-                           "Waiting time to skip this player has "
-                           "been reduced to {time} seconds.\n"
-                           "Next player: {name}",
-                           n,
-                           multi=game.translate)
-                   .format(time=n,
-                           name=display_name(next_player.user)))
-        game.turn()
-
     else:
-        try:
-            gm.leave_game(skipped_player.user, chat)
-            send_async(bot, chat.id,
-                       text=__("{name1} was skipped four times in a row "
-                               "and has been removed from the game.\n"
-                               "Next player: {name2}", multi=game.translate)
-                       .format(name1=display_name(skipped_player.user),
-                               name2=display_name(next_player.user)))
-
-        except NotEnoughPlayersError:
-            send_async(bot, chat.id,
-                       text=__("{name} was skipped four times in a row "
-                               "and has been removed from the game.\n"
-                               "The game ended.", multi=game.translate)
-                       .format(name=display_name(skipped_player.user)))
-
-            gm.end_game(chat.id, skipped_player.user)
+        do_skip(bot, player)
 
 
 @game_locales
@@ -540,15 +522,24 @@ def reply_to_query(bot, update):
     switch = None
 
     try:
-        user_id = update.inline_query.from_user.id
+        user = update.inline_query.from_user
+        user_id = user.id
         players = gm.userid_players[user_id]
         player = gm.userid_current[user_id]
         game = player.game
     except KeyError:
         add_no_game(results)
     else:
+
+        # The game has not started.
+        # The creator may change the game mode, other users just get a "game has not started" message.
         if not game.started:
-            add_not_started(results)
+            if user_is_creator(user, game):
+                add_mode_classic(results)
+                add_mode_fast(results)
+            else:
+                add_not_started(results)
+
 
         elif user_id == game.current_player.user.id:
             if game.choosing_color:
@@ -594,7 +585,7 @@ def reply_to_query(bot, update):
 
 @game_locales
 @user_locale
-def process_result(bot, update):
+def process_result(bot, update, job_queue):
     """
     Handler for chosen inline results.
     Checks the players actions and acts accordingly.
@@ -615,6 +606,12 @@ def process_result(bot, update):
     player.anti_cheat += 1
 
     if result_id in ('hand', 'gameinfo', 'nogame'):
+        return
+    elif result_id.startswith('mode_'):
+        # First 5 characters are 'mode_', the rest is the gamemode.
+        game.mode = result_id[5:]
+        logger.info("Gamemode changed to {mode}".format(mode = game.mode))
+        send_async(bot, chat.id, text=__("Gamemode changed to {mode}".format(mode = game.mode)))
         return
     elif len(result_id) == 36:  # UUID result
         return
@@ -637,22 +634,108 @@ def process_result(bot, update):
         reset_waiting_time(bot, player)
         do_play_card(bot, player, result_id)
 
-    if game in gm.chatid_games.get(chat.id, list()):
+    if game_is_running(game):
         send_async(bot, chat.id,
                    text=__("Next player: {name}", multi=game.translate)
                    .format(name=display_name(game.current_player.user)))
+        start_player_countdown(bot, game, job_queue)
+
+
+def start_player_countdown(bot, game, job_queue):
+    player = game.current_player
+    time = player.waiting_time
+    if time == 0:
+        time = 15
+    time = 5 #For debug
+
+    if game.mode == 'fast':
+        if game.job:
+            game.job.schedule_removal()
+
+        job = job_queue.run_once(
+            #lambda x,y: do_skip(bot, player),
+            skip_job,
+            time,
+            context=Countdown(player, job_queue)
+        )
+
+        logger.info("Started countdown for player: {player}. {time} seconds."
+                    .format(player=display_name(player.user), time=time))
+        player.game.job = job
 
 
 def reset_waiting_time(bot, player):
     """Resets waiting time for a player and sends a notice to the group"""
     chat = player.game.chat
 
-    if player.waiting_time < 90:
-        player.waiting_time = 90
+    if player.waiting_time < 60:
+        player.waiting_time = 60
         send_async(bot, chat.id,
-                   text=__("Waiting time for {name} has been reset to 90 "
+                   text=__("Waiting time for {name} has been reset to 60 "
                            "seconds", multi=player.game.translate)
                    .format(name=display_name(player.user)))
+
+
+def skip_job(bot, job):
+    player = job.context.player
+    game = player.game
+    if game_is_running(game):
+        job_queue = job.context.job_queue
+        do_skip(bot, player, job_queue)
+
+
+# FIXME do_skip() could get executed in another thread (it can be a job), so it looks like it can't use game.translate?
+def do_skip(bot, player, job_queue=None):
+    game = player.game
+    chat = game.chat
+    skipped_player = game.current_player
+    next_player = game.current_player.next
+
+    if skipped_player.waiting_time > 0:
+        skipped_player.anti_cheat += 1
+        skipped_player.waiting_time -= 20
+        try:
+            skipped_player.draw()
+        except DeckEmptyError:
+            pass
+
+        n = skipped_player.waiting_time
+        send_async(bot, chat.id,
+                   text="Waiting time to skip this player has "
+                        "been reduced to {time} seconds.\n"
+                        "Next player: {name}"
+                   .format(time=n,
+                           name=display_name(next_player.user))
+            )
+        logger.info("{player} was skipped!. "
+                    .format(player=display_name(player.user)))
+        game.turn()
+        if job_queue:
+            start_player_countdown(bot, game, job_queue)
+
+    else:
+        try:
+            gm.leave_game(skipped_player.user, chat)
+            send_async(bot, chat.id,
+                       text="{name1} was skipped four times in a row "
+                            "and has been removed from the game.\n"
+                            "Next player: {name2}"
+                       .format(name1=display_name(skipped_player.user),
+                               name2=display_name(next_player.user)))
+            logger.info("{player} was skipped!. "
+                    .format(player=display_name(player.user)))
+            if job_queue:
+                start_player_countdown(bot, game, job_queue)
+
+        except NotEnoughPlayersError:
+            send_async(bot, chat.id,
+                       text="{name} was skipped four times in a row "
+                               "and has been removed from the game.\n"
+                               "The game ended."
+                       .format(name=display_name(skipped_player.user)))
+
+            gm.end_game(chat, skipped_player.user)
+
 
 
 def do_play_card(bot, player, result_id):
@@ -702,7 +785,8 @@ def do_play_card(bot, player, result_id):
             gm.end_game(chat, user)
 
     if botan:
-        botan.track(Message(randint(1, 1000000000), user, datetime.now(),
+        random_int = randbelow(999999999) + 1
+        botan.track(Message(random_int, user, datetime.now(),
                             Chat(chat.id, 'group')),
                     'Played cards')
 
@@ -762,9 +846,9 @@ def do_call_bluff(bot, player):
 
 # Add all handlers to the dispatcher and run the bot
 dispatcher.add_handler(InlineQueryHandler(reply_to_query))
-dispatcher.add_handler(ChosenInlineResultHandler(process_result))
+dispatcher.add_handler(ChosenInlineResultHandler(process_result, pass_job_queue=True))
 dispatcher.add_handler(CallbackQueryHandler(select_game))
-dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True))
+dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True, pass_job_queue=True))
 dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))

@@ -40,7 +40,7 @@ class Player(object):
         self.logger = logging.getLogger(__name__)
 
         try:
-            for i in range(7):
+            for _ in range(7):
                 self.cards.append(self.game.deck.draw())
         except DeckEmptyError:
             for card in self.cards:
@@ -63,7 +63,7 @@ class Player(object):
         self.drew = False
         self.anti_cheat = 0
         self.turn_started = datetime.now()
-        self.waiting_time = 90
+        self.waiting_time = 60
 
     def leave(self):
         """Removes player from the game and closes the gap in the list"""
@@ -113,7 +113,7 @@ class Player(object):
         _amount = self.game.draw_counter or 1
 
         try:
-            for i in range(_amount):
+            for _ in range(_amount):
                 self.cards.append(self.game.deck.draw())
 
         except DeckEmptyError:

@@ -33,6 +33,8 @@ class Game(object):
     draw_counter = 0
     players_won = 0
     starter = None
+    mode = 'classic'
+    job = None
     with open("config.json","r") as f:
         config = json.loads(f.read())
     owner = config.get("admin_list", None)
@@ -106,6 +108,7 @@ class Game(object):
             self.turn()
         else:
             self.logger.debug("Choosing Color...")
+            self.logger.info("Played special card with hand: {hand}".format(hand=self.current_player.cards))
             self.choosing_color = True
 
     def choose_color(self, color):
