@@ -42,7 +42,7 @@ from internationalization import _, __, user_locale, game_locales
 import simple_commands
 import settings
 
-from simple_commands import help
+from simple_commands import help_handler
 
 #import json
 #with open("config.json","r") as f:
@@ -88,7 +88,7 @@ def new_game(bot, update):
     chat_id = update.message.chat_id
 
     if update.message.chat.type == 'private':
-        help(bot, update)
+        help_handler(bot, update)
 
     else:
 
@@ -119,7 +119,7 @@ def kill_game(bot, update):
     games = gm.chatid_games.get(chat.id)
 
     if update.message.chat.type == 'private':
-        help(bot, update)
+        help_handler(bot, update)
         return
 
     if not games:
@@ -153,7 +153,7 @@ def join_game(bot, update):
     chat = update.message.chat
 
     if update.message.chat.type == 'private':
-        help(bot, update)
+        help_handler(bot, update)
         return
 
     try:
@@ -365,7 +365,7 @@ def start_game(bot, update, args, job_queue):
                    reply_markup=InlineKeyboardMarkup(groups))
 
     else:
-        help(bot, update)
+        help_handler(bot, update)
 
 
 @user_locale
