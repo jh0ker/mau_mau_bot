@@ -28,11 +28,11 @@ BLACK = 'x'
 COLORS = (RED, BLUE, GREEN, YELLOW)
 
 COLOR_ICONS = {
-    RED: '❤️',
-    BLUE: '💙',
-    GREEN: '💚',
-    YELLOW: '💛',
-    BLACK: '⬛️'
+    RED: 'Red️',
+    BLUE: 'Blue',
+    GREEN: 'Green',
+    YELLOW: 'Yellow',
+    BLACK: 'Black️'
 }
 
 # Values
@@ -52,7 +52,7 @@ SKIP = 'skip'
 
 VALUES = (ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, DRAW_TWO,
           REVERSE, SKIP)
-WILD_VALUES = (ONE, TWO, THREE, FOUR, FIVE)
+WILD_VALUES = (ONE, TWO, THREE, FOUR, FIVE, DRAW_TWO, REVERSE, SKIP)
 
 # Special cards
 CHOOSE = 'colorchooser'

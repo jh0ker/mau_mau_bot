@@ -108,8 +108,6 @@ def new_game(bot, update):
                    text=_("Created a new game! Join the game with /join "
                           "and start the game with /start"))
 
-        game_mode_menu(bot, update.message.chat)
-
         if botan:
             botan.track(update.message, 'New games')
 
