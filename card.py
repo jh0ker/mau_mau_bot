@@ -28,11 +28,11 @@ BLACK = 'x'
 COLORS = (RED, BLUE, GREEN, YELLOW)
 
 COLOR_ICONS = {
-    RED: 'Red️',
-    BLUE: 'Blue',
-    GREEN: 'Green',
-    YELLOW: 'Yellow',
-    BLACK: 'Black️'
+    RED: '❤️',
+    BLUE: '💙',
+    GREEN: '💚',
+    YELLOW: '💛',
+    BLACK: '⬛️'
 }
 
 # Values

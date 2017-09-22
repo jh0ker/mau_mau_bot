@@ -70,8 +70,6 @@ class Game(object):
 
     def change_mode(self, mode):
         # We change from some mode to wild
-        print ("current mode:" + self.mode)
-        print ("new mode:" +  mode)
         if self.mode != "wild" and mode == "wild":
             logging.info("Changing deck to Wild")
             self.deck._fill_wild_()
