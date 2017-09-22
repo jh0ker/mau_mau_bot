@@ -118,6 +118,18 @@ def add_mode_fast(results):
     )
 
 
+def add_mode_wild(results):
+    """Change mode to classic"""
+    results.append(
+        InlineQueryResultArticle(
+            "mode_wild",
+            title=_("🐉 Wild mode"),
+            input_message_content=
+            InputTextMessageContent(_('Into the Wild~ 🐉'))
+        )
+    )
+
+
 def add_draw(player, results):
     """Add option to draw"""
     n = player.game.draw_counter or 1

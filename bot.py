@@ -22,7 +22,7 @@ from datetime import datetime
 from secrets import randbelow
 
 from telegram import ParseMode, Message, Chat, InlineKeyboardMarkup, \
-    InlineKeyboardButton
+    InlineKeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import InlineQueryHandler, ChosenInlineResultHandler, \
     CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext.dispatcher import run_async
@@ -30,7 +30,7 @@ from telegram.ext.dispatcher import run_async
 from start_bot import start_bot
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
-                     add_card, add_mode_classic, add_mode_fast)
+                     add_card, add_mode_classic, add_mode_fast, add_mode_wild)
 from user_setting import UserSetting
 from utils import display_name
 import card as c
@@ -107,6 +107,8 @@ def new_game(bot, update):
         send_async(bot, chat_id,
                    text=_("Created a new game! Join the game with /join "
                           "and start the game with /start"))
+
+        game_mode_menu(bot, update.message.chat)
 
         if botan:
             botan.track(update.message, 'New games')
@@ -317,8 +319,11 @@ def start_game(bot, update, args, job_queue):
                               "before you can start it"))
 
         else:
-            game.play_card(game.last_card)
-            game.started = True
+            # Starting a game
+            game.start()
+
+            for player in game.players:
+                player.draw_first_hand()
 
             first_message = (
                 __("First player: {name}\n"
@@ -537,6 +542,7 @@ def reply_to_query(bot, update):
             if user_is_creator(user, game):
                 add_mode_classic(results)
                 add_mode_fast(results)
+                add_mode_wild(results)
             else:
                 add_not_started(results)
 
@@ -609,9 +615,10 @@ def process_result(bot, update, job_queue):
         return
     elif result_id.startswith('mode_'):
         # First 5 characters are 'mode_', the rest is the gamemode.
-        game.mode = result_id[5:]
-        logger.info("Gamemode changed to {mode}".format(mode = game.mode))
-        send_async(bot, chat.id, text=__("Gamemode changed to {mode}".format(mode = game.mode)))
+        mode = result_id[5:]
+        game.change_mode(mode)
+        logger.info("Gamemode changed to {mode}".format(mode = mode))
+        send_async(bot, chat.id, text=__("Gamemode changed to {mode}".format(mode = mode)))
         return
     elif len(result_id) == 36:  # UUID result
         return
@@ -842,6 +849,12 @@ def do_call_bluff(bot, player):
                                multi=game.translate))
 
     game.turn()
+
+
+def game_mode_menu(bot, chat):
+    kb = [["🎻 Classic mode", "🚀 Sanic mode", "🐉 Wild mode"]]
+    markup = ReplyKeyboardMarkup(kb, resize_keyboard=True, one_time_keyboard=True)
+    send_async(bot, chat.id, text=_("Choose the game mode:"), reply_markup=markup)
 
 
 # Add all handlers to the dispatcher and run the bot

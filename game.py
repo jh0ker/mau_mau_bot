@@ -45,9 +45,7 @@ class Game(object):
         self.chat = chat
         self.last_card = None
 
-        while not self.last_card or self.last_card.special:
-            self.deck = Deck()
-            self.last_card = self.deck.draw()
+        self.deck = Deck()
 
         self.logger = logging.getLogger(__name__)
 
@@ -66,6 +64,25 @@ class Game(object):
             itplayer = itplayer.next
         return players
 
+    def start(self):
+        self._first_card_()
+        self.started = True
+
+    def change_mode(self, mode):
+        # We change from some mode to wild
+        print ("current mode:" + self.mode)
+        print ("new mode:" +  mode)
+        if self.mode != "wild" and mode == "wild":
+            logging.info("Changing deck to Wild")
+            self.deck._fill_wild_()
+
+        # We change from wild to another mode
+        if self.mode == "wild" and mode != "wild":
+            logging.info("Changing deck to Classic")
+            self.deck._fill_classic_()
+
+        self.mode = mode
+
     def reverse(self):
         """Reverses the direction of game"""
         self.reversed = not self.reversed
@@ -77,6 +94,16 @@ class Game(object):
         self.current_player.drew = False
         self.current_player.turn_started = datetime.now()
         self.choosing_color = False
+
+    def _first_card_(self):
+        # In case that the player did not select a game mode
+        if not self.deck.cards:
+            self.deck._fill_classic_()
+
+        while not self.last_card or self.last_card.special:
+            self.last_card = self.deck.draw()
+
+        self.play_card(self.last_card)
 
     def play_card(self, card):
         """
