@@ -72,7 +72,7 @@ attributions = ("Attributions:\n"
 
 
 @user_locale
-def help(bot, update):
+def help_handler(bot, update):
     """Handler for the /help command"""
     send_async(bot, update.message.chat_id, text=_(help_text),
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
@@ -131,7 +131,7 @@ def stats(bot, update):
 
 
 def register():
-    dispatcher.add_handler(CommandHandler('help', help))
+    dispatcher.add_handler(CommandHandler('help', help_handler))
     dispatcher.add_handler(CommandHandler('source', source))
     dispatcher.add_handler(CommandHandler('news', news))
     dispatcher.add_handler(CommandHandler('stats', stats))

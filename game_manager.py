@@ -93,6 +93,8 @@ class GameManager(object):
             players = self.userid_players[user.id]
 
         player = Player(game, user)
+        if game.started:
+            player.draw_first_hand()
 
         players.append(player)
         self.userid_current[user.id] = player
