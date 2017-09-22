@@ -65,20 +65,15 @@ class Game(object):
         return players
 
     def start(self):
+        if self.mode == None or self.mode != "wild":
+            self.deck._fill_classic_()
+        else:
+            self.deck._fill_wild_()
+
         self._first_card_()
         self.started = True
 
-    def change_mode(self, mode):
-        # We change from some mode to wild
-        if self.mode != "wild" and mode == "wild":
-            logging.info("Changing deck to Wild")
-            self.deck._fill_wild_()
-
-        # We change from wild to another mode
-        if self.mode == "wild" and mode != "wild":
-            logging.info("Changing deck to Classic")
-            self.deck._fill_classic_()
-
+    def set_mode(self, mode):
         self.mode = mode
 
     def reverse(self):
@@ -96,7 +91,7 @@ class Game(object):
     def _first_card_(self):
         # In case that the player did not select a game mode
         if not self.deck.cards:
-            self.deck._fill_classic_()
+            self.set_mode("classic")
 
         while not self.last_card or self.last_card.special:
             self.last_card = self.deck.draw()

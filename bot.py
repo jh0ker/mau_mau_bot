@@ -311,7 +311,7 @@ def start_game(bot, update, args, job_queue):
         if game.started:
             send_async(bot, chat.id, text=_("The game has already started"))
 
-        elif len(game.players) < 2:
+        elif len(game.players) < 1:
             send_async(bot, chat.id,
                        text=_("At least two players must /join the game "
                               "before you can start it"))
@@ -614,7 +614,7 @@ def process_result(bot, update, job_queue):
     elif result_id.startswith('mode_'):
         # First 5 characters are 'mode_', the rest is the gamemode.
         mode = result_id[5:]
-        game.change_mode(mode)
+        game.set_mode(mode)
         logger.info("Gamemode changed to {mode}".format(mode = mode))
         send_async(bot, chat.id, text=__("Gamemode changed to {mode}".format(mode = mode)))
         return
@@ -651,7 +651,6 @@ def start_player_countdown(bot, game, job_queue):
     time = player.waiting_time
     if time == 0:
         time = 15
-    time = 5 #For debug
 
     if game.mode == 'fast':
         if game.job:
