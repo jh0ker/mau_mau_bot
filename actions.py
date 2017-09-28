@@ -5,6 +5,7 @@ from secrets import randbelow
 
 from telegram import Message, Chat
 
+from bot_config import TIME_REMOVAL_AFTER_SKIP
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
 from shared_vars import gm, botan
@@ -37,7 +38,7 @@ def do_skip(bot, player, job_queue=None):
 
     if skipped_player.waiting_time > 0:
         skipped_player.anti_cheat += 1
-        skipped_player.waiting_time -= 20
+        skipped_player.waiting_time -= TIME_REMOVAL_AFTER_SKIP
         try:
             skipped_player.draw()
         except DeckEmptyError:
