@@ -1,7 +1,8 @@
 import logging
+import random
+
 import card as c
 from datetime import datetime
-from secrets import randbelow
 
 from telegram import Message, Chat
 
@@ -130,7 +131,7 @@ def do_play_card(bot, player, result_id):
             gm.end_game(chat, user)
 
     if botan:
-        random_int = randbelow(999999999) + 1
+        random_int = random.randrange(1, 999999999)
         botan.track(Message(random_int, user, datetime.now(),
                             Chat(chat.id, 'group')),
                     'Played cards')
