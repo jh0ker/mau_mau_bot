@@ -1,2 +1,2 @@
-python-telegram-bot
+python-telegram-bot==7.0.1
 pony
