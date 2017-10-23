@@ -292,8 +292,8 @@ def start_game(bot, update, args, job_queue):
 
         elif len(game.players) < MIN_PLAYERS:
             send_async(bot, chat.id,
-                       text=_("At least two players must /join the game "
-                              "before you can start it"))
+                       text=__("At least {minplayers} players must /join the game "
+                              "before you can start it").format(minplayers=MIN_PLAYERS))
 
         else:
             # Starting a game
