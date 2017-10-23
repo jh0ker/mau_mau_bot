@@ -173,9 +173,9 @@ msgid "The game has already started"
 msgstr "La partida ya ha comenzado."
 
 #: bot.py:281
-msgid "At least two players must /join the game before you can start it"
+msgid "At least {minplayers} players must /join the game before you can start it"
 msgstr ""
-"Antes de iniciar la partida, al menos dos jugadores deben unirse usando /join."
+"Antes de iniciar la partida, al menos {minplayers} jugadores deben unirse usando /join."
 
 #: bot.py:297
 #, python-format
@@ -289,8 +289,8 @@ msgstr "Siguiente Jugador: {name}."
 
 #: bot.py:572
 #, python-format
-msgid "Waiting time for {name} has been reset to 90 seconds"
-msgstr "El tiempo de espera para {name} se ha reiniciado a 90 segundos"
+msgid "Waiting time for {name} has been reset to {time} seconds"
+msgstr "El tiempo de espera para {name} se ha reiniciado a {time} segundos"
 
 #: bot.py:585
 msgid "Please choose a color"
