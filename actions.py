@@ -5,7 +5,7 @@ from datetime import datetime
 
 from telegram import Message, Chat
 
-from bot_config import TIME_REMOVAL_AFTER_SKIP
+from bot_config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
 from shared_vars import gm, botan, logger
@@ -32,6 +32,9 @@ def do_skip(bot, player, job_queue=None):
     if skipped_player.waiting_time > 0:
         skipped_player.anti_cheat += 1
         skipped_player.waiting_time -= TIME_REMOVAL_AFTER_SKIP
+        if (skipped_player.waiting_time < 0):
+            skipped_player.waiting_time = 0
+
         try:
             skipped_player.draw()
         except DeckEmptyError:
@@ -55,8 +58,8 @@ def do_skip(bot, player, job_queue=None):
         try:
             gm.leave_game(skipped_player.user, chat)
             send_async(bot, chat.id,
-                       text="{name1} was skipped four times in a row "
-                            "and has been removed from the game.\n"
+                       text="{name1} ran out of time "
+                            "and has been removed from the game!\n"
                             "Next player: {name2}"
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
@@ -67,8 +70,8 @@ def do_skip(bot, player, job_queue=None):
 
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
-                       text="{name} was skipped four times in a row "
-                               "and has been removed from the game.\n"
+                       text="{name} ran out of time "
+                               "and has been removed from the game!\n"
                                "The game ended."
                        .format(name=display_name(skipped_player.user)))
 
@@ -185,8 +188,9 @@ def do_call_bluff(bot, player):
 def start_player_countdown(bot, game, job_queue):
     player = game.current_player
     time = player.waiting_time
-    if time == 0:
-        time = 15
+
+    if time < MIN_FAST_TURN_TIME:
+        time = MIN_FAST_TURN_TIME
 
     if game.mode == 'fast':
         if game.job:
