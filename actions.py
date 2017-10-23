@@ -7,7 +7,7 @@ from datetime import datetime
 
 from telegram import Message, Chat
 
-from bot_config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
+from gameplay_config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
 from shared_vars import gm, botan

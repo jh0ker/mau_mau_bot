@@ -22,7 +22,7 @@ import logging
 import json
 from datetime import datetime
 
-from bot_config import DEFAULT_GAMEMODE
+from gameplay_config import DEFAULT_GAMEMODE
 from deck import Deck
 import card as c
 
