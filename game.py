@@ -95,8 +95,12 @@ class Game(object):
         if not self.deck.cards:
             self.set_mode(DEFAULT_GAMEMODE)
 
+        # The first card should not be a special card
         while not self.last_card or self.last_card.special:
             self.last_card = self.deck.draw()
+            # If the card drawn was special, return it to the deck and loop again
+            if self.last_card.special:
+                self.deck.dismiss(self.last_card)
 
         self.play_card(self.last_card)
 
