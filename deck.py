@@ -34,18 +34,7 @@ class Deck(object):
         self.graveyard = list()
         self.logger = logging.getLogger(__name__)
 
-        # Fill deck
-        for color in c.COLORS:
-            for value in c.VALUES:
-                self.cards.append(Card(color, value))
-                if not value == c.ZERO:
-                    self.cards.append(Card(color, value))
-
-        for special in c.SPECIALS * 4:
-            self.cards.append(Card(None, None, special=special))
-
         self.logger.debug(self.cards)
-        self.shuffle()
 
     def shuffle(self):
         """Shuffles the deck"""
@@ -70,3 +59,28 @@ class Deck(object):
     def dismiss(self, card):
         """Returns a card to the deck"""
         self.graveyard.append(card)
+
+    def _fill_classic_(self):
+        # Fill deck with the classic card set
+        self.cards.clear()
+        for color in c.COLORS:
+            for value in c.VALUES:
+                self.cards.append(Card(color, value))
+                if not value == c.ZERO:
+                    self.cards.append(Card(color, value))
+        for special in c.SPECIALS:
+            for _ in range(4):
+                self.cards.append(Card(None, None, special=special))
+        self.shuffle()
+
+    def _fill_wild_(self):
+        # Fill deck with a wild card set
+        self.cards.clear()
+        for color in c.COLORS:
+            for value in c.WILD_VALUES:
+                for _ in range(4):
+                    self.cards.append(Card(color, value))
+        for special in c.SPECIALS:
+            for _ in range(6):
+                self.cards.append(Card(None, None, special=special))
+        self.shuffle()
