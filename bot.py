@@ -37,19 +37,11 @@ from internationalization import _, __, user_locale, game_locales
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
                      add_card, add_mode_classic, add_mode_fast, add_mode_wild)
-from shared_vars import botan, gm, updater, dispatcher
+from shared_vars import botan, gm, updater, dispatcher, logger
 from simple_commands import help_handler
 from start_bot import start_bot
 from utils import display_name
 from utils import send_async, answer_async, error, TIMEOUT, user_is_creator_or_admin, user_is_creator, game_is_running
-
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-    ,filename='log.log'
-)
-logger = logging.getLogger(__name__)
 
 
 @user_locale

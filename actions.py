@@ -1,4 +1,3 @@
-import logging
 import random
 
 import card as c
@@ -9,16 +8,9 @@ from telegram import Message, Chat
 from bot_config import TIME_REMOVAL_AFTER_SKIP
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
-from shared_vars import gm, botan
+from shared_vars import gm, botan, logger
 from user_setting import UserSetting
 from utils import send_async, display_name, game_is_running
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-    ,filename='log.log'
-)
-logger = logging.getLogger(__name__)
 
 
 class Countdown(object):
