@@ -23,6 +23,7 @@ from datetime import datetime
 
 import card as c
 from errors import DeckEmptyError
+from gameplay_config import WAITING_TIME
 
 
 class Player(object):
@@ -39,15 +40,6 @@ class Player(object):
         self.user = user
         self.logger = logging.getLogger(__name__)
 
-        try:
-            for i in range(7):
-                self.cards.append(self.game.deck.draw())
-        except DeckEmptyError:
-            for card in self.cards:
-                self.game.deck.dismiss(card)
-
-            raise
-
         # Check if this player is the first player in this game.
         if game.current_player:
             self.next = game.current_player
@@ -63,7 +55,17 @@ class Player(object):
         self.drew = False
         self.anti_cheat = 0
         self.turn_started = datetime.now()
-        self.waiting_time = 90
+        self.waiting_time = WAITING_TIME
+
+    def draw_first_hand(self):
+        try:
+            for _ in range(7):
+                self.cards.append(self.game.deck.draw())
+        except DeckEmptyError:
+            for card in self.cards:
+                self.game.deck.dismiss(card)
+
+            raise
 
     def leave(self):
         """Removes player from the game and closes the gap in the list"""
@@ -113,7 +115,7 @@ class Player(object):
         _amount = self.game.draw_counter or 1
 
         try:
-            for i in range(_amount):
+            for _ in range(_amount):
                 self.cards.append(self.game.deck.draw())
 
         except DeckEmptyError:

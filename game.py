@@ -21,6 +21,8 @@
 import logging
 import json
 from datetime import datetime
+
+from gameplay_config import DEFAULT_GAMEMODE
 from deck import Deck
 import card as c
 
@@ -33,6 +35,8 @@ class Game(object):
     draw_counter = 0
     players_won = 0
     starter = None
+    mode = DEFAULT_GAMEMODE
+    job = None
     with open("config.json","r") as f:
         config = json.loads(f.read())
     owner = config.get("admin_list", None)
@@ -43,9 +47,7 @@ class Game(object):
         self.chat = chat
         self.last_card = None
 
-        while not self.last_card or self.last_card.special:
-            self.deck = Deck()
-            self.last_card = self.deck.draw()
+        self.deck = Deck()
 
         self.logger = logging.getLogger(__name__)
 
@@ -64,6 +66,18 @@ class Game(object):
             itplayer = itplayer.next
         return players
 
+    def start(self):
+        if self.mode == None or self.mode != "wild":
+            self.deck._fill_classic_()
+        else:
+            self.deck._fill_wild_()
+
+        self._first_card_()
+        self.started = True
+
+    def set_mode(self, mode):
+        self.mode = mode
+
     def reverse(self):
         """Reverses the direction of game"""
         self.reversed = not self.reversed
@@ -75,6 +89,20 @@ class Game(object):
         self.current_player.drew = False
         self.current_player.turn_started = datetime.now()
         self.choosing_color = False
+
+    def _first_card_(self):
+        # In case that the player did not select a game mode
+        if not self.deck.cards:
+            self.set_mode(DEFAULT_GAMEMODE)
+
+        # The first card should not be a special card
+        while not self.last_card or self.last_card.special:
+            self.last_card = self.deck.draw()
+            # If the card drawn was special, return it to the deck and loop again
+            if self.last_card.special:
+                self.deck.dismiss(self.last_card)
+
+        self.play_card(self.last_card)
 
     def play_card(self, card):
         """

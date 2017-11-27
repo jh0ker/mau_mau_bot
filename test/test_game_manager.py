@@ -74,7 +74,7 @@ class Test(unittest.TestCase):
                           *(self.user1, self.chat0))
 
     def test_leave_game(self):
-        g0 = self.gm.new_game(self.chat0)
+        self.gm.new_game(self.chat0)
 
         self.gm.join_game(self.user0, self.chat0)
         self.gm.join_game(self.user1, self.chat0)
@@ -91,14 +91,14 @@ class Test(unittest.TestCase):
                           *(self.user0, self.chat0))
 
     def test_end_game(self):
-        g0 = self.gm.new_game(self.chat0)
+        self.gm.new_game(self.chat0)
 
         self.gm.join_game(self.user0, self.chat0)
         self.gm.join_game(self.user1, self.chat0)
 
         self.assertEqual(len(self.gm.userid_players[0]), 1)
 
-        g1 = self.gm.new_game(self.chat0)
+        self.gm.new_game(self.chat0)
         self.gm.join_game(self.user2, self.chat0)
 
         self.gm.end_game(self.chat0, self.user0)

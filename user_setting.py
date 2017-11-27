@@ -18,7 +18,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from database import db, Optional, Required, PrimaryKey, db_session
+from pony.orm import Optional, PrimaryKey
+from database import db
 
 
 class UserSetting(db.Entity):
