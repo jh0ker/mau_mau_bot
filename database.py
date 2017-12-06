@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from pony.orm import Database, db_session, Optional, Required, Set, PrimaryKey
+from pony.orm import Database
 
 # Database singleton
 db = Database()

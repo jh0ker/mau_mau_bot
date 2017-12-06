@@ -22,7 +22,7 @@ import gettext
 from functools import wraps
 
 from locales import available_locales
-from database import db_session
+from pony.orm import db_session
 from user_setting import UserSetting
 from shared_vars import gm
 
@@ -102,7 +102,7 @@ def user_locale(func):
     @wraps(func)
     @db_session
     def wrapped(bot, update, *pargs, **kwargs):
-        user, chat = _user_chat_from_update(update)
+        user = _user_chat_from_update(update)[0]
 
         with db_session:
             us = UserSetting.get(id=user.id)

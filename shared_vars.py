@@ -18,12 +18,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import json
+
+import logging
 from telegram.ext import Updater
 from telegram.contrib.botan import Botan
 
 from game_manager import GameManager
 from database import db
-import user_setting  # required to generate db mapping
 
 db.bind('sqlite', 'uno.sqlite3', create_db=True)
 db.generate_mapping(create_tables=True)
