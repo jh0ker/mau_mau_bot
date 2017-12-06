@@ -220,7 +220,7 @@ def kick_player(bot, update, args):
     """Handler for the /kick command"""
 
     if update.message.chat.type == 'private':
-        help(bot, update)
+        help_handler(bot, update)
         return
 
     chat = update.message.chat
@@ -243,7 +243,7 @@ def kick_player(bot, update, args):
                    reply_to_message_id=update.message.message_id)
         return
 
-    if user.id in game.owner or user.id in get_admin_ids(bot, chat.id):
+    if user_is_creator_or_admin(user, game, bot, chat):
 
         if update.message.reply_to_message:
             kicked = update.message.reply_to_message.from_user
