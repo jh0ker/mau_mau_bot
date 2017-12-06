@@ -33,31 +33,3 @@ with open("config.json","r") as f:
     config = json.loads(f.read())
 updater = Updater(token=config.get("token"), workers=config.get("workers", 32))
 dispatcher = updater.dispatcher
-
-
-class botan_wrapper:
-
-    """In order to modify less code.
-    """
-
-    def __init__(self, token):		
-        self.token = token
-
-    def track(self, message, event_name='event'):
-        uid = message.from_user
-        message_dict = message.to_dict()
-        print (botan_sdk.track(token, uid, message_dict, event_name))
-
-
-if config.get("botan_token"):
-
-    try:
-        from botan import botan as botan_sdk
-    except ModuleNotFoundError:
-        botan = None
-        print("A botan token is set but the submodule can't be found. Botan is disabled.")
-    else:
-        botan = botan_wrapper(config.get("botan_token"))
-
-else:
-    botan = None
