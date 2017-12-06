@@ -46,7 +46,7 @@ class botan_wrapper:
     def track(self, message, event_name='event'):
         uid = message.from_user
         message_dict = message.to_dict()
-        print botan_sdk.track(token, uid, message_dict, event_name)
+        print (botan_sdk.track(token, uid, message_dict, event_name))
 
 
 if config.get("botan_token"):
