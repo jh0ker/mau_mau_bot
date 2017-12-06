@@ -271,7 +271,6 @@ def kick_player(bot, update, args):
                    reply_to_message_id=update.message.message_id)
 
     else:
-
         send_async(bot, chat.id,
                   text=_("Only the game creator ({name}) and admin can do that.")
                   .format(name=game.starter.first_name),
