@@ -216,7 +216,7 @@ def leave_game(bot, update):
 
 
 @user_locale
-def kick_player(bot, update, args):
+def kick_player(bot, update):
     """Handler for the /kick command"""
 
     if update.message.chat.type == 'private':
@@ -722,7 +722,7 @@ dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
-dispatcher.add_handler(CommandHandler('kick', kick_player, pass_args=True))
+dispatcher.add_handler(CommandHandler('kick', kick_player))
 dispatcher.add_handler(CommandHandler('open', open_game))
 dispatcher.add_handler(CommandHandler('close', close_game))
 dispatcher.add_handler(CommandHandler('enable_translations',
