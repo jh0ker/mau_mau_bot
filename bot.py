@@ -240,75 +240,29 @@ def kick_player(bot, update, args):
         if update.message.reply_to_message:
             kicked = update.message.reply_to_message.from_user
 
-            if kicked:
+            try:
+                gm.leave_game(kicked, chat)
 
-                try:
-                    gm.leave_game(kicked, chat)
-
-                except NoGameInChatError:
-                    send_async(bot, chat.id, text=_("Player {name} is not found in the current game.".format(name=display_name(kicked))),
-                                   reply_to_message_id=update.message.message_id)
-                    return
-
-                except NotEnoughPlayersError:
-                    gm.end_game(chat, user)
-                    send_async(bot, chat.id,
-                                   text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
-                    send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
-                    return
-
-                send_async(bot, chat.id,
-                               text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
-
-            else:
-                send_async(bot, chat.id,
-                    text=_("Please reply to the person you want to kick and type /kick again."),
-                    reply_to_message_id=update.message.message_id)
+            except NoGameInChatError:
+                send_async(bot, chat.id, text=_("Player {name} is not found in the current game.".format(name=display_name(kicked))),
+                                reply_to_message_id=update.message.message_id)
                 return
+
+            except NotEnoughPlayersError:
+                gm.end_game(chat, user)
+                send_async(bot, chat.id,
+                                text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+                send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+                return
+
+            send_async(bot, chat.id,
+                            text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
 
         else:
-
-            if len(args) == 0:
-                send_async(bot, chat.id,
-                    text=_("Please reply to the person you want to kick and type /kick again."),
-                    reply_to_message_id=update.message.message_id)
-                return
-
-            else:
-                for arg in args:
-                    if arg[0] == "@":
-                        for player in game.players:
-                            if player.user.username == arg[1:]:
-                                kicked = player.user
-                                break
-
-                        else:
-                            kicked = None
-                            send_async(bot, chat.id,
-                               text=_("Player {name} is not found in the current game.".format(name=arg)))
-                            return
-
-                    else:
-                        for player in game.players:
-                            if str(player.user.id) == arg:
-                                kicked = player.user
-                                break
-
-                        else:
-                            kicked = None
-                            send_async(bot, chat.id,
-                               text=_("Player with id:{id} is not found in the current game.".format(id=arg)))
-                            return
-
-                    try:
-                        send_async(bot, chat.id,
-                                       text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
-                        gm.leave_game(kicked, chat)
-
-                    except NotEnoughPlayersError:
-                        gm.end_game(chat, user)
-                        send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
-                        return
+            send_async(bot, chat.id,
+                text=_("Please reply to the person you want to kick and type /kick again."),
+                reply_to_message_id=update.message.message_id)
+            return
 
         send_async(bot, chat.id,
                    text=__("Okay. Next Player: {name}",
