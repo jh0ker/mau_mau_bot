@@ -18,6 +18,8 @@ To run the bot yourself, you will need:
 
 You can change some gameplay parameters like turn times, minimum amount of players and default gamemode in `gameplay_config.py`. Check the gamemodes available with the `/modes` command.
 
+Don't forget to run `git submodule update --init` if you want to use botan.
+
 Then run the bot with `python3 bot.py`.
 
 Code documentation is minimal but there.
