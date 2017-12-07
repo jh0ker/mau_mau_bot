@@ -30,7 +30,7 @@ import card as c
 import settings
 import simple_commands
 from actions import do_skip, do_play_card, do_draw, do_call_bluff, start_player_countdown
-from gameplay_config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
+from config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
 from internationalization import _, __, user_locale, game_locales

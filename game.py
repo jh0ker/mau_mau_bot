@@ -19,10 +19,9 @@
 
 
 import logging
-import json
+from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE
 from datetime import datetime
 
-from gameplay_config import DEFAULT_GAMEMODE
 from deck import Deck
 import card as c
 
@@ -37,10 +36,8 @@ class Game(object):
     starter = None
     mode = DEFAULT_GAMEMODE
     job = None
-    with open("config.json","r") as f:
-        config = json.loads(f.read())
-    owner = config.get("admin_list", None)
-    open = config.get("open_lobby", True)
+    owner = ADMIN_LIST
+    open = OPEN_LOBBY
     translate = config.get("enable_translations", False)
 
     def __init__(self, chat):
