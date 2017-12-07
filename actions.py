@@ -7,10 +7,10 @@ from datetime import datetime
 
 from telegram import Message, Chat
 
-from gameplay_config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
+from config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
-from shared_vars import gm, botan
+from shared_vars import gm
 from user_setting import UserSetting
 from utils import send_async, display_name, game_is_running
 
@@ -127,12 +127,6 @@ def do_play_card(bot, player, result_id):
                 us2.games_played += 1
 
             gm.end_game(chat, user)
-
-    if botan:
-        random_int = random.randrange(1, 999999999)
-        botan.track(Message(random_int, user, datetime.now(),
-                            Chat(chat.id, 'group')),
-                    'Played cards')
 
 
 def do_draw(bot, player):

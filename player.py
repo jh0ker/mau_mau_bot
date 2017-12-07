@@ -23,7 +23,7 @@ from datetime import datetime
 
 import card as c
 from errors import DeckEmptyError
-from gameplay_config import WAITING_TIME
+from config import WAITING_TIME
 
 
 class Player(object):

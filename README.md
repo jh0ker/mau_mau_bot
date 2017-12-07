@@ -16,7 +16,8 @@ To run the bot yourself, you will need:
 - Use `/setinline` and `/setinlinefeedback` with BotFather for your bot.
 - Install requirements (using a `virtualenv` is recommended): `pip install -r requirements.txt`
 
-You can change some gameplay parameters like turn times, minimum amount of players and default gamemode in `gameplay_config.py`. Check the gamemodes available with the `/modes` command.
+You can change some gameplay parameters like turn times, minimum amount of players and default gamemode in `config.json`.
+Current gamemodes available: classic, fast and wild. Check the details with the `/modes` command.
 
 Then run the bot with `python3 bot.py`.
 

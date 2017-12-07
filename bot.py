@@ -30,14 +30,14 @@ import card as c
 import settings
 import simple_commands
 from actions import do_skip, do_play_card, do_draw, do_call_bluff, start_player_countdown
-from gameplay_config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
+from config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
 from internationalization import _, __, user_locale, game_locales
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
                      add_card, add_mode_classic, add_mode_fast, add_mode_wild)
-from shared_vars import botan, gm, updater, dispatcher
+from shared_vars import gm, updater, dispatcher
 from simple_commands import help_handler
 from start_bot import start_bot
 from utils import display_name
@@ -93,8 +93,6 @@ def new_game(bot, update):
                    text=_("Created a new game! Join the game with /join "
                           "and start the game with /start"))
 
-        if botan:
-            botan.track(update.message, 'New games')
 
 @user_locale
 def kill_game(bot, update):
@@ -213,6 +211,76 @@ def leave_game(bot, update):
                                multi=game.translate).format(
                            name=display_name(user)),
                        reply_to_message_id=update.message.message_id)
+
+
+@user_locale
+def kick_player(bot, update):
+    """Handler for the /kick command"""
+
+    if update.message.chat.type == 'private':
+        help_handler(bot, update)
+        return
+
+    chat = update.message.chat
+    user = update.message.from_user
+
+    try:
+        game = gm.chatid_games[chat.id][-1]
+
+    except (KeyError, IndexError):
+            send_async(bot, chat.id,
+                   text=_("No game is running at the moment. "
+                          "Create a new game with /new"),
+                   reply_to_message_id=update.message.message_id)
+            return
+
+    if not game.started:
+        send_async(bot, chat.id,
+                   text=_("The game is not started yet. "
+                          "Join the game with /join and start the game with /start"),
+                   reply_to_message_id=update.message.message_id)
+        return
+
+    if user_is_creator_or_admin(user, game, bot, chat):
+
+        if update.message.reply_to_message:
+            kicked = update.message.reply_to_message.from_user
+
+            try:
+                gm.leave_game(kicked, chat)
+
+            except NoGameInChatError:
+                send_async(bot, chat.id, text=_("Player {name} is not found in the current game.".format(name=display_name(kicked))),
+                                reply_to_message_id=update.message.message_id)
+                return
+
+            except NotEnoughPlayersError:
+                gm.end_game(chat, user)
+                send_async(bot, chat.id,
+                                text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+                send_async(bot, chat.id, text=__("Game ended!", multi=game.translate))
+                return
+
+            send_async(bot, chat.id,
+                            text=_("{0} was kicked by {1}".format(display_name(kicked), display_name(user))))
+
+        else:
+            send_async(bot, chat.id,
+                text=_("Please reply to the person you want to kick and type /kick again."),
+                reply_to_message_id=update.message.message_id)
+            return
+
+        send_async(bot, chat.id,
+                   text=__("Okay. Next Player: {name}",
+                           multi=game.translate).format(
+                       name=display_name(game.current_player.user)),
+                   reply_to_message_id=update.message.message_id)
+
+    else:
+        send_async(bot, chat.id,
+                  text=_("Only the game creator ({name}) and admin can do that.")
+                  .format(name=game.starter.first_name),
+                  reply_to_message_id=update.message.message_id)
 
 
 def select_game(bot, update):
@@ -652,6 +720,7 @@ dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
+dispatcher.add_handler(CommandHandler('kick', kick_player))
 dispatcher.add_handler(CommandHandler('open', open_game))
 dispatcher.add_handler(CommandHandler('close', close_game))
 dispatcher.add_handler(CommandHandler('enable_translations',
