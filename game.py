@@ -19,7 +19,7 @@
 
 
 import logging
-from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE
+from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE, ENABLE_TRANSLATIONS
 from datetime import datetime
 
 from deck import Deck
@@ -38,7 +38,7 @@ class Game(object):
     job = None
     owner = ADMIN_LIST
     open = OPEN_LOBBY
-    translate = config.get("enable_translations", False)
+    translate = ENABLE_TRANSLATIONS
 
     def __init__(self, chat):
         self.chat = chat

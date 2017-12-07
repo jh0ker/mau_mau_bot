@@ -4,7 +4,6 @@
     "open_lobby": true,
     "enable_translations": false,
     "workers": 32,
-    // Current gamemodes: "classic", "fast", "wild".
     "default_gamemode": "fast",
     "waiting_time": 120,
     "time_removal_after_skip": 20,
