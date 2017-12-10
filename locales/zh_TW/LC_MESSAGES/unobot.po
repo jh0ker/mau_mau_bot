@@ -171,8 +171,8 @@ msgid "The game has already started"
 msgstr "遊戲已經開始了!"
 
 #: bot.py:281
-msgid "At least two players must /join the game before you can start it"
-msgstr "至少要有兩個人 /join 才能開始遊戲"
+msgid "At least {minplayers} players must /join the game before you can start it"
+msgstr "至少要有 {minplayers} 個人 /join 才能開始遊戲"
 
 
 #: bot.py:297
@@ -272,8 +272,8 @@ msgstr "輪到: {name}"
 
 #: bot.py:572
 #, python-format
-msgid "Waiting time for {name} has been reset to 90 seconds"
-msgstr "{name} 的等待時間已重置到 90 秒"
+msgid "Waiting time for {name} has been reset to {time} seconds"
+msgstr "{name} 的等待時間已重置到 {time} 秒"
 
 #: bot.py:585
 msgid "Please choose a color"
