@@ -1,6 +1,7 @@
 # UNO Bot
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](./LICENSE)
+[![Open Source Helpers](https://www.codetriage.com/jh0ker/mau_mau_bot/badges/users.svg)](https://www.codetriage.com/jh0ker/mau_mau_bot)
 
 Telegram Bot that allows you to play the popular card game UNO via inline queries. The bot currently runs as [@unobot](http://telegram.me/unobot).
 
