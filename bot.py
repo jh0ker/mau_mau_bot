@@ -635,9 +635,11 @@ def reply_to_query(bot, update):
 
         if players and game and len(players) > 1:
             switch = _('Current game: {game}').format(game=game.chat.title)
-
+    
+    offset = int(update.inline_query.offset) if update.inline_query.offset != None and update.inline_query.offset.isnumeric() else 0
+    results = results[offset : offset+42]
     answer_async(bot, update.inline_query.id, results, cache_time=0,
-                 switch_pm_text=switch, switch_pm_parameter='select')
+                 switch_pm_text=switch, switch_pm_parameter='select', next_offset=str(offset+42))
 
 
 @game_locales
