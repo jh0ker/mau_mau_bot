@@ -125,6 +125,7 @@ def do_play_card(bot, player, result_id):
             us2 = UserSetting.get(id=game.current_player.user.id)
             if us2 and us2.stats:
                 us2.games_played += 1
+                us2.last_places += 1
 
             gm.end_game(chat, user)
 
