@@ -22,6 +22,7 @@ import logging
 
 from game import Game
 from player import Player
+from user_setting import UserSetting
 from errors import (AlreadyJoinedError, LobbyClosedError, NoGameInChatError,
                     NotEnoughPlayersError)
 
