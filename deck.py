@@ -78,9 +78,9 @@ class Deck(object):
         self.cards.clear()
         for color in c.COLORS:
             for value in c.WILD_VALUES:
-                for _ in range(4):
+                for _ in range(2):
                     self.cards.append(Card(color, value))
         for special in c.SPECIALS:
-            for _ in range(6):
+            for _ in range(8):
                 self.cards.append(Card(None, None, special=special))
         self.shuffle()

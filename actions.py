@@ -109,7 +109,7 @@ def do_play_card(bot, player, result_id):
                    .format(name=user.first_name))
 
         if us.stats:
-            us.games_played += 1
+            # us.games_played += 1
 
             if game.players_won is 0:
                 us.first_places += 1
@@ -124,7 +124,7 @@ def do_play_card(bot, player, result_id):
 
             us2 = UserSetting.get(id=game.current_player.user.id)
             if us2 and us2.stats:
-                us2.games_played += 1
+                # us2.games_played += 1
                 us2.last_places += 1
 
             gm.end_game(chat, user)
