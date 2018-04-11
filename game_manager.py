@@ -64,7 +64,7 @@ class GameManager(object):
 
         try:
             us = UserSetting.get(id=user.id)
-            us.game_played += 1
+            us.games_played += 1
             game = self.chatid_games[chat.id][-1]
         except (KeyError, IndexError):
             raise NoGameInChatError()
