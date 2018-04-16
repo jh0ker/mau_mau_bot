@@ -113,6 +113,9 @@ def do_play_card(bot, player, result_id):
 
             if game.players_won is 0:
                 us.first_places += 1
+                if game.mode == 'one':
+                    gm.end_game(chat, user)
+                    
 
         game.players_won += 1
 

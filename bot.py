@@ -594,6 +594,7 @@ def reply_to_query(bot, update):
                 add_mode_classic(results)
                 add_mode_fast(results)
                 add_mode_wild(results)
+                add_mode_one(results)
             else:
                 add_not_started(results)
 
