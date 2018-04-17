@@ -116,7 +116,7 @@ def do_play_card(bot, player, result_id):
                 if game.mode == 'one':
                     gm.end_game(chat, user)
                     send_async(bot, chat.id,
-                       text=__("Game ended!", multi=game.translate))
+                       text=__("Game ended! Flawless Victory!", multi=game.translate))
                     
 
         game.players_won += 1
