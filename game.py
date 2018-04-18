@@ -64,7 +64,7 @@ class Game(object):
         return players
 
     def start(self):
-        if self.mode == None or self.mode != "wild" or self.mode != "one":
+        if self.mode == None or self.mode == "fast"
             self.deck._fill_classic_()
         else:
             self.deck._fill_wild_()
