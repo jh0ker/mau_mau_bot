@@ -61,10 +61,9 @@ def add_other_cards(player, results, game):
 
 def player_list(game):
     """Generate list of player strings"""
-    return [_("*{name}* ({number} card)",
-              "*{name}* ({number} cards)",
-              len(player.cards),
-             parse_mode=telegram.ParseMode.MARKDOWN)
+    return [_("<b>{name}</b> ({number} card)",
+              "<b>{name}</b> ({number} cards)",
+              len(player.cards)
             .format(name=player.user.first_name, number=len(player.cards))
             for player in game.players]
 
