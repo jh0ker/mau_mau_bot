@@ -88,8 +88,6 @@ def send_async(bot, *args, **kwargs):
     """Send a message asynchronously"""
     if 'timeout' not in kwargs:
         kwargs['timeout'] = TIMEOUT
-    if 'parse_mode' not in kwargs:
-        kwargs['parse_mode'] = telegram.ParseMode.MARKDOWN
 
     try:
         bot.sendMessage(*args, **kwargs)
