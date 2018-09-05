@@ -101,7 +101,7 @@ def add_mode_classic(results):
             "mode_classic",
             title=_("🎻 Classic mode"),
             input_message_content=
-            InputTextMessageContent(_('Classic 🎻'))
+            InputTextMessageContent(_("Classic 🎻"))
         )
     )
 
@@ -113,7 +113,7 @@ def add_mode_fast(results):
             "mode_fast",
             title=_("🚀 Sanic mode"),
             input_message_content=
-            InputTextMessageContent(_('Gotta go fast! 🚀'))
+            InputTextMessageContent(_("Gotta go fast! 🚀"))
         )
     )
 
@@ -125,7 +125,7 @@ def add_mode_wild(results):
             "mode_wild",
             title=_("🐉 Wild mode"),
             input_message_content=
-            InputTextMessageContent(_('Into the Wild~ 🐉'))
+            InputTextMessageContent(_("Into the Wild~ 🐉"))
         )
     )
 

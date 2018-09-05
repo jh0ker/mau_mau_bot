@@ -65,10 +65,10 @@ source_text = ("This bot is Free Software and licensed under the AGPL. "
                "The code is available here: \n"
                "https://github.com/jh0ker/mau_mau_bot")
 attributions = ("Attributions:\n"
-                'Draw icon by '
-                '<a href="http://www.faithtoken.com/">Faithtoken</a>\n'
-                'Pass icon by '
-                '<a href="http://delapouite.com/">Delapouite</a>\n'
+                "Draw icon by "
+                "<a href='http://www.faithtoken.com/'>Faithtoken</a>\n"
+                "Pass icon by "
+                "<a href='http://delapouite.com/'>Delapouite</a>\n"
                 "Originals available on http://game-icons.net\n"
                 "Icons edited by ɳick")
 
