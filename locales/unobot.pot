@@ -310,7 +310,7 @@ msgstr ""
 
 #: bot.py:709
 #, python-format
-msgid "Waiting time for {name} has been reset to 90 seconds"
+msgid "Waiting time for {name} has been reset to {time} seconds"
 msgstr ""
 
 #: actions.py:101
