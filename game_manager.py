@@ -22,6 +22,7 @@ import logging
 
 from game import Game
 from player import Player
+from user_setting import UserSetting
 from errors import (AlreadyJoinedError, LobbyClosedError, NoGameInChatError,
                     NotEnoughPlayersError)
 
@@ -62,6 +63,11 @@ class GameManager(object):
         self.logger.info("Joining game with id " + str(chat.id))
 
         try:
+            us = UserSetting.get(id=user.id)
+        if not us:
+            us = UserSetting(id=user.id)
+
+            us.games_played += 1
             game = self.chatid_games[chat.id][-1]
         except (KeyError, IndexError):
             raise NoGameInChatError()

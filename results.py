@@ -129,6 +129,17 @@ def add_mode_wild(results):
         )
     )
 
+def add_mode_one(results):
+    """Change mode to classic"""
+    results.append(
+        InlineQueryResultArticle(
+            "mode_one",
+            title=_("😐 Saitama mode"),
+            input_message_content=
+            InputTextMessageContent(_('One hit Kill? 😐'))
+        )
+    )
+
 
 def add_draw(player, results):
     """Add option to draw"""

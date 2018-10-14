@@ -79,6 +79,7 @@ def kb_select(bot, update, groups):
         us.first_places = 0
         us.games_played = 0
         us.cards_played = 0
+        us.last_places = 0
         send_async(bot, chat.id, text=_("Deleted and disabled statistics!"))
 
 

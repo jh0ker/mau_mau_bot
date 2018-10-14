@@ -107,24 +107,31 @@ def do_play_card(bot, player, result_id):
         send_async(bot, chat.id,
                    text=__("{name} won!", multi=game.translate)
                    .format(name=user.first_name))
+        send_async(bot, chat.id,
+                    text=__("Game ended! Flawless Victory!"))
 
         if us.stats:
-            us.games_played += 1
+            # us.games_played += 1
 
             if game.players_won is 0:
                 us.first_places += 1
-
-        game.players_won += 1
+                    
+        if game.mode == 'one':
+            gm.end_game(chat, user)
+        else:
+            game.players_won += 1
 
         try:
-            gm.leave_game(user, chat)
+            if game.mode != 'one':
+                gm.leave_game(user, chat)
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
                        text=__("Game ended!", multi=game.translate))
 
             us2 = UserSetting.get(id=game.current_player.user.id)
             if us2 and us2.stats:
-                us2.games_played += 1
+                # us2.games_played += 1
+                us2.last_places += 1
 
             gm.end_game(chat, user)
 
