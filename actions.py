@@ -158,6 +158,7 @@ def do_play_card(bot, player, result_id):
                     if not us:
                         us_ = UserSetting(id=player.user.id)
                     us_.games_played += 1
+                gm.end_game(chat, user)
             else:
                 sleep(5)
                 game.reset_cards()
