@@ -150,7 +150,7 @@ def do_play_card(bot, player, result_id):
                 send_async(bot, chat.id,
                            text=__("Game ended! {name} wins the game!",
                                    multi=game.translate)
-                           .format(highest[0].user.first_name))
+                           .format(name=highest[0].user.first_name))
                 if us.stats:
                     us.first_places += 1
                 for player in players_cache:
