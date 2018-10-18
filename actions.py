@@ -120,7 +120,7 @@ def do_play_card(bot, player, result_id):
                 chat.id,
                 text=", ".join(
                     ["{cl} {vl} (+{pt})"
-                     .format(cl=c.COLOR_ICONS[n[1].color],
+                     .format(cl=c.COLOR_ICONS[n[1].color or 'x'],
                              vl=n[1].value or n[1].special,
                              pt=n[0])
                      for n in sorted(game.last_round_score,
