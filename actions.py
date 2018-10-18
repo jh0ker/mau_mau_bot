@@ -11,6 +11,7 @@ from config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME, SCORE_WIN
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
 from shared_vars import gm
+from time import sleep
 from user_setting import UserSetting
 from utils import send_async, display_name, game_is_running, TIMEOUT
 
@@ -158,6 +159,7 @@ def do_play_card(bot, player, result_id):
                         us_ = UserSetting(id=player.user.id)
                     us_.games_played += 1
             else:
+                sleep(5)
                 game.reset_cards()
                 game.new_round()
                 next_round_message = (
