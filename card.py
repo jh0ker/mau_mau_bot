@@ -60,6 +60,11 @@ DRAW_FOUR = 'draw_four'
 
 SPECIALS = (CHOOSE, DRAW_FOUR)
 
+# Card score
+CARD_SCORES = {v: int(v) for v in VALUES[0:10]}
+CARD_SCORES.update({v: 15 for v in VALUES[10:13]})
+CARD_SCORES.update({SPECIALS[0]: 20, SPECIALS[1]: 25})
+
 STICKERS = {
     'b_0': 'BQADBAAD2QEAAl9XmQAB--inQsYcLTsC',
     'b_1': 'BQADBAAD2wEAAl9XmQABBzh4U-rFicEC',

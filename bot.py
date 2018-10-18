@@ -30,13 +30,15 @@ import card as c
 import settings
 import simple_commands
 from actions import do_skip, do_play_card, do_draw, do_call_bluff, start_player_countdown
-from config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
+from config import (WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS, SCORE_WIN,
+                    SCORE_DUEL, ADDITIONAL_POINT, PLAYER_THRESHOLD)
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
                     NotEnoughPlayersError, DeckEmptyError)
 from internationalization import _, __, user_locale, game_locales
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
-                     add_card, add_mode_classic, add_mode_fast, add_mode_wild)
+                     add_card, add_mode_classic, add_mode_fast, add_mode_wild,
+                     add_mode_score)
 from shared_vars import gm, updater, dispatcher
 from simple_commands import help_handler
 from start_bot import start_bot
@@ -370,6 +372,12 @@ def start_game(bot, update, args, job_queue):
                               "before you can start it").format(minplayers=MIN_PLAYERS))
 
         else:
+            # Set winning score
+            player_num = len(game.players)
+            if player_num == 2:
+                game.win_score = SCORE_DUEL
+            else:
+                game.win_score = ADDITIONAL_POINT * player_num
             # Starting a game
             game.start()
 
@@ -594,6 +602,7 @@ def reply_to_query(bot, update):
                 add_mode_classic(results)
                 add_mode_fast(results)
                 add_mode_wild(results)
+                add_mode_score(results)
             else:
                 add_not_started(results)
 

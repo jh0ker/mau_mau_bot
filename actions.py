@@ -7,12 +7,12 @@ from datetime import datetime
 
 from telegram import Message, Chat
 
-from config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
+from config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME, SCORE_WIN
 from errors import DeckEmptyError, NotEnoughPlayersError
 from internationalization import __, _
 from shared_vars import gm
 from user_setting import UserSetting
-from utils import send_async, display_name, game_is_running
+from utils import send_async, display_name, game_is_running, TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +107,77 @@ def do_play_card(bot, player, result_id):
         send_async(bot, chat.id,
                    text=__("{name} won!", multi=game.translate)
                    .format(name=user.first_name))
+
+        if game.mode == "score":
+            game.add_score(player)
+            score = sum([n[0] for n in game.last_round_score])
+            bot.sendMessage(chat.id,
+                            text=__("Added {pt} point",
+                                    "Added {pt} points",
+                                    score)
+                            .format(pt=score))
+            bot.sendMessage(
+                chat.id,
+                text=", ".join(
+                    ["{cl} {vl} (+{pt})"
+                     .format(cl=c.COLOR_ICONS[n[1].color],
+                             vl=n[1].value or n[1].special,
+                             pt=n[0])
+                     for n in sorted(game.last_round_score,
+                                     key=lambda x: x[0])]))
+            bot.sendMessage(
+                chat.id,
+                text=__("Current standings:\n\n") +
+                "\n".join([
+                    "{no}. {name}: {pt}".format(
+                        no=i + 1,
+                        name=x[0].user.first_name,
+                        pt=x[1])
+                    for i, x in enumerate(
+                        sorted(game.get_scores(),
+                               key=lambda x: x[1],
+                               reverse=True))]))
+            bot.sendMessage(
+                chat.id,
+                text=__("Points to win: {score}").format(score=game.win_score))
+
+            players_cache = game.players
+            highest = sorted(zip(players_cache, map(
+                game.get_score, players_cache
+            )), key=lambda x: x[1])[-1]
+            if highest[1] >= game.win_score:
+                send_async(bot, chat.id,
+                           text=__("Game ended! {name} wins the game!",
+                                   multi=game.translate)
+                           .format(highest[0].user.first_name))
+                if us.stats:
+                    us.first_places += 1
+                for player in players_cache:
+                    us_ = UserSetting.get(id=player.user.id)
+                    if not us:
+                        us_ = UserSetting(id=player.user.id)
+                    us_.games_played += 1
+            else:
+                game.reset_cards()
+                game.new_round()
+                next_round_message = (
+                    __("Next round!", multi=game.translate))
+                next_player_message = (
+                    __("First player: {name}\n",
+                       multi=game.translate)
+                    .format(name=display_name(game.current_player.user)))
+
+                bot.sendMessage(chat.id,
+                                text=next_round_message,
+                                timeout=TIMEOUT)
+                bot.sendSticker(chat.id,
+                                sticker=c.STICKERS[str(game.last_card)],
+                                timeout=TIMEOUT)
+                bot.sendMessage(chat.id,
+                                text=next_player_message,
+                                timeout=TIMEOUT)
+            return
+            # If game mode is "score", 'do_play_card' should stop here
 
         if us.stats:
             us.games_played += 1

@@ -130,6 +130,18 @@ def add_mode_wild(results):
     )
 
 
+def add_mode_score(results):
+    """Change mode to classic"""
+    results.append(
+        InlineQueryResultArticle(
+            "mode_score",
+            title=_("💯 Score mode"),
+            input_message_content=
+            InputTextMessageContent(_('Kaching~ 💯'))
+        )
+    )
+
+
 def add_draw(player, results):
     """Add option to draw"""
     n = player.game.draw_counter or 1
@@ -198,7 +210,10 @@ def add_card(game, card, results, can_play):
 
 
 def game_info(game):
-    players = player_list(game)
+    if game.mode == 'score':
+        players = score_list(game)
+    else:
+        players = player_list(game)
     players_numbered = [
         '{}. {}'.format(i + 1, p)
         for i, p in enumerate(players)
@@ -214,3 +229,16 @@ def game_info(game):
           len(players))
         .format(player_list="\n".join(players_numbered))
     )
+
+
+def score_list(game):
+    scores = [game.get_score(player) for player in game.players]
+    plist = [_("{name} ({number} card)",
+               "{name} ({number} cards)",
+               len(player.cards))
+             .format(name=player.user.first_name, number=len(player.cards))
+             for player in game.players]
+    return [s + " " +
+            _("[{point} point]", "[{point} points]", scores[i])
+            .format(point=scores[i])
+            for i, s in enumerate(plist)]

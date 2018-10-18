@@ -19,7 +19,8 @@
 
 
 import logging
-from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE, ENABLE_TRANSLATIONS
+from config import (ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE,
+                    ENABLE_TRANSLATIONS, SCORE_WIN)
 from datetime import datetime
 
 from deck import Deck
@@ -39,6 +40,9 @@ class Game(object):
     owner = ADMIN_LIST
     open = OPEN_LOBBY
     translate = ENABLE_TRANSLATIONS
+    scores = dict()
+    last_round_score = list()
+    win_score = SCORE_WIN
 
     def __init__(self, chat):
         self.chat = chat
@@ -137,3 +141,51 @@ class Game(object):
         """Carries out the color choosing and turns the game"""
         self.last_card.color = color
         self.turn()
+
+    def add_score(self, player):
+        """Add total value of all card in every players hand
+        to the winner's score."""
+        scores = 0
+        self.last_round_score.clear()
+        for player in self.players:
+            for card in player.cards:
+                sc = c.CARD_SCORES[card.value or card.special]
+                self.last_round_score.append((sc, card))
+                scores += sc
+        try:
+            self.scores[player.user.id] += scores
+        except KeyError:
+            self.scores[player.user.id] = scores
+
+    def reset_cards(self):
+        """Reset game deck and player's hand"""
+        players_cache = self.players
+        # clear player's card, might as well use player.cards.clear()
+        for player in players_cache:
+            for card in player.cards:
+                self.deck.dismiss(card)
+            player.cards = list()
+        # fill deck with normal cards set
+        self.deck._fill_classic_()
+        # draw player's hand
+        for player in players_cache:
+            player.draw_first_hand()
+
+    def new_round(self):
+        lc = self.last_card
+        while self.last_card == lc or not self.last_card or self.last_card.special:
+            self.last_card = self.deck.draw()
+            # If the card drawn was special, return it to the deck and loop again
+            if self.last_card.special:
+                self.deck.dismiss(self.last_card)
+        self.play_card(self.last_card)
+
+    def get_score(self, player):
+        try:
+            return self.scores[player.user.id]
+        except KeyError:
+            self.scores[player.user.id] = 0
+            return 0
+
+    def get_scores(self):
+        return [(player, self.get_score(player))for player in self.players]

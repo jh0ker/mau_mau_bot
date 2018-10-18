@@ -75,7 +75,8 @@ attributions = ("Attributions:\n"
 modes_explanation = ("This UNO bot has three game modes: Classic, Sanic and Wild.\n\n"
                      " 🎻 The Classic mode uses the conventional UNO deck and there is no auto skip.\n"
                      " 🚀 The Sanic mode uses the conventional UNO deck and the bot automatically skips a player if he/she takes too long to play its turn\n"
-                     " 🐉 The Wild mode uses a deck with more special cards, less number variety and no auto skip.\n\n"
+                     " 🐉 The Wild mode uses a deck with more special cards, less number variety and no auto skip.\n"
+                     " 💯 The Score mode is how Uno meant to be played, scored when one player run out of card.\n\n"
                      "To change the game mode, the GAME CREATOR has to type the bot nickname and a space, just like when playing a card, and all gamemode options should appear.")
 
 
