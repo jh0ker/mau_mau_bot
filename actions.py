@@ -38,6 +38,11 @@ def do_skip(bot, player, job_queue=None):
         if (skipped_player.waiting_time < 0):
             skipped_player.waiting_time = 0
 
+        # if player get skipped after playing wildcard or +4
+        # before getting to choose color, then choose color randomly
+        if game.choosing_color:
+            game.last_card.color = random.choice(c.COLORS)
+
         try:
             skipped_player.draw()
         except DeckEmptyError:
