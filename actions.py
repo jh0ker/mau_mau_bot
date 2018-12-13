@@ -38,13 +38,11 @@ def do_skip(bot, player, job_queue=None):
         if (skipped_player.waiting_time < 0):
             skipped_player.waiting_time = 0
 
-        # if player get skipped after playing wildcard or +4
-        # before getting to choose color, then choose color randomly
-        if game.choosing_color:
-            game.last_card.color = random.choice(c.COLORS)
-
+        # skip drawing if current player should choose color
+        # which means current player has played a card
         try:
-            skipped_player.draw()
+            if not game.choosing_color:
+                skipped_player.draw()
         except DeckEmptyError:
             pass
 
@@ -59,6 +57,14 @@ def do_skip(bot, player, job_queue=None):
         logger.info("{player} was skipped!. "
                     .format(player=display_name(player.user)))
         game.turn()
+
+        # send message to indicate the game has randomly choosen the color
+        if game._randomed_color:
+            send_async(bot, chat.id,
+                       text=__("Color randomly choosen to: {col}",
+                               multi=game.translate).format(
+                           col=c.COLOR_ICONS[game.last_card.color]))
+
         if job_queue:
             start_player_countdown(bot, game, job_queue)
 
