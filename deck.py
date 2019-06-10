@@ -58,6 +58,8 @@ class Deck(object):
 
     def dismiss(self, card):
         """Returns a card to the deck"""
+        if card.special:
+            card.color = None
         self.graveyard.append(card)
 
     def _fill_classic_(self):
