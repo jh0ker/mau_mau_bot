@@ -22,6 +22,8 @@ import logging
 from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE, ENABLE_TRANSLATIONS
 from datetime import datetime
 
+from random import choice as rand_choice
+
 from deck import Deck
 import card as c
 
@@ -68,6 +70,9 @@ class Game(object):
             self.deck._fill_classic_()
         else:
             self.deck._fill_wild_()
+
+        # randomize the first player
+        self.current_player = rand_choice(self.players)
 
         self._first_card_()
         self.started = True
