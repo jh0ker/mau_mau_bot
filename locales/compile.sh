@@ -1,11 +1,17 @@
 #!/bin/bash
 # This script compiles the unobot.po file for all languages.
 
-function compile {
-	cd './'$1'/LC_MESSAGES/'
-	msgfmt unobot.po -o unobot.mo
-	cd ../../
-}
+if [ ${PWD##*/} = "locales" ];
+then
+	function compile {
+		cd './'$1'/LC_MESSAGES/'
+		msgfmt unobot.po -o unobot.mo
+		cd ../../
+	};
+else 
+	echo 'Only execute this in the "locales" directory'
+	exit 1;
+fi
 
 # Deutsch
 compile de_DE
