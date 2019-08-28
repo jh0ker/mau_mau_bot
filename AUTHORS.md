@@ -9,5 +9,6 @@ The following wonderful people contributed directly or indirectly to this projec
 - [imlonghao](https://github.com/imlonghao)
 - [qubitnerd](https://github.com/qubitnerd)
 - [SYHGroup](https://github.com/SYHGroup)
+- [pan93412](https://github.com/pan93412)
 
 Please add yourself here alphabetically when you submit your first pull request.
