@@ -51,7 +51,7 @@ def do_skip(bot, player, job_queue=None):
                    .format(time=n,
                            name=display_name(next_player.user))
         )
-        logger.info(__("{player} was skipped! ", multi=game.translate)
+        logger.info("{player} was skipped! "
                     .format(player=display_name(player.user)))
         game.turn()
         if job_queue:
@@ -66,7 +66,7 @@ def do_skip(bot, player, job_queue=None):
                             "Next player: {name2}", multi=game.translate)
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
-            logger.info(__("{player} was skipped! ", multi=game.translate)
+            logger.info("{player} was skipped! "
                     .format(player=display_name(player.user)))
             if job_queue:
                 start_player_countdown(bot, game, job_queue)
