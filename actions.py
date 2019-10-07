@@ -45,13 +45,13 @@ def do_skip(bot, player, job_queue=None):
 
         n = skipped_player.waiting_time
         send_async(bot, chat.id,
-                   text="Waiting time to skip this player has "
+                   text=__("Waiting time to skip this player has "
                         "been reduced to {time} seconds.\n"
-                        "Next player: {name}"
+                        "Next player: {name}", multi=game.translate)
                    .format(time=n,
                            name=display_name(next_player.user))
-            )
-        logger.info("{player} was skipped!. "
+        )
+        logger.info("{player} was skipped! "
                     .format(player=display_name(player.user)))
         game.turn()
         if job_queue:
@@ -61,21 +61,21 @@ def do_skip(bot, player, job_queue=None):
         try:
             gm.leave_game(skipped_player.user, chat)
             send_async(bot, chat.id,
-                       text="{name1} ran out of time "
+                       text=__("{name1} ran out of time "
                             "and has been removed from the game!\n"
-                            "Next player: {name2}"
+                            "Next player: {name2}", multi=game.translate)
                        .format(name1=display_name(skipped_player.user),
                                name2=display_name(next_player.user)))
-            logger.info("{player} was skipped!. "
+            logger.info("{player} was skipped! "
                     .format(player=display_name(player.user)))
             if job_queue:
                 start_player_countdown(bot, game, job_queue)
 
         except NotEnoughPlayersError:
             send_async(bot, chat.id,
-                       text="{name} ran out of time "
+                       text=__("{name} ran out of time "
                                "and has been removed from the game!\n"
-                               "The game ended."
+                               "The game ended.", multi=game.translate)
                        .format(name=display_name(skipped_player.user)))
 
             gm.end_game(chat, skipped_player.user)
@@ -98,7 +98,7 @@ def do_play_card(bot, player, result_id):
         us.cards_played += 1
 
     if game.choosing_color:
-        send_async(bot, chat.id, text=_("Please choose a color"))
+        send_async(bot, chat.id, text=__("Please choose a color", multi=game.translate))
 
     if len(player.cards) == 1:
         send_async(bot, chat.id, text="UNO!")
