@@ -375,7 +375,7 @@ def start_game(bot, update, args, job_queue):
 
             for player in game.players:
                 player.draw_first_hand()
-
+            choice = [[InlineKeyboardButton(text=_("Make your choice!"), switch_inline_query_current_chat='')]]
             first_message = (
                 __("First player: {name}\n"
                    "Use /close to stop people from joining the game.\n"
@@ -393,6 +393,7 @@ def start_game(bot, update, args, job_queue):
 
                 bot.sendMessage(chat.id,
                                 text=first_message,
+                                reply_markup=InlineKeyboardMarkup(choice),
                                 timeout=TIMEOUT)
 
             send_first()
@@ -693,9 +694,13 @@ def process_result(bot, update, job_queue):
         do_play_card(bot, player, result_id)
 
     if game_is_running(game):
-        send_async(bot, chat.id,
-                   text=__("Next player: {name}", multi=game.translate)
-                   .format(name=display_name(game.current_player.user)))
+        nextplayer_message = (
+            __("Next player: {name}", multi=game.translate)
+            .format(name=display_name(game.current_player.user)))
+        choice = [[InlineKeyboardButton(text=_("Make your choice!"), switch_inline_query_current_chat='')]]
+        bot.sendMessage(chat.id,
+                        text=nextplayer_message,
+                        reply_markup=InlineKeyboardMarkup(choice))
         start_player_countdown(bot, game, job_queue)
 
 
