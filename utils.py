@@ -25,6 +25,7 @@ from telegram.ext.dispatcher import run_async
 from internationalization import _, __
 from mwt import MWT
 from shared_vars import gm
+import card as c
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +76,25 @@ def display_color_group(color, game):
     if color == "y":
         return __("{emoji} Yellow", game.translate).format(
             emoji='💛')
-
+    
+    
+def display_card_text(card):
+    if card.special == c.DRAW_FOUR:
+        return __("⬛️+4")
+    if card.special == c.CHOOSE:
+        return __("⬛️Color Chooser")
+    if card.value == c.DRAW_TWO:
+        if card.color == 'r':
+            return __("❤️+2")
+        if card.color == 'b':
+            return __("💙+2")
+        if card.color == 'g':
+            return __("💚+2")
+        if card.color == 'y':
+            return __("💛+2")
+    else:
+        return repr(card)
+    
 
 def error(bot, update, error):
     """Simple error handler"""
