@@ -26,7 +26,7 @@ from telegram import InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultCachedSticker as Sticker
 
 import card as c
-from utils import display_color, display_color_group, display_name
+from utils import display_color, display_color_group, display_name, display_card_text
 from internationalization import _, __
 
 
@@ -205,7 +205,7 @@ def add_card(game, card, results, can_play):
         )
         if game.mode == "text":
             results.append(
-                Sticker(str(card), sticker_file_id=c.STICKERS[str(card)], input_message_content=InputTextMessageContent("Card Played: {card}".format(card=repr(card)))
+                Sticker(str(card), sticker_file_id=c.STICKERS[str(card)], input_message_content=InputTextMessageContent("Card Played: {card}".format(card=display_card_text(card)))
         ))
     else:
         results.append(
