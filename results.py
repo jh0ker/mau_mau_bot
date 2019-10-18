@@ -205,7 +205,7 @@ def add_card(game, card, results, can_play):
         )
         if game.mode == "text":
             results.append(
-                Sticker(str(card), sticker_file_id=c.STICKERS[str(card)], input_message_content=InputTextMessageContent("Card Played: {card}".format(card=display_card_text(card)))
+                Sticker(str(card), sticker_file_id=c.STICKERS[str(card)], input_message_content=InputTextMessageContent("Card Played: {card}".format(card=repr(card).replace('Draw Four', '+4').replace('Draw', '+2').replace('Colorchooser', 'Color Chooser')))
         ))
     else:
         results.append(
