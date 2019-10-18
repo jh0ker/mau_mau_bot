@@ -70,7 +70,7 @@ def help_handler(bot, update):
 @user_locale
 def modes(bot, update):
     """Handler for the /help command"""
-    modes_explanation = _("This UNO bot has four game modes: Classic, Sanic, Wild and Texr.\n\n"
+    modes_explanation = _("This UNO bot has four game modes: Classic, Sanic, Wild and Text.\n\n"
       " 🎻 The Classic mode uses the conventional UNO deck and there is no auto skip.\n"
       " 🚀 The Sanic mode uses the conventional UNO deck and the bot automatically skips a player if he/she takes too long to play its turn\n"
       " 🐉 The Wild mode uses a deck with more special cards, less number variety and no auto skip.\n"
