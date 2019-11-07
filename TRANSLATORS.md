@@ -9,6 +9,7 @@ The following awesome people contributed to this project by translating it:
 | id_ID  | [Erwin Guo](https://www.facebook.com/erwinfransiscus)                                                        |
 | it_IT  | Carola Mariano, ɳick                                                                                         |
 | pt_BR  | [João Rodrigo Couto de Oliveira](http://twitter.com/JoaoRodrigoJR)
+|
 | tr_TR  | [Kasım Ağca](https://telegram.me/Holytotem)
 |
 | zh_CN  | [imlonghao](https://github.com/imlonghao)                                                                    |
