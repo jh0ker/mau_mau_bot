@@ -346,7 +346,7 @@ msgstr "Son kart: {card}"
 msgid "Player: {player_list}"
 msgid_plural "Players: {player_list}"
 msgstr[0] "Oyuncu: {player_list}"
-msgstr[1] "Oyuncular: {players_list}"
+msgstr[1] "Oyuncular: {player_list}"
 
 #: settings.py:37
 msgid "Please edit your settings in a private chat with the bot."
