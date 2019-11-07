@@ -19,9 +19,11 @@ compile it_IT
 compile pt_BR
 # Russian
 compile ru_RU
+# Turkish
+compile tr_TR
 # Simplified Chinese
 compile zh_CN
-# Chinese (Honk Kong) 
+# Chinese (Honk Kong)
 compile zh_HK
 # Traditional Chinese
 compile zh_TW
