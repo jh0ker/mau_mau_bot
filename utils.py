@@ -75,7 +75,7 @@ def display_color_group(color, game):
     if color == "y":
         return __("{emoji} Yellow", game.translate).format(
             emoji='💛')
-
+  
 
 def error(bot, update, error):
     """Simple error handler"""
