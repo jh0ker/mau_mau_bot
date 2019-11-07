@@ -158,7 +158,7 @@
 
   #: bot.py:304
  msgid "Back to last group"
- msgstr "Son gruba geri dön”
+ msgstr "Son gruba geri dön"
 
  #: bot.py:307
  msgid "Please switch to the group you selected!"
@@ -198,7 +198,7 @@
  "Use /close to stop people from joining the game.\n"
  "Enable multi-translations with /enable_translations"
  msgstr "İlk oyuncu: {name}\n"
- "/close yazarak oyuna daha fazla kişinin katılmasını kapatabilirsin.\n”
+ "/close yazarak oyuna daha fazla kişinin katılmasını kapatabilirsin.\n"
  "Çoklu dili etkinleştirmek için /enable_translations yaz."
 
   #: bot.py:417
@@ -489,7 +489,7 @@
  "Pass icon by <a href=\"http://delapouite.com/\">Delapouite</a>\n"
  "Originals available on http://game-icons.net\n"
  "Icons edited by ɳick"
- msgstr ""Teşekkürler:\n"
+ msgstr "Teşekkürler:\n"
  "Çekme simgesi <a href=\"http://www.faithtoken.com/\">Faithtoken</a>\n"
  "Pas simgesi <a href=\"http://delapouite.com/\">Delapouite</a>\n"
  "Orijinalleri http://game-icons.net\n"
@@ -518,8 +518,8 @@
  #, python-brace-format
  msgid "{number} first place"
  msgid_plural "{number} first places"
- msgstr[0] ""{number} ilk sırada"
- msgstr[1] ""{number} ilk sırada"
+ msgstr[0] "{number} ilk sırada"
+ msgstr[1] "{number} ilk sırada"
 
   #: simple_commands.py:136
  #, python-brace-format
