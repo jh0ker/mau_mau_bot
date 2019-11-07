@@ -25,3 +25,5 @@ compile zh_CN
 compile zh_HK
 # Traditional Chinese
 compile zh_TW
+# Turkish
+compile tr_TR
