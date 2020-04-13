@@ -338,7 +338,7 @@ msgstr[0] "抽取 {number} 张牌"
 
 #: results.py:167
 msgid "Pass"
-msgstr "要不起"
+msgstr "过"
 
 #: results.py:180
 msgid "I'm calling your bluff!"
