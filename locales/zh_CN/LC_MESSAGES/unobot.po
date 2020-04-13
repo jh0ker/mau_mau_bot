@@ -123,7 +123,7 @@ msgstr "已禁止中途加入游戏"
 
 #: bot.py:150 bot.py:232
 msgid "No game is running at the moment. Create a new game with /new"
-msgstr "这个群中并没有运行中的游戏。请使用 /new 创建新游戏"
+msgstr "这个群并没有运行中的游戏。请使用 /new 创建新游戏"
 
 #: bot.py:156
 msgid "You already joined the game. Start the game with /start"
@@ -193,7 +193,7 @@ msgstr "已成功将 {name} 移出游戏"
 
 #: bot.py:360
 msgid "There is no game running in this chat. Create a new one with /new"
-msgstr "这个群中并没有运行中的游戏。请使用 /new 创建新游戏"
+msgstr "这个群并没有运行中的游戏。请使用 /new 创建新游戏"
 
 #: bot.py:365
 msgid "The game has already started"
