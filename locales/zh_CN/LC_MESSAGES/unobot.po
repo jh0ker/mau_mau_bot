@@ -75,7 +75,7 @@ msgstr "游戏结束！"
 
 #: actions.py:141 actions.py:165 actions.py:179
 msgid "There are no more cards in the deck."
-msgstr "牌堆已经没有更多的牌了。"
+msgstr "牌堆中已经没有更多的牌了。"
 
 #: actions.py:157
 #, python-brace-format
