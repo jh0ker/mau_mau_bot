@@ -33,3 +33,5 @@ compile zh_CN
 compile zh_HK
 # Traditional Chinese
 compile zh_TW
+# Catalan
+compile ca_CA
