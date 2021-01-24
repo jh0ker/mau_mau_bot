@@ -1,0 +1,18 @@
+new - Start a new game 
+join - Join the current game 
+start - Start the game 
+leave - Leave the game you're in 
+close - Close the game lobby 
+open - Open the game lobby 
+kill - Terminate the game 
+kick - Kick players out of the game 
+enable_translations - Enable multi-translations 
+disable_translations - Disable multi-translations 
+skip - Skip the current player 
+notify_me - Get a message when there's a new game in this group 
+help - How to use this bot? 
+modes - Explanation of game modes
+settings - Language and other settings 
+stats - Show statistics 
+source - See source information 
+news - All news about this bot
