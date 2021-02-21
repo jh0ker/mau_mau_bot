@@ -35,3 +35,5 @@ compile zh_HK
 compile zh_TW
 # Catalan
 compile ca_CA
+#Malayalam
+complie ml_IN
