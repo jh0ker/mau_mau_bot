@@ -74,6 +74,7 @@ class Test(unittest.TestCase):
 
     def test_draw(self):
         p = Player(self.game, "Player 0")
+        self.game.start()
 
         deck_before = len(self.game.deck.cards)
         top_card = self.game.deck.cards[-1]
@@ -85,6 +86,7 @@ class Test(unittest.TestCase):
 
     def test_draw_two(self):
         p = Player(self.game, "Player 0")
+        self.game.start()
 
         deck_before = len(self.game.deck.cards)
         self.game.draw_counter = 2
