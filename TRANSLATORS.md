@@ -4,6 +4,7 @@ The following awesome people contributed to this project by translating it:
 
 | Locale | Translators                                                                                                  |
 |--------|--------------------------------------------------------------------------------------------------------------|
+| ca_CA  | [retiolus](https://github.com/retiolus)                                                                      |
 | de_DE  | [Jannes Höke](https://github.com/jh0ker)                                                                     |
 | es_ES  | [José.A Rojo](https://github.com/J4RV), [Ricardo Valverde Hernández](https://telegram.me/rivh1), Victor, Yuga|
 | id_ID  | [Erwin Guo](https://www.facebook.com/erwinfransiscus)                                                        |
