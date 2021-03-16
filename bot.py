@@ -200,6 +200,13 @@ def leave_game(bot, update):
 
     else:
         if game.started:
+            # send message to indicate the game has randomly choosen the color
+            if game._randomed_color:
+                send_async(bot, chat.id,
+                           text=__("Color randomly choosen to: {col}",
+                                   multi=game.translate).format(
+                               col=c.COLOR_ICONS[game.last_card.color]),
+                           reply_to_message_id=update.message.message_id)
             send_async(bot, chat.id,
                        text=__("Okay. Next Player: {name}",
                                multi=game.translate).format(

@@ -21,6 +21,7 @@
 import logging
 from config import ADMIN_LIST, OPEN_LOBBY, DEFAULT_GAMEMODE, ENABLE_TRANSLATIONS
 from datetime import datetime
+import random
 
 from deck import Deck
 import card as c
@@ -30,6 +31,7 @@ class Game(object):
     current_player = None
     reversed = False
     choosing_color = False
+    _randomed_color = False
     started = False
     draw_counter = 0
     players_won = 0
@@ -85,6 +87,17 @@ class Game(object):
         self.current_player = self.current_player.next
         self.current_player.drew = False
         self.current_player.turn_started = datetime.now()
+        self._reset_choosing_color()
+
+    def _reset_choosing_color(self):
+        """Reset 'choosing_color' flag to false and randomly choose color
+        if it hasn't been done, eg. when player is skipped or leave after
+        playing wildcard or +4 card."""
+        if self.choosing_color and not self.last_card.color:
+            self.last_card.color = random.choice(c.COLORS)
+            self._randomed_color = True
+        else:
+            self._randomed_color = False
         self.choosing_color = False
 
     def _first_card_(self):
