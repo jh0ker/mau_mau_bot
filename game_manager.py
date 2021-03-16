@@ -23,7 +23,7 @@ import logging
 from game import Game
 from player import Player
 from errors import (AlreadyJoinedError, LobbyClosedError, NoGameInChatError,
-                    NotEnoughPlayersError)
+                    NotEnoughPlayersError, MaxPlayersError)
 
 
 class GameManager(object):
@@ -68,6 +68,9 @@ class GameManager(object):
 
         if not game.open:
             raise LobbyClosedError()
+
+        if game.started and len(game.players) == 10:
+            raise MaxPlayersError()
 
         if user.id not in self.userid_players:
             self.userid_players[user.id] = list()
