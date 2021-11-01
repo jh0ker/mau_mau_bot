@@ -18,12 +18,12 @@ msgstr ""
 "Project-Id-Version: uno_bot 0.1\n"
 "Report-Msgid-Bugs-To: uno@jhoeke.de\n"
 "POT-Creation-Date: 2016-05-22 18:56-0300\n"
-"PO-Revision-Date: 2016-05-22 20:48-0300\n"
+"PO-Revision-Date: 2021-11-01 15:17-0300\n"
 "Language-Team: en <uno@jhoeke.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 3.0\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Language: pt_BR\n"
@@ -33,79 +33,70 @@ msgid ""
 "Follow these steps:\n"
 "\n"
 "1. Add this bot to a group\n"
-"2. In the group, start a new game with /new or join an already running game "
-"with /join\n"
+"2. In the group, start a new game with /new or join an already running game with /join\n"
 "3. After at least two players have joined, start the game with /start\n"
-"4. Type <code>@unobot</code> into your chat box and hit <b>space</b>, "
-"or click the <code>via @unobot</code> text next to messages. You will "
-"see your cards (some greyed out), any extra options like drawing, and a <b>?"
-"</b> to see the current game state. The <b>greyed out cards</b> are those "
-"you <b>can not play</b> at the moment. Tap an option to execute the selected "
-"action.\n"
-"Players can join the game at any time. To leave a game, use /leave. If a "
-"player takes more than 90 seconds to play, you can use /skip to skip that "
-"player. "
-"Use /notify_me to receive a private message when a new game is started.\n"
+"4. Type <code>@unobot</code> into your chat box and hit <b>space</b>, or click the "
+"<code>via @unobot</code> text next to messages. You will see your cards (some greyed out), "
+"any extra options like drawing, and a <b>?</b> to see the current game state. The "
+"<b>greyed out cards</b> are those you <b>can not play</b> at the moment. Tap an option to "
+"execute the selected action.\n"
+"Players can join the game at any time. To leave a game, use /leave. If a player takes more "
+"than 90 seconds to play, you can use /skip to skip that player. Use /notify_me to receive "
+"a private message when a new game is started.\n"
 "\n"
 "<b>Language</b> and other settings: /settings\n"
 "Other commands (only game creator):\n"
 "/close - Close lobby\n"
 "/open - Open lobby\n"
-"/enable_translations - Translate relevant texts into all languages spoken in "
-"a game\n"
+"/enable_translations - Translate relevant texts into all languages spoken in a game\n"
 "/disable_translations - Use English for those texts\n"
 "\n"
-"<b>Experimental:</b> Play in multiple groups at the same time. Press the "
-"<code>Current game: ...</code> button and select the group you want to play "
-"a card in.\n"
-"If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
-"start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"<b>Experimental:</b> Play in multiple groups at the same time. Press the <code>Current "
+"game: ...</code> button and select the group you want to play a card in.\n"
+"If you enjoy this bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot\">rate me</"
+"a>, join the <a href=\"https://telegram.me/unobotupdates\">update channel</a> and buy an "
+"UNO card game."
 msgstr ""
 "Siga esses passos:\n"
-"1. Adicione o bot ao grupo.\n"
-"2. No grupo, crie um jogo com /new ou entre em um jogo já criado com /join.\n"
-"3. Após dois ou mais jogadores entrarem, inicie o jogo com /start.\n"
-"4. Digite <code>@unobot</code> na janela de conversação e aperte a "
-"tecla <b>espaço</b>, ou clique no texto <code>@unobot</code> próximo às "
-"mensagens. Você verá suas cartas (algumas apagadas, na cor cinza), e opções "
-"extras como sacar, e um <b>?</b> para ver as estatísticas do jogo atual. As "
-"<b> cartas acizentadas</b> são as que você <b>não pode jogar</b> no momento. "
-"Toque em uma das opções para executar a ação desejada.\n"
-"Jogadores podem entrar no jogo a qualquer momento. Para sair do jogo, use /"
-"leave. Se um jogador levar mais de 90 segundos para jogar, você pode usar /"
-"skip para pular a vez desse jogador."
-"Use o /notify_me para receber uma mensagem no privada quando um novo jogo no "
-"grupo for iniciado.\n"
+"\n"
+"1. Adicione este bot ao grupo\n"
+"2. No grupo, crie uma nova partida com /new ou entre em uma partida já criada com /join\n"
+"3. Após pelo menos dois jogadores entrarem, inicie a partida com /start\n"
+"4. Digite <code>@unobot</code> na janela de conversação e aperte <b>espaço</b>, ou clique "
+"no texto <code>via @unobot</code> próximo às mensagens. Você verá suas cartas (algumas "
+"apagadas, na cor cinza), e opções extras como sacar, e um <b>?</b> para ver o estado da "
+"partida atual. As <b> cartas acizentadas</b> são as que você <b>não pode jogar</b> no "
+"momento. Toque em uma das opções para executar a ação desejada.\n"
+"Jogadores podem entrar na partida a qualquer momento. Para sair do jogo, use /leave. Se um "
+"jogador levar mais de 90 segundos para jogar, você pode usar /skip para pular a vez deste "
+"jogador. Use /notify_me para receber uma mensagem privada quando uma nova partida for "
+"iniciada no grupo.\n"
 "\n"
 "<b>Idioma</b> e outras configurações: /settings\n"
-"Outros comandos (somente para o criador do jogo):\n"
+"Outros comandos (somente para quem criou o jogo):\n"
 "/close - Fechar o lobby\n"
 "/open - Abrir o lobby\n"
-"/enable_translations - Traduz os textos relevantes para todas as linguagens "
-"disponíveis no jogo\n"
+"/enable_translations - Traduz os textos relevantes para todas as linguagens disponíveis no "
+"jogo\n"
 "/disable_translations - Receber esses textos em inglês\n"
 "\n"
-"<b>Experimental:</b> Jogue em vários grupos ao mesmo tempo. Toque no botão "
-"<code>Jogo atual: ...</code> e selecione o grupo no qual deseja jogar uma "
-"carta.\n"
-"Se gostou deste bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot"
-"\">avalie-o</a>, entre no <a href=\"https://telegram.me/unobotupdates"
-"\">canal de atualizações</a> e compre um jogo de cartas UNO."
+"<b>Experimental:</b> Jogue em vários grupos ao mesmo tempo. Toque no botão <code>Partida "
+"atual: ...</code> e selecione o grupo no qual deseja jogar uma carta.\n"
+"Se gostou deste bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot\">avalie-o</"
+"a>, entre no <a href=\"https://telegram.me/unobotupdates\">canal de atualizações</a> e "
+"compre um jogo de cartas UNO."
 
 #: bot.py:88
 msgid ""
-"This bot is Free Software and licensed under the AGPL. The code is available "
-"here: \n"
+"This bot is Free Software and licensed under the AGPL. The code is available here: \n"
 "https://github.com/jh0ker/mau_mau_bot"
 msgstr ""
-"Esse bot é um Software livre, grátis e reconhecido pela AGPL. O código está "
-"disponível aqui:\n"
+"Esse bot é um Software livre, grátis e licenciado com AGPL. O código está disponível "
+"aqui: \n"
 "https://github.com/jh0ker/mau_mau_bot"
 
 #: bot.py:133
-msgid ""
-"Created a new game! Join the game with /join and start the game with /start"
+msgid "Created a new game! Join the game with /join and start the game with /start"
 msgstr "Novo jogo criado! Entre no jogo com /join e inicie o jogo com /start"
 
 #: bot.py
@@ -118,11 +109,11 @@ msgstr "O lobby está fechado"
 
 #: bot.py
 msgid "A new game has been started in {title}"
-msgstr "Um novo jogo foi iniciado no grupo: {title}"
+msgstr "Um novo jogo foi iniciado no grupo {title}"
 
 #: bot.py:156
 msgid "No game is running at the moment. Create a new game with /new"
-msgstr "Nenhuma partida sendo jogada. Crie um novo jogo com /new"
+msgstr "Nenhuma partida está sendo jogada. Crie um novo jogo com /new"
 
 #: bot.py:162
 msgid "You already joined the game. Start the game with /start"
@@ -142,11 +133,11 @@ msgstr "Fim de jogo!"
 
 #: bot.py:201
 msgid "Okay. Next Player: {name}"
-msgstr "Ok. Próximo jogador: {name} "
+msgstr "Ok. Próximo(a) jogador(a): {name}"
 
 #: bot.py:219
 msgid "Game not found."
-msgstr "Jogo não encontrado"
+msgstr "Jogo não encontrado."
 
 #: bot.py:223
 msgid "Back to last group"
@@ -172,18 +163,17 @@ msgstr "Removendo {name} da partida"
 
 #: bot.py:273
 msgid "There is no game running in this chat. Create a new one with /new"
-msgstr ""
-"Não há uma partida sendo jogada nesta conversa. Crie um novo jogo com /new"
+msgstr "Não há uma partida sendo jogada nesta conversa. Crie um novo jogo com /new"
 
 #: bot.py:278
 msgid "The game has already started"
-msgstr "Essa partida já começou"
+msgstr "A partida já começou"
 
 #: bot.py:281
 msgid "At least two players must /join the game before you can start it"
 msgstr ""
-"Pelo menos dois jogadores devem entrar no jogo usando /join para que a "
-"partida possa começar"
+"Pelo menos dois jogadores devem entrar no jogo usando /join para que a partida possa "
+"começar"
 
 #: bot.py:297
 #, python-format
@@ -206,14 +196,12 @@ msgstr "Não há uma partida sendo jogada nesta conversa."
 
 #: bot.py:342
 msgid "Closed the lobby. No more players can join this game."
-msgstr ""
-"O lobby está fechado. Não é permitida a entrada de novos jogadores nessa "
-"partida."
+msgstr "O lobby está fechado. Não é permitida a entrada de novos jogadores nessa partida."
 
 #: bot.py:348 bot.py:373
 #, python-format
 msgid "Only the game creator ({name}) can do that."
-msgstr "Somente o criador do jogo ({name}) pode fazer isso."
+msgstr "Somente quem criou o jogo ({name}) pode fazer isso."
 
 #: bot.py:349
 #, python-format
@@ -222,19 +210,16 @@ msgstr "Multi-traduções ativadas. Desative com /disable_translations"
 
 #: bot.py:377
 #, python-format
-msgid ""
-"Disabled multi-translations. Enable them again with /enable_translations"
-msgstr ""
-"Multi-traduções desativadas. Ative-as novamente com /enable_translations"
+msgid "Disabled multi-translations. Enable them again with /enable_translations"
+msgstr "Multi-traduções desativadas. Ative-as novamente com /enable_translations"
 
 #: bot.py:368
 msgid "Opened the lobby. New players may /join the game."
-msgstr ""
-"O lobby está aberto. Novos jogadores podem entrar na partida usando /join."
+msgstr "O lobby está aberto. Novos jogadores podem entrar na partida usando /join."
 
 #: bot.py:386
 msgid "You are not playing in a game in this chat."
-msgstr "Você não está participando de um jogo nesta conversa."
+msgstr "Você não está participando de uma partida nesta conversa."
 
 #: bot.py:400
 #, python-format
@@ -245,14 +230,18 @@ msgstr[1] "Por favor, aguarde {time} segundos"
 
 #: bot.py:413
 #, python-format
-msgid "Waiting time to skip this player has been reduced to {time} second.\n"
+msgid ""
+"Waiting time to skip this player has been reduced to {time} second.\n"
 "Next player: {name}"
-msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
+msgid_plural ""
+"Waiting time to skip this player has been reduced to {time} seconds.\n"
 "Next player: {name}"
-msgstr[0] "O tempo de espera para pular a vez deste jogador foi reduzido para {time} segundo\n"
-"Próximo jogador: {name}"
-msgstr[1] "O tempo de espera para pular a vez deste jogador foi reduzido para {time} segundos\n"
-"Próximo jogador: {name}"
+msgstr[0] ""
+"O tempo de espera para pular a vez deste(a) jogador(a) foi reduzido para {time} segundo.\n"
+"Próximo(a) jogador(a): {name}"
+msgstr[1] ""
+"O tempo de espera para pular a vez deste(a) jogador(a) foi reduzido para {time} segundos.\n"
+"Próximo(a) jogador(a): {name}"
 
 #: bot.py:424
 #, python-format
@@ -260,9 +249,8 @@ msgid ""
 "{name1} was skipped four times in a row and has been removed from the game.\n"
 "Next player: {name2}"
 msgstr ""
-"{name1} teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do "
-"jogo.\n"
-"Próximo jogador: {name2}"
+"{name1} teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do jogo.\n"
+"Próximo(a) jogador(a): {name2}"
 
 #: bot.py:432
 #, python-format
@@ -270,8 +258,7 @@ msgid ""
 "{name} was skipped four times in a row and has been removed from the game.\n"
 "The game ended."
 msgstr ""
-"{name} teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do "
-"jogo.\n"
+"{name} teve suas jogadas puladas quatro vezes seguidas e foi removido(a) do jogo.\n"
 "O jogo acabou."
 
 #: bot.py:455
@@ -295,7 +282,7 @@ msgstr "Próximo jogador: {name}"
 #: bot.py:572
 #, python-format
 msgid "Waiting time for {name} has been reset to 90 seconds"
-msgstr "O tempo de espera para {name} é novamente de 90 segundos."
+msgstr "O tempo de espera para {name} foi reiniciado para 90 segundos"
 
 #: bot.py:585
 msgid "Please choose a color"
@@ -341,8 +328,8 @@ msgstr "Última carta: {card}"
 #: results.py:62 results.py:125 results.py:168
 msgid "Player: {player_list}"
 msgid_plural "Players: {player_list}"
-msgstr[0] "Jogador: {player_list}"
-msgstr[1] "Jogadores: {player_list}"
+msgstr[0] "Jogador(a): {player_list}"
+msgstr[1] "Jogadores(as): {player_list}"
 
 #: results.py:72
 #, python-format
@@ -357,15 +344,15 @@ msgstr "Você não está jogando"
 
 #: results.py:83
 msgid ""
-"Not playing right now. Use /new to start a game or /join to join the current "
-"game in this group"
+"Not playing right now. Use /new to start a game or /join to join the current game in this "
+"group"
 msgstr ""
-"Você não está jogando. Use /new criar um jogo ou /join para entrar na "
-"partida atual da conversa"
+"Você não está jogando. Use /new para criar uma partida ou /join para entrar na partida "
+"atual neste grupo"
 
 #: results.py:95
 msgid "The game wasn't started yet"
-msgstr "O jogo ainda não começou"
+msgstr "A partida ainda não começou"
 
 #: results.py:97
 msgid "Start the game with /start"
@@ -391,8 +378,7 @@ msgstr "Você está blefando!"
 
 #: settings.py:39
 msgid "Please edit your settings in a private chat with the bot."
-msgstr ""
-"Por favor, ajuste suas configurações em uma conversa privada com o bot."
+msgstr "Por favor, ajuste suas configurações em uma conversa privada com o bot."
 
 #: settings.py:49
 msgid "Enable statistics"
@@ -400,7 +386,7 @@ msgstr "Habilitar estatísticas"
 
 #: settings.py:51
 msgid "Delete all statistics"
-msgstr "Deletar todas as estatísticas"
+msgstr "Apagar todas estatísticas"
 
 #: settings.py:53
 msgid "Language"
@@ -420,7 +406,7 @@ msgstr "Definir linguagem"
 
 #: settings.py:81
 msgid "Deleted and disabled statistics!"
-msgstr "Estatísticas deletadas e desabilitadas!"
+msgstr "Estatísticas apagadas e desabilitadas!"
 
 #: settings.py:94
 msgid "Set locale!"
@@ -428,11 +414,10 @@ msgstr "Linguagem selecionada!"
 
 #: simple_commands.py
 msgid ""
-"You did not enable statistics. Use /settings in a private chat with the bot "
-"to enable them."
+"You did not enable statistics. Use /settings in a private chat with the bot to enable them."
 msgstr ""
-"Você não habilitou as estatísticas. Use /settings em uma conversa privada "
-"com o bot para ativá-las."
+"Você não habilitou as estatísticas. Use /settings em uma conversa privada com o bot para "
+"ativá-las."
 
 #: simple_commands.py
 msgid "{number} game played"
