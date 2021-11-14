@@ -441,10 +441,10 @@ msgstr[0] "{number} gespieltes Spiel"
 msgstr[1] "{number} gespielte Spiele"
 
 #: simple_commands.py
-msgid "{number} first place"
-msgid_plural "{number} first places"
-msgstr[0] "{number} mal 1. Platz"
-msgstr[1] "{number} mal 1. Platz"
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "{number} mal 1. Platz ({percent}%)"
+msgstr[1] "{number} mal 1. Platz ({percent}%)"
 
 #: simple_commands.py
 msgid "{number} card played"

@@ -402,9 +402,9 @@ msgid_plural "{number} games played"
 msgstr[0] "玩咗{number}盤"
 
 #: simple_commands.py
-msgid "{number} first place"
-msgid_plural "{number} first places"
-msgstr[0] "贏咗{number}次"
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "贏咗{number}次 ({percent}%)"
 
 #: simple_commands.py
 msgid "{number} card played"

@@ -436,10 +436,10 @@ msgstr[0] "{number} игры сыграно"
 msgstr[1] "{number} игр сыграно"
 
 #: simple_commands.py
-msgid "{number} first place"
-msgid_plural "{number} first places"
-msgstr[0] "{number} первое место"
-msgstr[1] "{number} первых мест"
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "{number} первое место ({percent}%)"
+msgstr[1] "{number} первых мест ({percent}%)"
 
 #: simple_commands.py
 msgid "{number} card played"
