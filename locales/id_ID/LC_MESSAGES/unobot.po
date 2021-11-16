@@ -430,8 +430,8 @@ msgid "{number} games played"
 msgstr "{number} permainan dimainkan"
 
 #: simple_commands.py
-msgid "{number} first places"
-msgstr "{number} diletakkan pertama"
+msgid "{number} first places ({percent}%)"
+msgstr "{number} diletakkan pertama ({percent}%)"
 
 #: simple_commands.py
 msgid "{number} cards played"

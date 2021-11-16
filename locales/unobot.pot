@@ -464,8 +464,8 @@ msgstr[1] ""
 
 #: simple_commands.py:129
 #, python-brace-format
-msgid "{number} first place"
-msgid_plural "{number} first places"
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
 msgstr[0] ""
 msgstr[1] ""
 

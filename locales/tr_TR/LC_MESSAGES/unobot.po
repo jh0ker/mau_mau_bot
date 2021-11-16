@@ -515,10 +515,10 @@ msgstr[1] "{number} Oyun oynandı"
 
 #: simple_commands.py:129
 #, python-brace-format
-msgid "{number} first place"
-msgid_plural "{number} first places"
-msgstr[0] "{number} Defa birincilik"
-msgstr[1] "{number} Defa birincilik"
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "{number} Defa birincilik ({percent}%)"
+msgstr[1] "{number} Defa birincilik ({percent}%)"
 
 #: simple_commands.py:136
 #, python-brace-format
