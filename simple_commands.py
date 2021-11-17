@@ -126,7 +126,7 @@ def stats(bot, update):
         )
 
         n = us.first_places
-        m = round((us.first_places / us.games_played) * 100) if games_played else 0
+        m = round((us.first_places / us.games_played) * 100) if us.games_played else 0
         stats_text.append(
             _("{number} first place ({percent}%)",
               "{number} first places ({percent}%)",
