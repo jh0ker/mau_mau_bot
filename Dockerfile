@@ -1,10 +1,9 @@
-FROM python:alpine
+FROM python:alpine3.4
 
 RUN apk add --no-cache gettext
 
 WORKDIR /app/
 COPY requirements.txt .
-RUN pip install -r requirements.txt
 
 COPY . .
 
