@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:alpine3.4
 
 RUN apk add --no-cache gettext
 
@@ -10,7 +10,6 @@ COPY . .
 
 RUN cd locales && find . -maxdepth 2 -type d -name 'LC_MESSAGES' -exec ash -c 'msgfmt {}/unobot.po -o {}/unobot.mo' \;
 
-RUN pip install -r requirements.txt
 
 VOLUME /app/data
 ENV UNO_DB /app/data/uno.sqlite3
