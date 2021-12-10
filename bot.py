@@ -245,6 +245,8 @@ def kick_player(bot, update):
 
         if update.message.reply_to_message:
             kicked = update.message.reply_to_message.from_user
+            if kicked.id == bot.id:
+                kicked = game.current_player.user
 
             try:
                 gm.leave_game(kicked, chat)
@@ -266,7 +268,8 @@ def kick_player(bot, update):
 
         else:
             send_async(bot, chat.id,
-                text=_("Please reply to the person you want to kick and type /kick again."),
+                text=_("Please reply to the person you want to kick and type /kick again. "
+                       "Note that replying to the bot causes the current player to be kicked."),
                 reply_to_message_id=update.message.message_id)
             return
 
