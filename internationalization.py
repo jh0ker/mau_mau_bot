@@ -101,7 +101,7 @@ def __(singular, plural=None, n=1, multi=False):
 def user_locale(func):
     @wraps(func)
     @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
+    def wrapped(update, context, *pargs, **kwargs):
         user = _user_chat_from_update(update)[0]
 
         with db_session:
@@ -112,7 +112,7 @@ def user_locale(func):
         else:
             _.push('en_US')
 
-        result = func(bot, update, *pargs, **kwargs)
+        result = func(update, context, *pargs, **kwargs)
         _.pop()
         return result
     return wrapped
@@ -121,7 +121,7 @@ def user_locale(func):
 def game_locales(func):
     @wraps(func)
     @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
+    def wrapped(update, context, *pargs, **kwargs):
         user, chat = _user_chat_from_update(update)
         player = gm.player_for_user_in_chat(user, chat)
         locales = list()
@@ -141,7 +141,7 @@ def game_locales(func):
                 _.push(loc)
                 locales.append(loc)
 
-        result = func(bot, update, *pargs, **kwargs)
+        result = func(update, context, *pargs, **kwargs)
 
         while _.code:
             _.pop()
