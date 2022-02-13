@@ -299,16 +299,15 @@ def select_game(update: Update, context: CallbackContext):
                    text=_("Game not found."))
         return
 
-    @run_async
-    def selected(bot):
+    def selected():
         back = [[InlineKeyboardButton(text=_("Back to last group"),
                                       switch_inline_query='')]]
-        context.bot.answerCallbackQuery(update.callback_query.id,
+        dispatcher.run_async(context.bot.answerCallbackQuery, update.callback_query.id,
                                 text=_("Please switch to the group you selected!"),
                                 show_alert=False,
                                 timeout=TIMEOUT)
 
-        context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
+        dispatcher.run_async(context.bot.editMessageText, chat_id=update.callback_query.message.chat_id,
                             message_id=update.callback_query.message.message_id,
                             text=_("Selected group: {group}\n"
                                    "<b>Make sure that you switch to the correct "
@@ -318,7 +317,7 @@ def select_game(update: Update, context: CallbackContext):
                             parse_mode=ParseMode.HTML,
                             timeout=TIMEOUT)
 
-    selected(bot)
+    selected()
 
 
 @game_locales
@@ -383,15 +382,14 @@ def start_game(update: Update, context: CallbackContext):
                    multi=game.translate)
                 .format(name=display_name(game.current_player.user)))
 
-            @run_async
             def send_first():
                 """Send the first card and player"""
 
-                context.bot.sendSticker(chat.id,
+                dispatcher.run_async(context.bot.sendSticker, chat.id,
                                 sticker=c.STICKERS[str(game.last_card)],
                                 timeout=TIMEOUT)
 
-                context.bot.sendMessage(chat.id,
+                dispatcher.run_async(context.bot.sendMessage, chat.id,
                                 text=first_message,
                                 reply_markup=InlineKeyboardMarkup(choice),
                                 timeout=TIMEOUT)
@@ -702,7 +700,7 @@ def process_result(update: Update, context: CallbackContext):
         send_async(context.bot, chat.id,
                         text=nextplayer_message,
                         reply_markup=InlineKeyboardMarkup(choice))
-        start_player_countdown(context.bot, game, job_queue)
+        start_player_countdown(context.bot, game, context.job_queue)
 
 
 def reset_waiting_time(bot, player):
