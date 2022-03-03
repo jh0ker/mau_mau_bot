@@ -7,6 +7,7 @@ from datetime import datetime
 
 from telegram import Message, Chat
 from telegram.ext import CallbackContext
+from apscheduler.jobstores.base import JobLookupError
 
 from config import TIME_REMOVAL_AFTER_SKIP, MIN_FAST_TURN_TIME
 from errors import DeckEmptyError, NotEnoughPlayersError
@@ -192,7 +193,10 @@ def start_player_countdown(bot, game, job_queue):
 
     if game.mode == 'fast':
         if game.job:
-            game.job.schedule_removal()
+            try:
+                game.job.schedule_removal()
+            except JobLookupError:
+                pass
 
         job = job_queue.run_once(
             #lambda x,y: do_skip(bot, player),

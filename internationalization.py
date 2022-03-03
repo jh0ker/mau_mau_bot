@@ -151,21 +151,10 @@ def game_locales(func):
 
 
 def _user_chat_from_update(update):
+    user = update.effective_user
+    chat = update.effective_chat
 
-    try:
-        user = update.message.from_user
-        chat = update.message.chat
-    except (NameError, AttributeError):
-        try:
-            user = update.inline_query.from_user
-            chat = gm.userid_current[user.id].game.chat
-        except KeyError:
-            chat = None
-        except (NameError, AttributeError):
-            try:
-                user = update.chosen_inline_result.from_user
-                chat = gm.userid_current[user.id].game.chat
-            except (NameError, AttributeError, KeyError):
-                chat = None
+    if chat is None and user is not None and user.id in gm.userid_current:
+        chat = gm.userid_current.get(user.id).game.chat
 
     return user, chat

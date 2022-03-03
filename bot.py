@@ -49,6 +49,7 @@ logging.basicConfig(
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+logging.getLogger('apscheduler').setLevel(logging.WARNING)
 
 @user_locale
 def notify_me(update: Update, context: CallbackContext):
@@ -302,12 +303,12 @@ def select_game(update: Update, context: CallbackContext):
     def selected():
         back = [[InlineKeyboardButton(text=_("Back to last group"),
                                       switch_inline_query='')]]
-        dispatcher.run_async(context.bot.answerCallbackQuery, update.callback_query.id,
+        context.bot.answerCallbackQuery(update.callback_query.id,
                                 text=_("Please switch to the group you selected!"),
                                 show_alert=False,
                                 timeout=TIMEOUT)
 
-        dispatcher.run_async(context.bot.editMessageText, chat_id=update.callback_query.message.chat_id,
+        context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                             message_id=update.callback_query.message.message_id,
                             text=_("Selected group: {group}\n"
                                    "<b>Make sure that you switch to the correct "
@@ -317,7 +318,7 @@ def select_game(update: Update, context: CallbackContext):
                             parse_mode=ParseMode.HTML,
                             timeout=TIMEOUT)
 
-    selected()
+    dispatcher.run_async(selected)
 
 
 @game_locales
@@ -385,16 +386,16 @@ def start_game(update: Update, context: CallbackContext):
             def send_first():
                 """Send the first card and player"""
 
-                dispatcher.run_async(context.bot.sendSticker, chat.id,
+                context.bot.sendSticker(chat.id,
                                 sticker=c.STICKERS[str(game.last_card)],
                                 timeout=TIMEOUT)
 
-                dispatcher.run_async(context.bot.sendMessage, chat.id,
+                context.bot.sendMessage(chat.id,
                                 text=first_message,
                                 reply_markup=InlineKeyboardMarkup(choice),
                                 timeout=TIMEOUT)
 
-            send_first()
+            dispatcher.run_async(send_first)
             start_player_countdown(context.bot, game, context.job_queue)
 
     elif len(context.args) and context.args[0] == 'select':
