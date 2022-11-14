@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from telegram import ParseMode
-from telegram.ext import CommandHandler
+from telegram import ParseMode, Update
+from telegram.ext import CommandHandler, CallbackContext
 
 from user_setting import UserSetting
 from utils import send_async
@@ -26,7 +26,7 @@ from shared_vars import dispatcher
 from internationalization import _, user_locale
 
 @user_locale
-def help_handler(bot, update):
+def help_handler(update: Update, context: CallbackContext):
     """Handler for the /help command"""
     help_text = _("Follow these steps:\n\n"
       "1. Add this bot to a group\n"
@@ -64,11 +64,11 @@ def help_handler(bot, update):
       "<a href=\"https://telegram.me/unobotupdates\">update channel</a>"
       " and buy an UNO card game.")
 
-    send_async(bot, update.message.chat_id, text=help_text,
+    send_async(context.bot, update.message.chat_id, text=help_text,
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 @user_locale
-def modes(bot, update):
+def modes(update: Update, context: CallbackContext):
     """Handler for the /help command"""
     modes_explanation = _("This UNO bot has four game modes: Classic, Sanic, Wild and Text.\n\n"
       " 🎻 The Classic mode uses the conventional UNO deck and there is no auto skip.\n"
@@ -77,11 +77,11 @@ def modes(bot, update):
       " ✍️ The Text mode uses the conventional UNO deck but instead of stickers it uses the text.\n\n"
       "To change the game mode, the GAME CREATOR has to type the bot nickname and a space, "
       "just like when playing a card, and all gamemode options should appear.")
-    send_async(bot, update.message.chat_id, text=modes_explanation,
+    send_async(context.bot, update.message.chat_id, text=modes_explanation,
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 @user_locale
-def source(bot, update):
+def source(update: Update, context: CallbackContext):
     """Handler for the /help command"""
     source_text = _("This bot is Free Software and licensed under the AGPL. "
       "The code is available here: \n"
@@ -94,25 +94,25 @@ def source(bot, update):
       "Originals available on http://game-icons.net\n"
       "Icons edited by ɳick")
 
-    send_async(bot, update.message.chat_id, text=source_text + '\n' +
+    send_async(context.bot, update.message.chat_id, text=source_text + '\n' +
                                                  attributions,
                parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @user_locale
-def news(bot, update):
+def news(update: Update, context: CallbackContext):
     """Handler for the /news command"""
-    send_async(bot, update.message.chat_id,
+    send_async(context.bot, update.message.chat_id,
                text=_("All news here: https://telegram.me/unobotupdates"),
                disable_web_page_preview=True)
 
 
 @user_locale
-def stats(bot, update):
+def stats(update: Update, context: CallbackContext):
     user = update.message.from_user
     us = UserSetting.get(id=user.id)
     if not us or not us.stats:
-        send_async(bot, update.message.chat_id,
+        send_async(context.bot, update.message.chat_id,
                    text=_("You did not enable statistics. Use /settings in "
                           "a private chat with the bot to enable them."))
     else:
@@ -140,7 +140,7 @@ def stats(bot, update):
               n).format(number=n)
         )
 
-        send_async(bot, update.message.chat_id,
+        send_async(context.bot, update.message.chat_id,
                    text='\n'.join(stats_text))
 
 

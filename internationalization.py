@@ -101,7 +101,7 @@ def __(singular, plural=None, n=1, multi=False):
 def user_locale(func):
     @wraps(func)
     @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
+    def wrapped(update, context, *pargs, **kwargs):
         user = _user_chat_from_update(update)[0]
 
         with db_session:
@@ -112,7 +112,7 @@ def user_locale(func):
         else:
             _.push('en_US')
 
-        result = func(bot, update, *pargs, **kwargs)
+        result = func(update, context, *pargs, **kwargs)
         _.pop()
         return result
     return wrapped
@@ -121,7 +121,7 @@ def user_locale(func):
 def game_locales(func):
     @wraps(func)
     @db_session
-    def wrapped(bot, update, *pargs, **kwargs):
+    def wrapped(update, context, *pargs, **kwargs):
         user, chat = _user_chat_from_update(update)
         player = gm.player_for_user_in_chat(user, chat)
         locales = list()
@@ -141,7 +141,7 @@ def game_locales(func):
                 _.push(loc)
                 locales.append(loc)
 
-        result = func(bot, update, *pargs, **kwargs)
+        result = func(update, context, *pargs, **kwargs)
 
         while _.code:
             _.pop()
@@ -151,21 +151,10 @@ def game_locales(func):
 
 
 def _user_chat_from_update(update):
+    user = update.effective_user
+    chat = update.effective_chat
 
-    try:
-        user = update.message.from_user
-        chat = update.message.chat
-    except (NameError, AttributeError):
-        try:
-            user = update.inline_query.from_user
-            chat = gm.userid_current[user.id].game.chat
-        except KeyError:
-            chat = None
-        except (NameError, AttributeError):
-            try:
-                user = update.chosen_inline_result.from_user
-                chat = gm.userid_current[user.id].game.chat
-            except (NameError, AttributeError, KeyError):
-                chat = None
+    if chat is None and user is not None and user.id in gm.userid_current:
+        chat = gm.userid_current.get(user.id).game.chat
 
     return user, chat
