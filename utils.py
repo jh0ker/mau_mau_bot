@@ -19,6 +19,8 @@
 
 
 import logging
+from telegram import Update
+from telegram.ext import CallbackContext
 
 from internationalization import _, __
 from mwt import MWT
@@ -73,11 +75,11 @@ def display_color_group(color, game):
     if color == "y":
         return __("{emoji} Yellow", game.translate).format(
             emoji='💛')
-  
 
-def error(bot, update, error):
+
+def error(update: Update, context: CallbackContext):
     """Simple error handler"""
-    logger.exception(error)
+    logger.exception(context.error)
 
 
 def send_async(bot, *args, **kwargs):
