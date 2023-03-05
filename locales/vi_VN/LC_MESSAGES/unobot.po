@@ -1,0 +1,562 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: uno_bot 1.0\n"
+"Report-Msgid-Bugs-To: uno@jhoeke.de\n"
+"POT-Creation-Date: 2023-03-05 14:21+0800\n"
+"PO-Revision-Date: 2023-03-05\n"
+"Last-Translator: Lê Minh Sơn\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: actions.py:48
+#, python-brace-format
+msgid ""
+"Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
+msgstr ""
+"Thời gian chờ để bỏ qua người chơi này đã giảm xuống còn {time} giây.\n"
+"Người chơi tiếp theo: {name}"
+
+#: actions.py:54 actions.py:69
+#, python-brace-format
+msgid "{player} was skipped! "
+msgstr "{player} đã bị bỏ qua! "
+
+#: actions.py:64
+#, python-brace-format
+msgid ""
+"{name1} ran out of time and has been removed from the game!\n"
+"Next player: {name2}"
+msgstr ""
+"{name1} đã hết thời gian và đã bị xóa khỏi trò chơi!\n"
+"Người chơi tiếp theo: {name2}"
+
+#: actions.py:76
+#, python-brace-format
+msgid ""
+"{name} ran out of time and has been removed from the game!\n"
+"The game ended."
+msgstr ""
+"{name} đã hết thời gian và đã bị xóa khỏi trò chơi!\n"
+"Trò chơi kết thúc."
+
+#: actions.py:101
+msgid "Please choose a color"
+msgstr "Hãy chọn một màu may mắn"
+
+#: actions.py:108
+#, python-brace-format
+msgid "{name} won!"
+msgstr "{name} thắng!"
+
+#: actions.py:123 bot.py:119 bot.py:199 bot.py:261 bot.py:340
+msgid "Game ended!"
+msgstr "Nước mắt anh rơi trò chơi kết thúc"
+
+#: actions.py:141 actions.py:165 actions.py:179
+msgid "There are no more cards in the deck."
+msgstr "Không còn thẻ nào trong bộ bài."
+
+#: actions.py:157
+#, python-brace-format
+msgid "Bluff called! Giving 4 cards to {name}"
+msgstr "Thần may mắn gọi! Đưa 4 lá bài cho {name}"
+
+#: actions.py:171
+#, python-brace-format
+msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
+msgstr "{name1} không bịp! Đưa 6 thẻ cho {name2}"
+
+#: bot.py:60
+msgid ""
+"Send this command in a group to be notified when a new game is started there."
+msgstr ""
+"Gửi lệnh này trong một nhóm để được thông báo khi trò chơi mới bắt đầu ở đó."
+
+#: bot.py:83
+#, python-brace-format
+msgid "A new game has been started in {title}"
+msgstr "Một trò chơi mới đã được bắt đầu trong {title}"
+
+#: bot.py:93
+msgid ""
+"Created a new game! Join the game with /join and start the game with /start"
+msgstr ""
+"Đã tạo một trò chơi mới! Tham gia trò chơi với /join và bắt đầu trò chơi với /start"
+
+#: bot.py:110 bot.py:433 bot.py:461 bot.py:488 bot.py:516
+msgid "There is no running game in this chat."
+msgstr "Không có trò chơi đang chạy trong cuộc trò chuyện này."
+
+#: bot.py:123 bot.py:239
+msgid ""
+"The game is not started yet. Join the game with /join and start the game "
+"with /start"
+msgstr ""
+"Trò chơi chưa bắt đầu. Tham gia trò chơi với /join và bắt đầu trò chơi "
+"với /start"
+
+#: bot.py:129 bot.py:281 bot.py:446 bot.py:473 bot.py:501 bot.py:530
+#, python-brace-format
+msgid "Only the game creator ({name}) and admin can do that."
+msgstr "Chỉ người tạo trò chơi ({name}) và quản trị viên mới có thể làm điều đó."
+
+#: bot.py:146
+msgid "The lobby is closed"
+msgstr "Sảnh đóng cửa"
+
+#: bot.py:150 bot.py:232
+msgid "No game is running at the moment. Create a new game with /new"
+msgstr "Không có trò chơi đang chạy tại thời điểm này. Tạo một trò chơi mới với /new"
+
+#: bot.py:156
+msgid "You already joined the game. Start the game with /start"
+msgstr "Bạn đã tham gia trò chơi. Bắt đầu trò chơi với /start"
+
+#: bot.py:162
+msgid "There are not enough cards left in the deck for new players to join."
+msgstr "Không còn đủ lá trong bộ bài để người chơi mới tham gia."
+
+#: bot.py:168
+msgid "Joined the game"
+msgstr "Đã tham gia trò chơi"
+
+#: bot.py:181 bot.py:193
+msgid "You are not playing in a game in this group."
+msgstr "Bạn không chơi trong một trò chơi trong nhóm này."
+
+#: bot.py:204 bot.py:274
+#, python-brace-format
+msgid "Okay. Next Player: {name}"
+msgstr "Được rồi. Người chơi tiếp theo: {name}"
+
+#: bot.py:210
+#, python-brace-format
+msgid "{name} left the game before it started."
+msgstr "{name} đã rời khỏi trò chơi trước khi trò chơi bắt đầu."
+
+#: bot.py:253
+#, python-brace-format
+msgid "Player {name} is not found in the current game."
+msgstr "Không tìm thấy người chơi {name} trong trò chơi hiện tại."
+
+#: bot.py:260 bot.py:265
+#, python-brace-format
+msgid "{0} was kicked by {1}"
+msgstr "{0} đã bị đá bởi {1}"
+
+#: bot.py:269
+msgid "Please reply to the person you want to kick and type /kick again."
+msgstr "Vui lòng trả lời người bạn muốn đá và gõ lại /kick một lần nữa."
+
+#: bot.py:299
+msgid "Game not found."
+msgstr "Không thấy ván bài nào cả."
+
+#: bot.py:304
+msgid "Back to last group"
+msgstr "Quay lại nhóm trước"
+
+#: bot.py:307
+msgid "Please switch to the group you selected!"
+msgstr "Vui lòng chuyển sang nhóm bạn đã chọn!"
+
+#: bot.py:313
+#, python-brace-format
+msgid ""
+"Selected group: {group}\n"
+"<b>Make sure that you switch to the correct group!</b>"
+msgstr ""
+"Nhóm được chọn: {group}\n"
+"<b>Đảm bảo rằng bạn chuyển sang đúng nhóm!</b>"
+
+#: bot.py:343
+#, python-brace-format
+msgid "Removing {name} from the game"
+msgstr "Đang xóa {name} khỏi trò chơi"
+
+#: bot.py:360
+msgid "There is no game running in this chat. Create a new one with /new"
+msgstr "Không có trò chơi đang chạy trong cuộc trò chuyện này. Tạo một cái mới với /new"
+
+#: bot.py:365
+msgid "The game has already started"
+msgstr "Trò chơi đã bắt đầu"
+
+#: bot.py:369
+#, python-brace-format
+msgid ""
+"At least {minplayers} players must /join the game before you can start it"
+msgstr ""
+"Ít nhất {minplayers} người chơi phải /join trò chơi trước khi bạn có thể bắt đầu trò chơi"
+
+#: bot.py:380
+#, python-brace-format
+msgid ""
+"First player: {name}\n"
+"Use /close to stop people from joining the game.\n"
+"Enable multi-translations with /enable_translations"
+msgstr ""
+"Người chơi đầu tiên: {name}\n"
+"Sử dụng /close để ngăn mọi người tham gia trò chơi.\n"
+"Bật nhiều bản dịch với /enable_translations"
+
+#: bot.py:417
+msgid "Please select the group you want to play in."
+msgstr "Vui lòng chọn nhóm bạn muốn chơi."
+
+#: bot.py:440
+msgid "Closed the lobby. No more players can join this game."
+msgstr "Đóng cửa sảnh. Không còn người chơi nào có thể tham gia trò chơi này."
+
+#: bot.py:468
+msgid "Opened the lobby. New players may /join the game."
+msgstr "Đã mở sảnh. Người chơi mới có thể /join để tham gia trò chơi."
+
+#: bot.py:495
+msgid "Enabled multi-translations. Disable with /disable_translations"
+msgstr "Đã bật nhiều bản dịch. Vô hiệu hóa với /disable_translations"
+
+#: bot.py:523
+msgid ""
+"Disabled multi-translations. Enable them again with /enable_translations"
+msgstr "Đã tắt đa bản dịch. Kích hoạt lại chúng với /enable_translations"
+
+#: bot.py:546
+msgid "You are not playing in a game in this chat."
+msgstr "Bạn không chơi bài trong đoạn chat này."
+
+#: bot.py:561
+#, python-brace-format
+msgid "Please wait {time} second"
+msgid_plural "Please wait {time} seconds"
+msgstr[0] "Vui lòng đợi {time} giây"
+msgstr[1] "Vui lòng đợi {time} giây"
+
+#: bot.py:637
+#, python-brace-format
+msgid "Current game: {game}"
+msgstr "Ván hiện tại: {game}"
+
+#: bot.py:672
+#, python-brace-format
+msgid "Gamemode changed to {mode}"
+msgstr "Chế độ trò chơi thay đổi thành {mode}"
+
+#: bot.py:678
+#, python-brace-format
+msgid "Cheat attempt by {name}"
+msgstr "Lỗ lực gian lận bởi {name}"
+
+#: bot.py:697
+#, python-brace-format
+msgid "Next player: {name}"
+msgstr "Người chơi tiếp theo: {name}"
+
+#: bot.py:709
+#, python-brace-format
+msgid "Waiting time for {name} has been reset to {time} seconds"
+msgstr "Thời gian chờ của {name} đã được đặt lại thành {time} giây"
+
+#: results.py:39
+msgid "Choose Color"
+msgstr "Chọn màu may mắn"
+
+#: results.py:53
+msgid "Card (tap for game state):"
+msgid_plural "Cards (tap for game state):"
+msgstr[0] "Lá bài (nhấn để biết trạng thái trò chơi):"
+msgstr[1] "Lá bài (nhấn để biết trạng thái trò chơi):"
+
+#: results.py:64
+#, python-brace-format
+msgid "{name} ({number} card)"
+msgid_plural "{name} ({number} cards)"
+msgstr[0] "{name} ({number} lá bài)"
+msgstr[1] "{name} ({number} lá bài)"
+
+#: results.py:76
+msgid "You are not playing"
+msgstr "Bạn không chơi"
+
+#: results.py:78
+msgid ""
+"Not playing right now. Use /new to start a game or /join to join the current "
+"game in this group"
+msgstr "Không chơi ngay bây giờ. Sử dụng /new để bắt đầu trò chơi hoặc /join để tham gia "
+"trò chơi trong nhóm này"
+
+#: results.py:90
+msgid "The game wasn't started yet"
+msgstr "Ván bài vẫn chưa bắt đầu"
+
+#: results.py:92
+msgid "Start the game with /start"
+msgstr "Bắt đầu vắn bài với /start"
+
+#: results.py:102
+msgid "🎻 Classic mode"
+msgstr "🎻 Chế độ cổ điển"
+
+#: results.py:104
+msgid "Classic 🎻"
+msgstr "Cổ điển 🎻"
+
+#: results.py:114
+msgid "🚀 Sanic mode"
+msgstr "🚀 Chế độ Sanic"
+
+#: results.py:116
+msgid "Gotta go fast! 🚀"
+msgstr "Phải đi nhanh! 🚀"
+
+#: results.py:126
+msgid "🐉 Wild mode"
+msgstr "🐉 Chế độ hoang dã"
+
+#: results.py:128
+msgid "Into the Wild~ 🐉"
+msgstr "Lạc vào thế giới hoang dã~ 🐉"
+
+#: results.py:141
+#, python-brace-format
+msgid "Drawing {number} card"
+msgid_plural "Drawing {number} cards"
+msgstr[0] "Thêm {number} lá bài"
+msgstr[1] "Thêm {number} lá bài"
+
+#: results.py:167
+msgid "Pass"
+msgstr "Qua"
+
+#: results.py:180
+msgid "I'm calling your bluff!"
+msgstr "Tôi đang gọi lá bài của bạn"
+
+#: results.py:203
+#, python-brace-format
+msgid "Current player: {name}"
+msgstr "Bàn hiện tại là: {name}"
+
+#: results.py:206
+#, python-brace-format
+msgid "Last card: {card}"
+msgstr "Lá bài cuối: {card}"
+
+#: results.py:208
+#, python-brace-format
+msgid "Player: {player_list}"
+msgid_plural "Players: {player_list}"
+msgstr[0] "Người chơi: {player_list}"
+msgstr[1] "Người chơi: {player_list}"
+
+#: settings.py:37
+msgid "Please edit your settings in a private chat with the bot."
+msgstr "Vui lòng chỉnh sửa cài đặt của bạn trong cuộc trò chuyện riêng tư với bot."
+
+#: settings.py:47
+msgid "Enable statistics"
+msgstr "Bật thống kê"
+
+#: settings.py:49
+msgid "Delete all statistics"
+msgstr "Xoá tất cả dữ liệu thống kê"
+
+#: settings.py:51
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#: settings.py:52
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: settings.py:66
+msgid "Enabled statistics!"
+msgstr "Đã bật thống kê"
+
+#: settings.py:72
+msgid "Select locale"
+msgstr "Chọn ngôn ngữ"
+
+#: settings.py:82
+msgid "Deleted and disabled statistics!"
+msgstr "Đã xóa và vô hiệu hóa số liệu thống kê!"
+
+#: settings.py:95
+msgid "Set locale!"
+msgstr "Đặt ngôn ngữ!"
+
+#: simple_commands.py:31
+msgid ""
+"Follow these steps:\n"
+"\n"
+"1. Add this bot to a group\n"
+"2. In the group, start a new game with /new or join an already running game "
+"with /join\n"
+"3. After at least two players have joined, start the game with /start\n"
+"4. Type <code>@unobot</code> into your chat box and hit <b>space</b>, or "
+"click the <code>via @unobot</code> text next to messages. You will see your "
+"cards (some greyed out), any extra options like drawing, and a <b>?</b> to "
+"see the current game state. The <b>greyed out cards</b> are those you <b>can "
+"not play</b> at the moment. Tap an option to execute the selected action.\n"
+"Players can join the game at any time. To leave a game, use /leave. If a "
+"player takes more than 90 seconds to play, you can use /skip to skip that "
+"player. Use /notify_me to receive a private message when a new game is "
+"started.\n"
+"\n"
+"<b>Language</b> and other settings: /settings\n"
+"Other commands (only game creator):\n"
+"/close - Close lobby\n"
+"/open - Open lobby\n"
+"/kill - Terminate the game\n"
+"/kick - Select a player to kick by replying to him or her\n"
+"/enable_translations - Translate relevant texts into all languages spoken in "
+"a game\n"
+"/disable_translations - Use English for those texts\n"
+"\n"
+"<b>Experimental:</b> Play in multiple groups at the same time. Press the "
+"<code>Current game: ...</code> button and select the group you want to play "
+"a card in.\n"
+"If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
+"unobotupdates\">update channel</a> and buy an UNO card game."
+msgstr ""
+"Làm theo các bước sau:\n"
+"\n"
+"1. Thêm bot này vào một nhóm\n"
+"2. Trong nhóm, bắt đầu một trò chơi mới với /new hoặc tham gia một trò chơi đang chạy "
+"với /tham gia\n"
+"3. Sau khi có ít nhất hai người chơi tham gia, hãy bắt đầu trò chơi với /start\n"
+"4. Nhập <code>@unobot</code> vào hộp trò chuyện của bạn và nhấn <b>dấu cách</b> hoặc "
+"nhấp vào văn bản <code>qua @unobot</code> bên cạnh tin nhắn. Bạn sẽ thấy"
+"thẻ (một số bị mờ đi), bất kỳ tùy chọn bổ sung nào như vẽ và <b>?</b> để "
+"xem trạng thái trò chơi hiện tại. <b>các thẻ chuyển sang màu xám</b> là những thẻ bạn <b>có thể"
+"hiện không phát</b>. Nhấn vào một tùy chọn để thực hiện hành động đã chọn.\n"
+"Người chơi có thể tham gia trò chơi bất cứ lúc nào. Để rời khỏi trò chơi, hãy sử dụng /leave. Nếu a"
+"người chơi mất hơn 90 giây để chơi, bạn có thể sử dụng /skip để bỏ qua phần đó"
+"người chơi. Sử dụng /notify_me để nhận tin nhắn riêng khi có trò chơi mới "
+"đã bắt đầu.\n"
+"\n"
+"<b>Ngôn ngữ</b> và các cài đặt khác: /settings\n"
+"Các lệnh khác (chỉ người tạo trò chơi):\n"
+"/đóng - Đóng sảnh\n"
+"/open - Mở sảnh\n"
+"/kill - Chấm dứt trò chơi\n"
+"/kick - Chọn một người chơi để kick bằng cách trả lời người đó\n"
+"/enable_translations - Dịch các văn bản có liên quan sang tất cả các ngôn ngữ có trong"
+"trò chơi\n"
+"/disable_translations - Sử dụng tiếng Anh cho những văn bản đó\n"
+"\N"
+"<b>Thử nghiệm:</b> Chơi trong nhiều nhóm cùng lúc. Nhấn nút "
+"<code>Trò chơi hiện tại: ...</code> và chọn nhóm bạn muốn chơi"
+"bài.\n"
+"Nếu bạn thích bot này, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">đánh giá  tôi</a>, tham gia <a href=\"https://telegram.me/"
+"unobotupdates\">kênh cập nhật</a> và mua bài UNO."
+
+
+#: simple_commands.py:73
+msgid ""
+"This UNO bot has three game modes: Classic, Sanic and Wild.\n"
+"\n"
+" 🎻 The Classic mode uses the conventional UNO deck and there is no auto "
+"skip.\n"
+" 🚀 The Sanic mode uses the conventional UNO deck and the bot automatically "
+"skips a player if he/she takes too long to play its turn\n"
+" 🐉 The Wild mode uses a deck with more special cards, less number variety "
+"and no auto skip.\n"
+"\n"
+"To change the game mode, the GAME CREATOR has to type the bot nickname and a "
+"space, just like when playing a card, and all gamemode options should appear."
+msgstr "Bot UNO này có ba chế độ chơi: Cổ điển, Sanic và Hoang dã.\n"
+"🎻 Chế độ Cổ điển sử dụng bộ bài UNO thông thường và không có tự động "
+"bỏ qua.\n"
+"🚀 Chế độ Sanic sử dụng bộ bài UNO thông thường và bot tự động "
+"bỏ qua một người chơi nếu anh ấy/cô ấy mất quá nhiều thời gian để chơi lượt của mình\n"
+"🐉 Chế độ Wild sử dụng bộ bài có nhiều quân bài đặc biệt hơn, số lượng ít đa dạng hơn"
+"và không tự động bỏ qua.\n"
+"\n"
+"Để thay đổi chế độ trò chơi, NGƯỜI TẠO TRÒ CHƠI phải nhập username bot và "
+"dấu cách, giống như khi chơi bài và tất cả các tùy chọn chế độ chơi sẽ xuất hiện."
+
+#: simple_commands.py:85
+msgid ""
+"This bot is Free Software and licensed under the AGPL. The code is available "
+"here: \n"
+"https://github.com/jh0ker/mau_mau_bot"
+msgstr "Bot này là Phần mềm Tự do và được cấp phép theo AGPL. Mã có sẵn"
+"ở đây: \n"
+"https://github.com/jh0ker/mau_mau_bot"
+
+#: simple_commands.py:88
+msgid ""
+"Attributions:\n"
+"Draw icon by <a href=\"http://www.faithtoken.com/\">Faithtoken</a>\n"
+"Pass icon by <a href=\"http://delapouite.com/\">Delapouite</a>\n"
+"Originals available on http://game-icons.net\n"
+"Icons edited by ɳick"
+msgstr "Thiết kế:\n"
+"Vẽ biểu tượng bởi <a href=\http://www.faithtoken.com/\">Faithtoken</a>\n"
+"Biểu tượng bỏ qua bởi  <a href=\"http://delapouite.com/\">Delapouite</a>\n"
+"Chình sửa biểu tượng bởi ɳick"
+
+#: simple_commands.py:105
+msgid "All news here: https://telegram.me/unobotupdates"
+msgstr "Tin tức mới về bot ở đây: https://telegram.me/unobotupdates"
+
+#: simple_commands.py:115
+msgid ""
+"You did not enable statistics. Use /settings in a private chat with the bot "
+"to enable them."
+msgstr "Bạn chưa kích hoạt thống kê. Sử dụng /settings trong cuộc trò chuyện riêng với bot "
+"để kích hoạt."
+
+#: simple_commands.py:122
+#, python-brace-format
+msgid "{number} game played"
+msgid_plural "{number} games played"
+msgstr[0] "{number} ván đã chơi"
+msgstr[1] "{number} ván đã chơi"
+
+#: simple_commands.py:129
+#, python-brace-format
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "{number} vị trí đầu tiên ({percent}%)"
+msgstr[1] "{number} vị trí đầu tiên ({percent}%)"
+
+#: simple_commands.py:136
+#, python-brace-format
+msgid "{number} card played"
+msgid_plural "{number} cards played"
+msgstr[0] "{number} bài đã chơi"
+msgstr[1] "{number} bài đã chơi"
+
+#: utils.py:55 utils.py:67
+#, python-brace-format
+msgid "{emoji} Red"
+msgstr "{emoji} Đỏ"
+
+#: utils.py:57 utils.py:70
+#, python-brace-format
+msgid "{emoji} Blue"
+msgstr "{emoji} Xanh da trời"
+
+#: utils.py:59 utils.py:73
+#, python-brace-format
+msgid "{emoji} Green"
+msgstr "{emoji} Xanh lá cây"
+
+#: utils.py:61 utils.py:76
+#, python-brace-format
+msgid "{emoji} Yellow"
+msgstr "{emoji} Vàng"
