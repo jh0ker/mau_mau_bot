@@ -37,3 +37,5 @@ compile zh_TW
 compile ca_CA
 #Malayalam
 compile ml_IN
+# Việt Nam
+compile vi_VN
