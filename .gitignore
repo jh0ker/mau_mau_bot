@@ -27,6 +27,8 @@ var/
 .installed.cfg
 *.egg
 
+venv/
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -69,3 +71,7 @@ target/
 
 # Database file
 uno.sqlite3
+
+images/api_auth.json
+images/sticker_config.json
+images/sticker_uploader.session
