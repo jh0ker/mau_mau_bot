@@ -405,7 +405,7 @@ def start_game(update: Update, context: CallbackContext):
         for player in players:
             title = player.game.chat.title
 
-            if player is gm.userid_current[update.message.from_user.id]:
+            if player == gm.userid_current[update.message.from_user.id]:
                 title = '- %s -' % player.game.chat.title
 
             groups.append(

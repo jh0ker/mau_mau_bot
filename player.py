@@ -69,7 +69,7 @@ class Player(object):
 
     def leave(self):
         """Removes player from the game and closes the gap in the list"""
-        if self.next is self:
+        if self.next == self:
             return
 
         self.next.prev = self.prev
