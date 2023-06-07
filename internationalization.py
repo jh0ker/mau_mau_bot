@@ -66,7 +66,7 @@ class _Underscore(object):
             locale = self.locale_stack[-1]
 
         if locale not in self.translators.keys():
-            if n is 1:
+            if n == 1:
                 return singular
             else:
                 return plural

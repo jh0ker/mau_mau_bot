@@ -58,7 +58,7 @@ class Game(object):
         current_player = self.current_player
         itplayer = current_player.next
         players.append(current_player)
-        while itplayer and itplayer is not current_player:
+        while itplayer and itplayer != current_player:
             players.append(itplayer)
             itplayer = itplayer.next
         return players
@@ -121,7 +121,7 @@ class Game(object):
             self.logger.debug("Draw counter increased by 2")
         elif card.value == c.REVERSE:
             # Special rule for two players
-            if self.current_player is self.current_player.next.next:
+            if self.current_player == self.current_player.next.next:
                 self.turn()
             else:
                 self.reverse()
