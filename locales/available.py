@@ -30,6 +30,7 @@ def flag(code):
 available_locales = {'en_US': flag('US') + ' English (US)',
                      'de_DE': flag('DE') + ' Deutsch (DE)',
                      'es_ES': flag('ES') + ' Español (ES)',
+                     'hn_IN': flag('IN') + ' Hindi   (IN)',
                      'id_ID': flag('ID') + ' Bahasa Indonesia',
                      'it_IT': flag('IT') + ' Italiano',
                      'pt_BR': flag('BR') + ' Português Brasileiro',
