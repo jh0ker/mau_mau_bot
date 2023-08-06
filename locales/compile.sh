@@ -39,3 +39,5 @@ compile ca_CA
 compile ml_IN
 # Việt Nam
 compile vi_VN
+# Hindi
+compile hn_IN
