@@ -1,0 +1,460 @@
+# Telegram bot to play UNO in group chats
+# Copyright (c) 2016 Jannes Höke <uno@jhoeke.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+msgid ""
+msgstr ""
+"Project-Id-Version: uno_bot 0.1\n"
+"Report-Msgid-Bugs-To: uno@jhoeke.de\n"
+"POT-Creation-Date: 2016-05-22 17:32-0600\n"
+"PO-Revision-Date: 2016-05-22 21:20-0600\n"
+"Language-Team: en <uno@jhoeke.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: hn_IN\n"
+
+#: bot.py:60
+msgid ""
+"Follow these steps:\n"
+"\n"
+"1. Add this bot to a group\n"
+"2. In the group, start a new game with /new or join an already running game "
+"with /join\n"
+"3. After at least two players have joined, start the game with /start\n"
+"4. Type <code>@unobot</code> into your chat box and hit <b>space</b>, "
+"or click the <code>via @unobot</code> text next to messages. You will "
+"see your cards (some greyed out), any extra options like drawing, and a <b>?"
+"</b> to see the current game state. The <b>greyed out cards</b> are those "
+"you <b>can not play</b> at the moment. Tap an option to execute the selected "
+"action.\n"
+"Players can join the game at any time. To leave a game, use /leave. If a "
+"player takes more than 90 seconds to play, you can use /skip to skip that "
+"player.\n"
+"\n"
+"<b>Language</b> and other settings: /settings\n"
+"Other commands (only game creator):\n"
+"/close - Close lobby\n"
+"/open - Open lobby\n"
+"/enable_translations - Translate relevant texts into all languages spoken in "
+"a game\n"
+"/disable_translations - Use English for those texts\n"
+"\n"
+"<b>Experimental:</b> Play in multiple groups at the same time. Press the "
+"<code>Current game: ...</code> button and select the group you want to play "
+"a card in.\n"
+"If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
+"start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
+"unobotupdates\">update channel</a> and buy an UNO card game."
+msgstr ""
+"इन चरणों का पालन करें:\n"
+"\n"
+"1. इस बॉट को किसी समूह में जोड़ें\n"
+"2. समूह में, के साथ एक नया गेम बनाएँ /new या इसके साथ एक पहल में शामिल हों / join"
+"join\n"
+"3. कम से कम दो खिलाड़ियों के शामिल होने के बाद, खेल शुरू होता है। "
+"के साथ /start\n"
+"4. लिखता <code>@unobot</code> पाठ बॉक्स में और दबाएँ  "
+"<b>अन्तरिक्ष</b>या पाठ पर क्लिक करें <code>via @unobot</code>के साथ-साथ "
+"संदेश। आपको अपने कार्ड (कुछ भूरे रंग के), कोई भी विकल्प दिखाई देगा। "
+"चोरी और चोरी के रूप में अतिरिक्त <b>?</b> खेल की वर्तमान स्थिति देखने के लिए. "
+"वही <b>ग्रेश चार्ट</b> वे हैं <b>उपयोग नहीं किया जा सकता</b> में "
+"क्षण। चयनित क्रिया निष्पादित करने के लिए किसी विकल्प पर टैप करें.\n"
+"खिलाड़ी किसी भी समय शामिल हो सकते हैं। एक को छोड़ना "
+"खेल, उपयोग करें /leave. यदि कोई खिलाड़ी खेलने के लिए 90 सेकंड से अधिक समय लेता है, "
+"आप इसका उपयोग कर सकते हैं /skip उस खिलाड़ी को छोड़ दें.\n"
+"\n"
+"<b>भाषा</b> और अन्य सेटिंग्सs: /settings\n"
+"अन्य आदेश (केवल गेम निर्माता उपयोग कर सकता है):\n"
+"/close - बंद कमरा\n"
+"/open - खुला कमरा\t\n"
+"/enable_translations - महत्वपूर्ण संदेशों का सभी भाषाओं में अनुवाद करें "
+"खेल में उपलब्ध है\n"
+"/disable_translations - डिफ़ॉल्ट भाषा (अंग्रेज़ी भाषा) का उपयोग करें \n"
+"\n"
+"<b>Experimental:</b> एक ही समय में कई समूहों में खेलना. "
+"दबाएँ <code>Current game: ...</code>  और समूह का चयन करें "
+"जिसे आप आगे बढ़ाना चाहते हैं.\n"
+"यदि आप बॉट पसंद करते हैं <a href=\"https://telegram.me/storebot?start=mau_mau_bot"
+"\">rate me</a>, शामिल हों <a href=\"https://telegram.me/unobotupdates\">canal "
+"अद्यतनों की संख्या </a> और UNO कार्ड गेम खरीदें."
+
+#: bot.py:88
+msgid ""
+"This bot is Free Software and licensed under the AGPL. The code is available "
+"here: \n"
+"https://github.com/jh0ker/mau_mau_bot"
+msgstr ""
+"यह बॉट नि: शुल्क सॉफ्टवेयर है और एजीपीएल के तहत लाइसेंस प्राप्त है। कोड है "
+"यहाँ उपलब्ध है:\n"
+"https://github.com/jh0ker/mau_mau_bot"
+
+#: bot.py:133
+msgid ""
+"Created a new game! Join the game with /join and start the game with /start"
+msgstr ""
+"नया खेल बनाया गया! शामिल हों  /join जब आप सभी तैयार हों, तो शुरू करने के लिए क्लिक करें. /start"
+
+#: bot.py:152
+msgid "The lobby is closed"
+msgstr "कमरा बंद है।a."
+
+#: bot.py:156
+msgid "No game is running at the moment. Create a new game with /new"
+msgstr ""
+"कोई खेल प्रगति पर नहीं है /new के साथ एक खेल बनाएँ ."
+
+#: bot.py:162
+msgid "You already joined the game. Start the game with /start"
+msgstr "आप पहले ही इस खेल में शामिल हो चुके हैं  /start के साथ शुरू करें ."
+
+#: bot.py:167
+msgid "Joined the game"
+msgstr "खेल में शामिल हो गए."
+
+#: bot.py:179 bot.py:191
+msgid "You are not playing in a game in this group."
+msgstr "आप इस समूह में एक खेल में नहीं खेल रहे हैं।."
+
+#: bot.py:197 bot.py:258 bot.py:595
+msgid "Game ended!"
+msgstr " खेल ख़त्म हुआ!  "  
+
+#: bot.py:201
+msgid "Okay. Next Player: {name}"
+msgstr "Okay. अगला खिलाड़ी: {name}"
+
+#: bot.py:219
+msgid "Game not found."
+msgstr "खेल नहीं मिला."
+
+#: bot.py:223
+msgid "Back to last group"
+msgstr "अंतिम समूह पर लौटें."
+
+#: bot.py:227
+msgid "Please switch to the group you selected!"
+msgstr "कृपया अपने द्वारा चयनित समूह पर स्विच करें!"
+
+#: bot.py:233
+#, python-format
+msgid ""
+"Selected group: {group}\n"
+"<b>Make sure that you switch to the correct group!</b>"
+msgstr ""
+"चयनित समूह: {group}\n"
+"<b>सुनिश्चित करें कि आप सही समूह पर स्विच करें!</b>"
+
+#: bot.py:260
+#, python-format
+msgid "Removing {name} from the game"
+msgstr "निकालने {name} खेल से."
+
+#: bot.py:273
+msgid "There is no game running in this chat. Create a new one with /new"
+msgstr "इस चैट में कोई गेम नहीं चल रहा है /new के साथ एक नया बनाएँ /new."
+
+#: bot.py:278
+msgid "The game has already started"
+msgstr "खेल पहले ही शुरू हो चुका है."
+
+#: bot.py:281
+msgid "At least {minplayers} players must /join the game before you can start it"
+msgstr ""
+"खेल शुरू करने से पहले, कम से कम {minplayers} खिलाड़ियों को उपयोग में शामिल होना चाहिए /join."
+
+#: bot.py:297
+#, python-format
+msgid ""
+"First player: {name}\n"
+"Use /close लोगों को खेल में शामिल होने से रोकने के लिए.\n"
+"Enable multi-translations with /enable_translations"
+msgstr ""
+"पहला खिलाड़ी: {name}\n"
+"लोगों को खेल में शामिल होने से रोकने के लिए उपयोग  करें  /close.n"
+"के साथ बहु-अनुवाद सक्षम करें /enable_translations."
+
+#: bot.py:321
+msgid "Please select the group you want to play in."
+msgstr "वह समूह चुनें जिसमें आप खेलना चाहते हैं."
+
+#: bot.py:335 bot.py:361
+msgid "There is no running game in this chat."
+msgstr "इस समूह में कोई खेल प्रगति पर नहीं है।."
+
+#: bot.py:342
+msgid "Closed the lobby. No more players can join this game."
+msgstr "बंद कमरा। कोई और खिलाड़ी खेल में शामिल नहीं हो पाएगा."
+
+#: bot.py:348 bot.py:373
+#, python-format
+msgid "Only the game creator ({name}) can do that."
+msgstr "केवल खेल के निर्माता ({name}) ऐसा कर सकते हैं."
+
+#: bot.py:349
+#, python-format
+msgid "Enabled multi-translations. Disable with /disable_translations"
+msgstr ""
+"बहु-अनुवाद सक्षम किए गए. उन्हें अक्षम करें /disable_translations."
+
+#: bot.py:377
+#, python-format
+msgid ""
+"Disabled multi-translations. Enable them again with /enable_translations"
+msgstr ""
+"बहु-अनुवाद अक्षम किए गए. उन्हें फिर से सक्षम करें /"
+"enable_translations."
+
+#: bot.py:368
+msgid "Opened the lobby. New players may /join the game."
+msgstr "लॉबी खोली। नए खिलाड़ी खेल में /join शामिल हो सकते हैं."
+
+#: bot.py:386
+msgid "You are not playing in a game in this chat."
+msgstr "आप इस चैट में नहीं खेल रहे हैं."
+
+#: bot.py:400
+#, python-format
+msgid "Please wait {time} second"
+msgid_plural "Please wait {time} seconds"
+msgstr[0] "कृपया प्रतीक्षा करें सेकंड."
+msgstr[1] "कृपया प्रतीक्षा करें {time} सेकंड."
+
+#: bot.py:413
+#, python-format
+msgid "Waiting time to skip this player has been reduced to {time} second.\n"
+"Next player: {name}"
+msgid_plural "Waiting time to skip this player has been reduced to {time} seconds.\n"
+"Next player: {name}"
+msgstr[0] ""
+"वर्तमान खिलाड़ी को कूदने के लिए प्रतीक्षा समय कम हो गया है {time} "
+"सेकंड.\n"
+"अगला खिलाड़ी: {name}"
+msgstr[1] ""
+"वर्तमान खिलाड़ी को कूदने के लिए प्रतीक्षा समय कम हो गया है {time} "
+"सेकंड.\n"
+"अगला खिलाड़ी: {name}"
+
+#: bot.py:424
+#, python-format
+msgid ""
+"{name1} was skipped four times in a row and has been removed from the game.\n"
+"Next player: {name2}"
+msgstr ""
+"{name1} उन्हें लगातार चार बार छोड़ दिया गया और खेल से हटा दिया गयाउन्हें लगातार चार बार छोड़ दिया गया और खेल से हटा दिया गया "
+"partida.\n"
+"अगला खिलाड़ी {name2}"
+
+#: bot.py:432
+#, python-format
+msgid ""
+"{name} was skipped four times in a row and has been removed from the game.\n"
+"खेल समाप्त हुआ."
+msgstr ""
+"{name} उन्हें लगातार चार बार छोड़ दिया गया और खेल से हटा दिया गया "
+"प्रस्थान.\n"
+"खेल पूरा हुआ."
+
+#: bot.py:455
+msgid "All news here: https://telegram.me/unobotupdates"
+msgstr "सभी समाचार यहाँ: https://telegram.me/unobotupdates"
+
+#: bot.py:513
+#, python-format
+msgid "Current game: {group}"
+msgstr " वर्तमान खेल: {group}"
+
+#: bot.py:545
+#, python-format
+msgid "Cheat attempt by {name}"
+msgstr "{name} से धोखा देने का प्रयास."
+
+#: bot.py:562
+msgid "Next player: {name}"
+msgstr "अगला खिलाड़ी: {name}."
+
+#: bot.py:572
+#, python-format
+msgid "Waiting time for {name} has been reset to {time} seconds"
+msgstr "प्रतीक्षा समय {name} पुन: प्रारंभ करें {time} सेकंड"
+
+#: bot.py:585
+msgid "Please choose a color"
+msgstr "कृपया किसी रंग का चयन करें"
+
+#: bot.py:591
+#, python-format
+msgid "{name} won!"
+msgstr "¡{name} जीत गया!"
+
+#: bot.py:613 bot.py:635 bot.py:647
+msgid "There are no more cards in the deck."
+msgstr "डेक में कोई और कार्ड नहीं हैं।."
+
+#: bot.py:627
+#, python-format
+msgid "Bluff called! Giving 4 cards to {name}"
+msgstr "यह एक धोखा था! {name} 4 कार्ड प्राप्त करें."
+
+#: bot.py:639
+#, python-format
+msgid "{name1} didn't bluff! Giving 6 cards to {name2}"
+msgstr "¡{name1} उसने धोखा नहीं दिया!, {name2} 6 कार्ड प्राप्त करें."
+
+#: results.py:38
+msgid "Choose Color"
+msgstr "किसी रंग का चयन करें"
+
+#: results.py:56
+msgid "Last card (tap for game state):"
+msgid_plural "Cards (tap for game state):"
+msgstr[0] "अंतिम कार्ड (खेल की स्थिति देखने के लिए क्लिक करें):"
+msgstr[1] "कार्ड (खेल की स्थिति देखने के लिए क्लिक करें):"
+
+#: results.py:60 results.py:123 results.py:165
+msgid "Current player: {name}"
+msgstr "वर्तमान खिलाड़ी: {name}."
+
+#: results.py:61 results.py:124 results.py:167
+msgid "Last card: {card}"
+msgstr "आखिरी कार्ड: {card}."
+
+#: results.py:62 results.py:125 results.py:168
+msgid "Player: {player_list}"
+msgid_plural "Players: {player_list}"
+msgstr[0] "वादक: {player_list}"
+msgstr[1] "जुआरी: {player_list}"
+
+#: results.py:72
+#, python-format
+msgid "{name} ({number} card)"
+msgid_plural "{name} ({number} cards)"
+msgstr[0] "{name} ({number} carta)"
+msgstr[1] "{name} ({number} cartas)"
+
+#: results.py:81
+msgid "You are not playing"
+msgstr "आप नहीं खेल रहे हैं."
+
+#: results.py:83
+msgid ""
+"Not playing right now. Use /new to start a game or /join to join the current "
+"game in this group"
+msgstr ""
+"आप अभी नहीं खेल रहे हैं। एक खेल शुरू करने के लिए उपयोग   /new"
+"यदि इस समूह में कोई खेल चल रहा है तो शामिल हों."
+
+#: results.py:95
+msgid "The game wasn't started yet"
+msgstr "खेल अभी शुरू नहीं हुआ था."
+
+#: results.py:97
+msgid "Start the game with /start"
+msgstr " /start से खेल प्रारंभ करें."
+
+#: results.py:108
+#, python-format
+msgid "Drawing {number} card"
+msgid_plural "Drawing {number} cards"
+msgstr[0] "Robando {number} carta."
+msgstr[1] "Robando {number} cartas."
+
+#: results.py:136
+msgid "Pass"
+msgstr "उत्तीर्ण"
+
+#: results.py:148
+msgid "I'm calling your bluff!"
+msgstr "मैं आपके धोखे का जवाब दे रहा हूं!"
+
+#: settings.py:39
+msgid "Please edit your settings in a private chat with the bot."
+msgstr "कृपया बॉट के साथ निजी चैट में अपनी सेटिंग्स संपादित करें."
+
+#: settings.py:49
+msgid "Enable statistics"
+msgstr "आँकड़े सक्षम करें"
+
+#: settings.py:51
+msgid "Delete all statistics"
+msgstr "सभी आँकड़े हटाएँ"
+
+#: settings.py:53
+msgid "Language"
+msgstr "भाषा"
+
+#: settings.py:54
+msgid "Settings"
+msgstr "समायोजन"
+
+#: settings.py:68
+msgid "Enabled statistics!"
+msgstr "सक्षम आँकड़े!"
+
+#: settings.py:70
+msgid "Select locale"
+msgstr "स्थान चुनें"
+
+#: settings.py:81
+msgid "Deleted and disabled statistics!"
+msgstr "हटाए गए और अक्षम आँकड़े! "
+
+#: settings.py:94
+msgid "Set locale!"
+msgstr "स्थान निर्धारित करें!"
+
+#: simple_commands.py
+msgid ""
+"You did not enable statistics. Use /settings in a private chat with the bot "
+"to enable them."
+msgstr ""
+"आपने सांख्यिकी सक्षम नहीं की. उपयोग /settings बॉट के साथ एक निजी बातचीत में "
+"उन्हें सक्षम करने के लिए."
+
+#: simple_commands.py
+msgid "{number} game played"
+msgid_plural "{number} games played"
+msgstr[0] "{number} खेल खेला गया."
+msgstr[1] "{number} खेले गए खेल."
+
+#: simple_commands.py
+msgid "{number} first place ({percent}%)"
+msgid_plural "{number} first places ({percent}%)"
+msgstr[0] "{number} पहले स्थान पर ({percent}%)."
+msgstr[1] "{number} प्रथम स्थान ({percent}%)."
+
+#: simple_commands.py
+msgid "{number} card played"
+msgid_plural "{number} cards played"
+msgstr[0] "{number} कार्ड खेला गया."
+msgstr[1] "{number} कार्ड खेले गए."
+
+#: utils.py
+msgid "{emoji} Green"
+msgstr "{emoji} हरा"
+
+#: utils.py
+msgid "{emoji} Red"
+msgstr "{emoji} लाल"
+
+#: utils.py
+msgid "{emoji} Blue"
+msgstr "{emoji} नीला"
+
+#: utils.py
+msgid "{emoji} Yellow"
+msgstr "{emoji} पीला"
