@@ -40,4 +40,5 @@ available_locales = {'en_US': flag('US') + ' English (US)',
                      'zh_TW': flag('TW') + ' 中文(台灣)',
                      'ca_CA': flag('ES') + ' Catalan',
                      'ml_IN': flag('IN') + ' Malayalam',
-                     'vi_VN': flag('VN') + ' Việt Nam'}
+                     'vi_VN': flag('VN') + ' Việt Nam'
+                     'hn_IN': flag('IN') + ' Hindi'}
