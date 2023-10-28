@@ -58,7 +58,7 @@ msgid ""
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"unobotnews\">update channel</a> and buy an UNO card game."
 msgstr ""
 "ഈ ഘട്ടങ്ങൾ പിന്തുടരുക:\n"
 "\n"
@@ -90,7 +90,7 @@ msgstr ""
 "game: ...</code> ഉപയോഗിക്കുക.  പിന്നീട് കളിക്കാൻ ആഗ്രഹിക്കുന്ന ഗ്രൂപ്പ്  സെലക്ട് ചെയ്യുക. \n"
 "ഈ ബോട്ട് ഇഷ്ടപ്പെട്ടുവെങ്കിൽ റേറ്റ് ചെയ്യുക , <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">Rate  Me! </a>, <a href=\"https://telegram.me/"
-"unobotupdates\">uno News Channel </a> അപ്ഡേറ്റുകൾ ജോയിൻ  ചെയ്യുക."
+"unobotnews\">uno News Channel </a> അപ്ഡേറ്റുകൾ ജോയിൻ  ചെയ്യുക."
 
 #: bot.py:88
 msgid ""
@@ -274,8 +274,8 @@ msgstr ""
 "ഗെയിം അവസാനിച്ചു."
 
 #: bot.py:455
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "അപ്‌ഡേറ്റുകൾക്കായി ഗ്രൂപ്പ് ജോയിൻ ചെയ്യാം  https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "അപ്‌ഡേറ്റുകൾക്കായി ഗ്രൂപ്പ് ജോയിൻ ചെയ്യാം  https://telegram.me/unobotnews"
 
 #: bot.py:513
 #, python-format

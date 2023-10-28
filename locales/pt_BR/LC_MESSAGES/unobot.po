@@ -54,7 +54,7 @@ msgid ""
 "<b>Experimental:</b> Play in multiple groups at the same time. Press the <code>Current "
 "game: ...</code> button and select the group you want to play a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot\">rate me</"
-"a>, join the <a href=\"https://telegram.me/unobotupdates\">update channel</a> and buy an "
+"a>, join the <a href=\"https://telegram.me/unobotnews\">update channel</a> and buy an "
 "UNO card game."
 msgstr ""
 "Siga esses passos:\n"
@@ -83,7 +83,7 @@ msgstr ""
 "<b>Experimental:</b> Jogue em vários grupos ao mesmo tempo. Toque no botão <code>Partida "
 "atual: ...</code> e selecione o grupo no qual deseja jogar uma carta.\n"
 "Se gostou deste bot, <a href=\"https://telegram.me/storebot?start=mau_mau_bot\">avalie-o</"
-"a>, entre no <a href=\"https://telegram.me/unobotupdates\">canal de atualizações</a> e "
+"a>, entre no <a href=\"https://telegram.me/unobotnews\">canal de atualizações</a> e "
 "compre um jogo de cartas UNO."
 
 #: bot.py:88
@@ -262,8 +262,8 @@ msgstr ""
 "O jogo acabou."
 
 #: bot.py:455
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "Todas as novidades aqui: https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "Todas as novidades aqui: https://telegram.me/unobotnews"
 
 #: bot.py:513
 #, python-format

@@ -417,7 +417,7 @@ msgid ""
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"unobotnews\">update channel</a> and buy an UNO card game."
 msgstr ""
 "Şu adımları takip edin:\n"
 "\n"
@@ -448,7 +448,7 @@ msgstr ""
 "<code>Mevcut oyun: ...</code> butonu ile oynamak istediğiniz grubu seçin\n"
 "Eğer bu botu sevdiysen, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">beni oyla</a>, kanala <a href=\"https://telegram.me/"
-"unobotupdates\">katıl</a> ve UNO oyun kartları satın al."
+"unobotnews\">katıl</a> ve UNO oyun kartları satın al."
 
 #: simple_commands.py:73
 msgid ""
@@ -496,8 +496,8 @@ msgstr "Teşekkürler:\n"
 "Türkçe çevirisi: @holytotem tarafından yapılmıştır."
 
 #: simple_commands.py:105
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "Tüm yenilikler burada: https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "Tüm yenilikler burada: https://telegram.me/unobotnews"
 
 #: simple_commands.py:115
 msgid ""

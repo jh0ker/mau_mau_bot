@@ -428,7 +428,7 @@ msgid ""
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"unobotnews\">update channel</a> and buy an UNO card game."
 msgstr ""
 "Làm theo các bước sau:\n"
 "\n"
@@ -461,7 +461,7 @@ msgstr ""
 "bài.\n"
 "Nếu bạn thích bot này, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">đánh giá  tôi</a>, tham gia <a href=\"https://telegram.me/"
-"unobotupdates\">kênh cập nhật</a> và mua bài UNO."
+"unobotnews\">kênh cập nhật</a> và mua bài UNO."
 
 
 #: simple_commands.py:73
@@ -510,8 +510,8 @@ msgstr "Thiết kế:\n"
 "Chình sửa biểu tượng bởi ɳick"
 
 #: simple_commands.py:105
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "Tin tức mới về bot ở đây: https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "Tin tức mới về bot ở đây: https://telegram.me/unobotnews"
 
 #: simple_commands.py:115
 msgid ""

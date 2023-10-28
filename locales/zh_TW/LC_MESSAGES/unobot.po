@@ -429,7 +429,7 @@ msgid ""
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"unobotnews\">update channel</a> and buy an UNO card game."
 msgstr ""
 "請遵循以下步驟:\n"
 "\n"
@@ -459,7 +459,7 @@ msgstr ""
 "\n"
 "如果你享受這台機器人，請<a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">評價這台機器人</a>、加入<a href=\"https://telegram.me/"
-"unobotupdates\">更新頻道</a>並買一款 UNO 卡牌遊戲。"
+"unobotnews\">更新頻道</a>並買一款 UNO 卡牌遊戲。"
 
 #: simple_commands.py:73
 msgid ""
@@ -509,8 +509,8 @@ msgstr ""
 "圖示由 ɳick 編輯。"
 
 #: simple_commands.py:105
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "新聞頻道: https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "新聞頻道: https://telegram.me/unobotnews"
 
 #: simple_commands.py:115
 msgid ""

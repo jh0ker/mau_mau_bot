@@ -63,7 +63,7 @@ msgid "Follow these steps:\n"
 "a card in.\n"
 "If you enjoy this bot, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">rate me</a>, join the <a href=\"https://telegram.me/"
-"unobotupdates\">update channel</a> and buy an UNO card game."
+"unobotnews\">update channel</a> and buy an UNO card game."
 msgstr ""
 "Выполните следующие действия:\n"
 "\n"
@@ -95,7 +95,7 @@ msgstr ""
 "<code>Текущая игры: ...</code> и выберите, в какой группе сделать ход.\n"
 "Если Вам понравился этот бот, <a href=\"https://telegram.me/storebot?"
 "start=mau_mau_bot\">оцените его</a> и следите за <a href=\"https://telegram.me/"
-"unobotupdates\">новостным каналом</a>, а такщже купите себе карточки UNO."
+"unobotnews\">новостным каналом</a>, а такщже купите себе карточки UNO."
 
 #: bot.py:88
 msgid ""
@@ -275,8 +275,8 @@ msgstr ""
 "Игра окончена."
 
 #: bot.py:455
-msgid "All news here: https://telegram.me/unobotupdates"
-msgstr "Все новости здесь: https://telegram.me/unobotupdates"
+msgid "All news here: https://telegram.me/unobotnews"
+msgstr "Все новости здесь: https://telegram.me/unobotnews"
 
 #: bot.py:513
 #, python-format
