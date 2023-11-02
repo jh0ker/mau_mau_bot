@@ -62,8 +62,7 @@ class Player(object):
             for _ in range(7):
                 self.cards.append(self.game.deck.draw())
         except DeckEmptyError:
-            for card in self.cards:
-                self.game.deck.dismiss(card)
+            self.leave()
 
             raise
 

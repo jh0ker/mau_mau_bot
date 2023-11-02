@@ -32,7 +32,7 @@ import simple_commands
 from actions import do_skip, do_play_card, do_draw, do_call_bluff, start_player_countdown
 from config import WAITING_TIME, DEFAULT_GAMEMODE, MIN_PLAYERS
 from errors import (NoGameInChatError, LobbyClosedError, AlreadyJoinedError,
-                    NotEnoughPlayersError, DeckEmptyError)
+                    NotEnoughPlayersError, DeckEmptyError, MaxPlayersError)
 from internationalization import _, __, user_locale, game_locales
 from results import (add_call_bluff, add_choose_color, add_draw, add_gameinfo,
                      add_no_game, add_not_started, add_other_cards, add_pass,
@@ -162,6 +162,11 @@ def join_game(update: Update, context: CallbackContext):
         send_async(context.bot, chat.id,
                    text=_("There are not enough cards left in the deck for "
                           "new players to join."),
+                   reply_to_message_id=update.message.message_id)
+
+    except MaxPlayersError:
+        send_async(bot, chat.id,
+                   text=_("You can't join the game due to the maximum players limit"),
                    reply_to_message_id=update.message.message_id)
 
     else:
@@ -368,6 +373,10 @@ def start_game(update: Update, context: CallbackContext):
             send_async(context.bot, chat.id,
                        text=__("At least {minplayers} players must /join the game "
                               "before you can start it").format(minplayers=MIN_PLAYERS))
+
+        elif len(game.players) > MAX_PLAYERS:
+            send_async(bot, chat.id,
+                       text=__("No more than {maxplayers} players can join the game").format(maxplayers=MAX_PLAYERS))
 
         else:
             # Starting a game

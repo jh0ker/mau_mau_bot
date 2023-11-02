@@ -36,3 +36,7 @@ class NotEnoughPlayersError(Exception):
 
 class DeckEmptyError(Exception):
     pass
+
+
+class MaxPlayersError(Exception):
+    pass
