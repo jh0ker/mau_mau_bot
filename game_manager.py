@@ -24,7 +24,7 @@ from game import Game
 from player import Player
 from errors import (AlreadyJoinedError, LobbyClosedError, NoGameInChatError,
                     NotEnoughPlayersError)
-
+from promotions import send_promotion_async
 
 class GameManager(object):
     """ Manages all running games by using a confusing amount of dicts """
@@ -143,6 +143,7 @@ class GameManager(object):
         """
 
         self.logger.info("Game in chat " + str(chat.id) + " ended")
+        send_promotion_async(chat, chance=0.15)
 
         # Find the correct game instance to end
         player = self.player_for_user_in_chat(user, chat)
