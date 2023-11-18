@@ -79,7 +79,7 @@ def new_game(update: Update, context: CallbackContext):
 
         if update.message.chat_id in gm.remind_dict:
             for user in gm.remind_dict[update.message.chat_id]:
-                send_async(bot,
+                send_async(context.bot,
                            user,
                            text=_("A new game has been started in {title}").format(
                                 title=update.message.chat.title))
