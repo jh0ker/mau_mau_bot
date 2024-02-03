@@ -43,4 +43,5 @@ available_locales = {
     "ml_IN": flag("IN") + " Malayalam",
     "vi_VN": flag("VN") + " Việt Nam",
     "hn_IN": flag("IN") + " Hindi",
+    "uz_UZ": flag("UZ") + " O'zbek",
 }
