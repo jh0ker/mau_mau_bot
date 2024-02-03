@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: actions.py:48
 #, python-brace-format
@@ -198,7 +198,7 @@ msgstr ""
 "/join bosing!"
 
 #: bot.py:380
-#, python-brace-format
+#, python-brace-format, fuzzy
 msgid ""
 "First player: {name}\n"
 "Use /close to stop people from joining the game.\n"
@@ -441,7 +441,7 @@ msgstr ""
 "variantlarni va <b>?</b> joriy oʻyin holatini koʻrish uchun."
 "<b>Kulrang kartalar</b> - bu siz <b>hozir oʻynay olmaydigan</b> kartalar."
 "Tanlangan amalni bajarish uchun variantni bosing.\n"
-"Oʻyinchilar oʻyinga istalgan vaqtda qoʻshilishlari mumkin.
+"Oʻyinchilar oʻyinga istalgan vaqtda qoʻshilishlari mumkin."
 "Oʻyinni tark etish uchun /leave dan foydalaning."
 "Agar oʻyinchi oʻynash uchun 90 soniyadan koʻproq vaqt talab qilsa,"
 "oʻyinchini oʻtkazib yuborish uchun /skip dan foydalanishingiz mumkin."
@@ -509,8 +509,8 @@ msgid ""
 "Icons edited by ɳick"
 msgstr ""
 "Yaratuvchilar:\n"
-"<a href=\"http://www.faithtoken.com/\">Faithtoken</a> tomonidan "Draw" belgisi\n"
-"<a href=\"http://delapouite.com/\">Delapouite</a> tomonidan "Pass" belgisi\n"
+"<a href=\"http://www.faithtoken.com/\">Faithtoken</a> tomonidan \"Draw\" belgisi\n"
+"<a href=\"http://delapouite.com/\">Delapouite</a> tomonidan \"Pass\" belgisi\n"
 "Asl http://game-icons.net da mavjud\n."
 "ɳick tomonidan tahrirlangan belgilar"
 
