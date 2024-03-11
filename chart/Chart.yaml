@@ -1,0 +1,21 @@
+apiVersion: v2
+name: maumaubot
+description: Telegram Bot that allows you to play the popular card game UNO via inline queries.
+type: application
+version: 0.1.0
+appVersion: latest
+kubeVersion: ">=1.22.0-0"
+keywords:
+  - telegram
+  - uno
+  - telegram-bot
+dependencies:
+  - name: common
+    repository: https://bjw-s.github.io/helm-charts
+    version: 3.0.0-beta4
+sources:
+  - https://github.com/jh0ker/mau_mau_bot
+annotations:
+  artifacthub.io/links: |-
+    - name: App Source
+      url: https://github.com/jh0ker/mau_mau_bot

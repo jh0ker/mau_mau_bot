@@ -1,0 +1,17 @@
+{{/* Preprocess values and prepare config file */}}
+{{- define "maumaubot.preprocess" -}}
+secrets:
+  envs:
+    stringData:
+      TOKEN: {{ required "Bot token is required. Please set config.token" .Values.config.token | quote }}
+
+configMaps:
+  config:
+    data:
+      config.json: |
+        {{- omit .Values.config "token" | mustToPrettyJson | nindent 8 }}
+{{- end -}}
+{{- $_ := merge .Values (include "maumaubot.preprocess" . | fromYaml) -}}
+
+{{/* Render the templates */}}
+{{- include "bjw-s.common.loader.all" . }}
