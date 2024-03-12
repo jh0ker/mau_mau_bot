@@ -23,7 +23,7 @@ import json
 
 try:
     with open("config.json", "r") as f:
-        config = json.loads(f.read())
+        config = json.load(f)
 except FileNotFoundError:
     config = {}
 
