@@ -1,8 +1,7 @@
-version: "3.9"
 services:
-  unobot:
-    container_name: unobot
-    build:
-      context: .
-      dockerfile: Dockerfile
+  maumaubot:
+    # build: .
+    image: ghcr.io/jh0ker/mau_mau_bot
     restart: unless-stopped
+    volumes:
+      - ./data:/app/data

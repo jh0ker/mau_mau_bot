@@ -1,8 +1,6 @@
 name: Docker build
 
 on:
-  schedule:
-    - cron: '25 15 * * *'
   push:
     branches:
       - master
@@ -24,22 +22,22 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
 
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v2
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
           tags: |
@@ -48,15 +46,59 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
 
+      - name: Setup buildx mount cache
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: |
+            home-cache-386
+            home-cache-amd64
+            home-cache-armv6
+            home-cache-armv7
+            home-cache-arm64
+            home-cargo-386
+            home-cargo-amd64
+            home-cargo-armv6
+            home-cargo-armv7
+            home-cargo-arm64
+          key: buildx-mount-cache-${{ github.sha }}
+          restore-keys: |
+            buildx-mount-cache-
+
+      - name: Inject buildx mount cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
+        with:
+          cache-map: |
+            {
+              "home-cache-386": {
+                "target": "/root/.cache",
+                "id": "home-cache-linux/386"
+              },
+              "home-cache-amd64": {
+                "target": "/root/.cache",
+                "id": "home-cache-linux/amd64"
+              },
+              "home-cache-armv6": {
+                "target": "/root/.cache",
+                "id": "home-cache-linux/arm/v6"
+              },
+              "home-cache-armv7": {
+                "target": "/root/.cache",
+                "id": "home-cache-linux/arm/v7"
+              },
+              "home-cache-arm64": {
+                "target": "/root/.cache",
+                "id": "home-cache-linux/arm64"
+              }
+            }
+
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
         with:
           context: .
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
