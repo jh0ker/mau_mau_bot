@@ -74,6 +74,7 @@ chart/charts
 
 # Database file
 uno.sqlite3
+data/
 
 images/api_auth.json
 images/sticker_config.json

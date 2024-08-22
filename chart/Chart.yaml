@@ -12,7 +12,7 @@ keywords:
 dependencies:
   - name: common
     repository: https://bjw-s.github.io/helm-charts
-    version: 3.0.0-beta4
+    version: 3.3.2
 sources:
   - https://github.com/jh0ker/mau_mau_bot
 annotations:
