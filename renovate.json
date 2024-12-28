@@ -18,6 +18,17 @@
         "repology"
       ],
       "groupName": "OS Packages"
+    },
+    {
+      "description": "Separate python minor releases",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "python"
+      ],
+      "separateMultipleMinor": true,
+      "separateMinorPatch": true
     }
   ],
   "ignoreDeps": [
