@@ -1,4 +1,4 @@
-FROM python:3.11.11-alpine@sha256:bc84eb94541f34a0e98535b130ea556ae85f6a431fdb3095762772eeb260ffc3
+FROM python:3.11.11-alpine@sha256:9af3561825050da182afc74b106388af570b99c500a69c8216263aa245a2001b
 
 # renovate: datasource=repology depName=alpine_3_21/gettext versioning=loose
 ARG         GETTEXT_VERSION="0.22.5-r0"
