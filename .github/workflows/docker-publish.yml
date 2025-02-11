@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     permissions:
       contents: read
       packages: write
@@ -20,9 +20,124 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/386
+          - linux/arm/v6
+          - linux/arm/v7
+          - linux/arm64
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepare variables
+        id: vars
+        run: |
+          platform=${{ matrix.platform }}
+          echo "platform_pair=${platform//\//-}" >> $GITHUB_OUTPUT
+          echo "platform_pair_un=${platform//\//_}" >> $GITHUB_OUTPUT
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+
+      - name: Extract image without tag from metadata
+        id: image
+        run: |
+          image=${{ steps.meta.outputs.tags }}
+          echo "image=${image%%:*}" >> $GITHUB_OUTPUT
+
+      - name: Setup buildx mount cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        with:
+          path: |
+            home-cache
+            home-cargo
+          key: buildx-mount-cache-${{ steps.vars.outputs.platform_pair }}-${{ github.sha }}
+          restore-keys: |
+            buildx-mount-cache-${{ steps.vars.outputs.platform_pair }}-
+
+      - name: Inject buildx mount cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
+        with:
+          cache-map: |
+            {
+              "home-cache": {
+                "target": "/root/.cache",
+                "id": "home-cache-${{ matrix.platform }}"
+              },
+              "home-cargo": {
+                "target": "/root/.cargo",
+                "id": "home-cargo-${{ matrix.platform }}"
+              }
+            }
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
+        with:
+          context: .
+          push: true
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,"name=${{ steps.image.outputs.image }}",push-by-digest=true,name-canonical=true,push=true
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Workaround for https://github.com/actions/runner/pull/2477
+      - name: Export digest
+        run: |
+          mkdir -p ${{ runner.temp }}/digests
+          digest="${{ steps.build-and-push.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest as an artifact
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        with:
+          name: digests-${{ steps.vars.outputs.platform_pair }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+    # https://github.com/actions/runner/pull/2477 :<
+    #   ${{ steps.vars.outputs.platform_pair_un }}_digest: ${{ steps.build-and-push.outputs.digest }}
+
+  merge:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    needs:
+      - build
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-*
+          merge-multiple: true
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
@@ -46,59 +161,8 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Setup buildx mount cache
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
-        with:
-          path: |
-            home-cache-386
-            home-cache-amd64
-            home-cache-armv6
-            home-cache-armv7
-            home-cache-arm64
-            home-cargo-386
-            home-cargo-amd64
-            home-cargo-armv6
-            home-cargo-armv7
-            home-cargo-arm64
-          key: buildx-mount-cache-${{ github.sha }}
-          restore-keys: |
-            buildx-mount-cache-
-
-      - name: Inject buildx mount cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
-        with:
-          cache-map: |
-            {
-              "home-cache-386": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/386"
-              },
-              "home-cache-amd64": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/amd64"
-              },
-              "home-cache-armv6": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm/v6"
-              },
-              "home-cache-armv7": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm/v7"
-              },
-              "home-cache-arm64": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm64"
-              }
-            }
-
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Create manifest list and push
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ needs.build.outputs.image }}@sha256:%s ' *)
