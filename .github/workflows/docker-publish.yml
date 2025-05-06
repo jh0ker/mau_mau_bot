@@ -6,99 +6,23 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: "Build and push the container"
     permissions:
       contents: read
       packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      # Workaround: https://github.com/docker/build-push-action/issues/461
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@6524bf65af31da8d45b59e8c27de4bd072b392f5 # v3.8.0
-
-      - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
-        with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Setup buildx mount cache
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
-        with:
-          path: |
-            home-cache-386
-            home-cache-amd64
-            home-cache-armv6
-            home-cache-armv7
-            home-cache-arm64
-            home-cargo-386
-            home-cargo-amd64
-            home-cargo-armv6
-            home-cargo-armv7
-            home-cargo-arm64
-          key: buildx-mount-cache-${{ github.sha }}
-          restore-keys: |
-            buildx-mount-cache-
-
-      - name: Inject buildx mount cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
-        with:
-          cache-map: |
-            {
-              "home-cache-386": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/386"
-              },
-              "home-cache-amd64": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/amd64"
-              },
-              "home-cache-armv6": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm/v6"
-              },
-              "home-cache-armv7": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm/v7"
-              },
-              "home-cache-arm64": {
-                "target": "/root/.cache",
-                "id": "home-cache-linux/arm64"
-              }
-            }
-
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+    uses: JuniorJPDJ/containers/.github/workflows/docker-parallel-multiarch-build.yml@master
+    with:
+      title: mau_mau_bot
+      platforms: 'linux/amd64,linux/386,linux/arm/v7,linux/arm64'
+      buildkit-mount-caches: '{"home-cache": "/root/.cache", "home-cargo": "/root/.cargo"}'
+      buildkit-mount-cache-ids-append-platform: true
+      registry: ghcr.io
+      image-name: ${{ github.repository }}
+    secrets:
+      registry-username: ${{ github.actor }}
+      registry-password: ${{ secrets.GITHUB_TOKEN }}
