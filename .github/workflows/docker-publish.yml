@@ -22,7 +22,7 @@ jobs:
       buildkit-mount-caches: '{"home-cache": "/root/.cache", "home-cargo": "/root/.cargo"}'
       buildkit-mount-cache-ids-append-platform: true
       registry: ghcr.io
+      registry-username: ${{ github.actor }}
       image-name: ${{ github.repository }}
     secrets:
-      registry-username: ${{ github.actor }}
       registry-password: ${{ secrets.GITHUB_TOKEN }}
